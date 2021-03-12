@@ -13,3 +13,5 @@ La team s’appelle MimirDeveloppement, en référence au dieu nordique de la co
 Astrid et Marwa sont nos deux principales développeuses, Jiou et Lucie les deux testeuses et Louise s'occupe de l'assurance qualité. De plus, Jiou, Louise et Lucie s'occupent également de toute la partie création des designs et croquis pour l'application et les logos.
 
 Chacunes ont des rôles différents au sein de la team, mais nous sommes toutes en 3e année de Double Licence Sciences de la Vie / Informatique. Travaillant ensemble depuis 3 ans sur différents projets, nous sommes une équipe soudée et nous avons conscience des atouts de chacune d’entre nous. 
+
+# Utilisation de l'Application Fenouil
