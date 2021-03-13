@@ -1,6 +1,0 @@
-# Page connexion (13/03/2021)
-Membre : Louise et Lucie
-
-Grid à permis de centrer le conteneur de la connexion lorsqu'on est en plein écran.
-Problème: lorsque l'on réduit la taille de la page du navigatuer, le conteneur reste centré mais les élements à l'intérieur bougent (ils sortent du conteneur)
-Idée de résolution: Ne pas mettre la taille des éléments en px mais en % ou quelque chose d'autre comme ça
