@@ -17,12 +17,11 @@ body{
 
 
 .conteneur{
-    width:400px;
-    padding:30px;
-    position: absolute;
-    top: 40%;
-    left: 40%;
-    transform:translate(-50px,-50px);
+    grid-column:3/5;
+    grid-row: 2/4;
+    
+    padding:25px;
+    padding-top: 0px;
     background: rgb(99, 187, 99);
     text-align: center;
     border-radius: 30px;
