@@ -1,0 +1,50 @@
+.body{
+    background-color: rgb(203, 220, 202);
+    display: grid;
+    grid-template-columns: "header"
+                            "main"
+                            "footer";
+
+}
+.header{
+    grid-area: "header";
+    display: grid;
+    grid-template-areas:    "header"
+                            "main"
+                            "footer";
+    background-color: white;
+}
+.head{
+    grid-area: "header";
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-column-gap: 10px;
+}
+.logo{
+    width: 250px;
+    height: 115px;
+}
+.title{
+    grid-area: "main";
+    text-align: center;
+}
+.bar{
+    grid-area: "footer";
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    align-items: stretch;
+    background-color: black;
+}
+.Nouvel_Article, .Modif_Article, .Nouvel_Individu,.Modif_Individu{
+    width: 100%;
+    background-color: rgb(60, 131, 55);
+}
+.Nouvel_Article:focus, .Modif_Article:focus, .Nouvel_Individu:focus,.Modif_Individu:focus{
+    background-color: rgb(238, 244, 234);
+}
+.page{
+    grid-area: "main";
+}
+.foot{
+    grid-area: "footer";
+}
