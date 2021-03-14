@@ -61,6 +61,9 @@ app.get('/commandes', (req,res)=> {
 app.get('/prospection', (req,res)=> {
     res.render('prospection', {title:'Prospection',style:"prospection"})
 })
+app.get('/anomalies', (req,res)=> {
+    res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})
+})
 //blog routes
 
 // affiche liste de tous les individus de la base

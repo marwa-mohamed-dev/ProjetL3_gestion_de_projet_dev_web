@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('./partials/head.ejs') %>
+
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+    <div class="barre">
+        <input class="Recherche_Anomalie" type="submit" value="Rechercher une anomalie" onclick="Recherche_Anomalie()">
+        <input class="courrier" type="submit" value="Envoyer un courrier" onclick="courrier()">
+    </div>
+    <script>
+        function Recherche_Anomalie(){
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"")
+        }
+        function courrier(){
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"")
+        }
+    </script>
+
+    <div class="page" id='choix'></div>
+
+    <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>
