@@ -100,6 +100,7 @@ app.get('/recherche/:id',(req, res) => {
         });
 });
 
+
 // supprime un des individus sélectionné
 app.delete('/recherche/:id',(req, res) => {
     const id = req.params.id;
@@ -112,11 +113,14 @@ app.delete('/recherche/:id',(req, res) => {
         });
 });
 
+
+
 // 404 page
 // use: fonction middleware qui marche que si les options du dessus 
 // n'ont pas été validées, eut-être placée à n'importe quel endroit
 app.use((req, res) => {
     res.status(404).render('404', {title: '404 Error', style: "styles"});
 });
+
 
 
