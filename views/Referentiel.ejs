@@ -8,14 +8,41 @@
     <%- include('./partials/nav.ejs') %>
 
     <div class="barre">
-        <input class="Nouvel_Article" type="submit" value="Créer un nouvel article">
-        <input class="Modif_Article" type="submit" value="Modifier un article">
-        <input type="submit" class="Nouvel_Individu" value="Créer un nouvel individu" onclick="location.href='/referentiel/newIndividu';">
-        <input class="Modif_Individu" type="submit" value="Modifier les propriétés d'un individu">
+        <input class="Nouvel_Article" type="submit" value="Créer un nouvel article" onclick="Nouvel_Article()">
+        <input class="Modif_Article" type="submit" value="Modifier un article" onclick="Recherche_Article()">
+        <input type="submit" class="Nouvel_Individu" value="Créer un nouvel individu" onclick="Nouvel_Individu()">
+        <input class="Modif_Individu" type="submit" value="Modifier les propriétés d'un individu" onclick="Recherche_Individu()">
 
+        <!--<a href="/referentiel/newIndividu"></a>-->
     </div>
+    <script>
+        function Nouvel_Article(){
+            const choix=document.getElementById('choix')
+            choix.innerHTML= "";
+            let on = document.getElementsByClassName("Nouvel_Article");
+            //on.classList.add("on");
+            choix.insertAdjacentHTML('afterbegin',"<form action:'/referenciel'method='POST' class='CreerArt'><label>Désignation*</label><input type='text' required><label >prix de vente (€)*</label><input type='number' required> <label>Description</label><input type='text'><input type='submit' value='Créer un nouvel Article'></form>");
+        }
 
-    <div class="page"></div>
+        function Recherche_Article(){
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"<form action:''method='POST' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher l'Article'>");
+        }
+
+        function Nouvel_Individu(){
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"<form class=''><label>Nom*</label><input type='text' required><label >Prénom*</label><input type='text' required> <label>Date de Naissance*</label><input type='text' required><label>Catégorie socio-professionnelle*</label><SELECT name='nom' size='1'><OPTION>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><div><input type='text' placeholder='N° de voie'><input type='text' placeholder='Nom de la Voie'><input type='text' placeholder='Code postal'><input type='text' placeholder='Ville'></div><label>Numéro de téléphone</label><input type='text'><label>Adresse mail</label><input type='text'><input type='submit' value='Créer un nouvel Individu'></form>");
+        }
+
+        function Recherche_Individu(){
+            choix.innerHTML= "";
+            
+        }
+
+
+    </script>
+
+    <div class="page" id='choix'></div>
 
     <%- include('./partials/footer.ejs') %>
 
