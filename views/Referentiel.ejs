@@ -31,12 +31,12 @@
 
         function Nouvel_Individu(){
             choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin',"<form class=''><label>Nom*</label><input type='text' required><label >Prénom*</label><input type='text' required> <label>Date de Naissance*</label><input type='text' required><label>Catégorie socio-professionnelle*</label><SELECT name='nom' size='1'><OPTION>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><div><input type='text' placeholder='N° de voie'><input type='text' placeholder='Nom de la Voie'><input type='text' placeholder='Code postal'><input type='text' placeholder='Ville'></div><label>Numéro de téléphone</label><input type='text'><label>Adresse mail</label><input type='text'><input type='submit' value='Créer un nouvel Individu'></form>");
+            choix.insertAdjacentHTML('afterbegin',"<form class='' action:''method='POST'><label>Nom*</label><input type='text' required><label >Prénom*</label><input type='text' required> <label>Date de Naissance*</label><input type='text' required><label>Catégorie socio-professionnelle*</label><SELECT name='nom' size='1'><OPTION>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><div><input type='text' placeholder='N° de voie'><input type='text' placeholder='Nom de la Voie'><input type='text' placeholder='Code postal'><input type='text' placeholder='Ville'></div><label>Numéro de téléphone</label><input type='text'><label>Adresse mail</label><input type='text'><input type='submit' value='Créer un nouvel Individu'></form>");
         }
 
         function Recherche_Individu(){
             choix.innerHTML= "";
-            
+            choix.insertAdjacentHTML('afterbegin'," <form class='' action:'' method:'POST'><label>Nom</label><input type='text'><label >Prénom</label><input type='text'> <label>Date de Naissance</label><input type='text'><input type='submit' value='Rechercher l'individu'></form>")
         }
 
 
