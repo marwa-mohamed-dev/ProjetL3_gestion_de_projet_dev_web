@@ -2,6 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Individu = require('./models/individu');
+const Article = require('./models/article');
+const Employee = require('./models/employee');
+const Commande = require('./models/commande');
+
 const { render } = require('ejs');
 
 // on créé une instance d'une application express
@@ -51,7 +55,9 @@ app.get('/referentiel', (req, res) => {
 app.get('/referentiel/newIndividu', (req, res) => {
     res.render('newIndividu', {title: 'Créer individu', style: "styles"});
 })
-
+app.get('/commandes', (req,res)=> {
+    res.render('Commande', {title:'Commandes',style:"Commande"})
+})
 //blog routes
 
 // affiche liste de tous les individus de la base
