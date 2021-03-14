@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include('./partials/head.ejs') %>
+
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="barre">
+        <input class="Nouvel_Article" type="submit" value="Créer un nouvel article">
+        <input class="Modif_Article" type="submit" value="Modifier un article">
+        <input type="submit" class="Nouvel_Individu" value="Créer un nouvel individu" onclick="location.href='/referentiel/newIndividu';">
+        <input class="Modif_Individu" type="submit" value="Modifier les propriétés d'un individu">
+
+    </div>
+
+    <div class="page"></div>
+
+    <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

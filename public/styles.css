@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
+body{
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    font-family: 'Noto Serif', serif;
+}
+p, h1, h2, h3, a, ul{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    color: #222;
+}
+/* nav & footer styles */
+#logo{
+    width: 150px;
+}
+nav{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 60px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    text-transform: uppercase;
+}
+nav ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+nav button{
+    background: teal;
+    color: white;
+    border-radius: 5%;
+    padding: 6px;
+    border: 0;
+    font-size: 1em;
+    cursor: pointer;
+}
+nav button:hover{
+    box-shadow: 1px 3px 5px rgba(0,0,0,0.5);
+}
+nav li{
+    list-style-type: none;
+    margin-left: 20px;
+    text-decoration: none;
+}
+footer{
+    color: #777;
+    text-align: center;
+    margin: 80px auto 20px;
+}
+.content{
+    margin-left: 20px;
+}
+/* Create new individu */
+.newIndividu form{
+    max-width: 400px;
+    margin: 0 auto;
+}
+.newIndividu input,
+.newIndividu textarea{
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+.newIndividu label{
+    display: block;
+    margin-top: 24px;
+}
+textarea{
+    height: 120px;
+}
+.newIndividu button{
+    margin-top: 20px;
+    background: teal;
+    color: white;
+    padding: 6px;
+    border: 0;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+/* details styles */
+.details{
+    position: relative;
+  }
+  .delete{
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    padding: 8px;
+  }
+  .delete:hover{
+    cursor: pointer;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+  }

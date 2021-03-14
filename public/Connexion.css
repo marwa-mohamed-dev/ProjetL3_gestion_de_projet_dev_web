@@ -1,0 +1,73 @@
+body{
+    margin:0;
+    padding:0;
+    width:100vw;        
+    height:100vh;
+    font-family: sans-serif;
+    background-image: url(backgroundImageConnexion.jpg);
+    background-size: cover;
+    background-color: whitesmoke;
+    background-repeat: no-repeat;
+    
+    display: grid;
+    grid-template-columns: repeat(6,16.66%);
+    grid-template-rows: repeat(4,25%);
+}
+
+
+
+.conteneur{
+    grid-column:3/5;
+    grid-row: 2/4;
+    
+    padding:25px;
+    padding-top: 0px;
+    background: rgb(99, 187, 99);
+    text-align: center;
+    border-radius: 30px;
+}
+
+.conteneur h1{
+    margin:0px;
+    padding:0px;
+    width:300px;
+    height: 90px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto 
+}
+
+.conteneur input[type="text"],.conteneur input[type="password"]{
+    border: 0;
+    background-color:white;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 3px solid black;
+    padding: 14px 10px;
+    width: 220px;
+    outline: none;
+    color: black;
+    border-radius: 30px;
+    transition: 0.25px;
+}
+
+.conteneur input[type="text"]:focus,.conteneur input[type="password"]:focus{
+    width: 270px;
+}
+
+.conteneur input[type="submit"]{
+    border:0;
+    background: green;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 3px solid black;
+    padding: 14px 35px;
+    outline: none;
+    color: black;
+    border-radius: 30px;
+    transition: 0.25px;
+    cursor:pointer;
+}
+

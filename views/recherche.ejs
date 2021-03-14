@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('./partials/head.ejs') %>
+
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="individus content">
+        <h2>Liste des individus</h2>
+	
+        <% if (individus.length > 0) { %>
+            <% individus.forEach(individu => { %>
+                <a class="single" href="/recherche/<%= individu._id %>">
+                    <h3 class="nom"><%= individu.nom %></h3>
+                    <h3 class="prenom"><%= individu.prenom %></h3>
+                    <p classe="dateNaissance"><%= individu.dateNaissance %></p>
+                </a>
+            <% }) %>
+        <% } else { %>
+            <p>Personne n'est enregistré dans la base de données</p>
+        <% } %>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>
