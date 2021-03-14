@@ -2,6 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Individu = require('./models/individu');
+const Article = require('./models/article');
+const Employee = require('./models/employee');
+const Commande = require('./models/commande');
+
 const { render } = require('ejs');
 
 // on créé une instance d'une application express
