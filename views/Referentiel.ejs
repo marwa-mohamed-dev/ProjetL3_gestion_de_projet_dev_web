@@ -11,7 +11,7 @@
         <input class="Nouvel_Article" type="submit" value="Créer un nouvel article" onclick="Nouvel_Article()">
         <input class="Modif_Article" type="submit" value="Modifier un article" onclick="Recherche_Article()">
         <input type="submit" class="Nouvel_Individu" value="Créer un nouvel individu" onclick="Nouvel_Individu()">
-        <input class="Modif_Individu" type="submit" value="Modifier les propriétés d'un individu" onclick="Recherche_Individu()">
+        <input class="Modif_Individu" type="submit" value="Modifier les informations d'un individu" onclick="Recherche_Individu()">
 
         <!--<a href="/referentiel/newIndividu"></a>-->
     </div>
@@ -31,7 +31,7 @@
 
         function Nouvel_Individu(){
             choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin',"<form class='NewI' action:''method='POST'><label>Nom*</label><input type='text' required><label >Prénom*</label><input type='text' required> <label>Date de Naissance*</label><input type='text' required><label>Catégorie socio-professionnelle*</label><SELECT name='nom' size='1'><OPTION>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><div><input type='text' placeholder='N° de voie'><input type='text' placeholder='Nom de la Voie'><input type='text' placeholder='Code postal'><input type='text' placeholder='Ville'></div><label>Numéro de téléphone</label><input type='text'><label>Adresse mail</label><input type='text'><input type='submit' value='Créer un nouvel Individu'></form>");
+            choix.insertAdjacentHTML('afterbegin',"<form class='NewI' action:''method='POST'><label class='Col1'>Nom*</label><input class='Col1' type='text' required><label class='Col2'>Prénom*</label><input class='Col2' type='text' required> <label>Date de Naissance*</label><input type='text' required><label>Catégorie socio-professionnelle*</label><SELECT name='nom' size='1'><OPTION>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><label>Adresse*</label><input class='Col1' type='text' placeholder='N° de voie'><input class='Col2' type='text' placeholder='Nom de la Voie'><input class='Col1' type='text' placeholder='Code postal'><input class='Col2'type='text' placeholder='Ville'><input type='text' placeholder='Complément d`adresse'><label class='Col1'>Numéro de téléphone</label><input class='Col1' type='text'><label class='Col2'>Adresse mail</label><input class='Col2' type='text'><input type='submit' value='Créer un nouvel Individu'></form>");
         }
 
         function Recherche_Individu(){
