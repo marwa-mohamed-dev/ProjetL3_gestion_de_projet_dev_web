@@ -90,26 +90,34 @@ footer{
 
 form{
   display: grid;
-  grid-template-columns:repeat(3,33%) ;
+  grid-template-columns:repeat(4,25%) ;
   grid-auto-rows: auto;
-  grid-gap: 15px;
+  grid-row-gap: 15px;
+  grid-column-gap:5px;
   margin:4% auto;
   
 }
 
 form>label, form>input{
-  grid-column-start: 2;
+  grid-column: 2/4;
+  margin: auto 10%;
 }
 
 form>input[type="submit"]{
   width:200px;
   height: 40px;
-  background-color: #4CAF50;
+  background-color: #f6f8f6;
+  border-radius: 5px;
   border: none;
-  color: white;
+  color: rgb(0, 0, 0);
   text-decoration: none;
   cursor: pointer;
   margin-top: 5px;
   margin-left: auto;
   margin-right: auto;
+}
+
+form.NewI>label,form.NewI>input{
+  grid-column-start:2;
+  
 }
