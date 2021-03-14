@@ -62,7 +62,8 @@
   .Titre{
     grid-area:head-start/titre-start/head-end/titre-end;
     text-align:center;
-    margin-top: 75px;
+    margin:0px;
+    align-self: end;
     font-family:Georgia, 'Times New Roman', Times, serif;
     font-size:xx-large;
   }
