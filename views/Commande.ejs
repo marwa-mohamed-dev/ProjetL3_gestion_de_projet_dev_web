@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('./partials/head.ejs') %>
+
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+    <div class="barre">
+        <input class="Nouvel_Commande" type="submit" value="Créer une nouvelle Commande" onclick="Nouvel_Commande()">
+        <input class="Recherche_Commande" type="submit" value="Compléter une Commande" onclick="Recherche_Commande()">
+    </div>
+    <script>
+        function Nouvel_Commande(){
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"")
+        }
+        function Recherche_Commande(){
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"")
+        }
+    </script>
+
+    <div class="page" id='choix'></div>
+
+    <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

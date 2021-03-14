@@ -51,7 +51,9 @@ app.get('/referentiel', (req, res) => {
 app.get('/referentiel/newIndividu', (req, res) => {
     res.render('newIndividu', {title: 'Créer individu', style: "styles"});
 })
-
+app.get('/commandes', (req,res)=> {
+    res.render('Commande', {title:'Commandes',style:"Commande"})
+})
 //blog routes
 
 // affiche liste de tous les individus de la base
