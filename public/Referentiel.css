@@ -60,7 +60,8 @@ footer{
 .Titre{
     grid-area:head-start/titre-start/head-end/titre-end;
     text-align:center;
-    margin-top: 75px;
+    margin: 0px;
+    align-self: end;
     font-family:Georgia, 'Times New Roman', Times, serif;
     font-size:x-large;
   }
@@ -85,4 +86,30 @@ footer{
 
 .page{
     grid-area: page-start/page-start/page-end/page-end;
+}
+
+form{
+  display: grid;
+  grid-template-columns:repeat(3,33%) ;
+  grid-auto-rows: auto;
+  grid-gap: 15px;
+  margin:4% auto;
+  
+}
+
+form>label, form>input{
+  grid-column-start: 2;
+}
+
+form>input[type="submit"]{
+  width:200px;
+  height: 40px;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
 }
