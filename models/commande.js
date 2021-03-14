@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Individu = require('./individu');
+//const Individu = require('./individu');
 const Schema = mongoose.Schema;
 
 const commandeSchema = new Schema({
@@ -8,7 +8,8 @@ const commandeSchema = new Schema({
         required: true
     },
     client: {
-        type: Individu,
+        // à mettre type object Individu
+        type: String,
         required: true
     },
     article: {
