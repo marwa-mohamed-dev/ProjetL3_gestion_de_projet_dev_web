@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('./partials/head.ejs') %>
+
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+    <div class="barre">
+        <input class="routage" type="submit" value="Créer une cible de routage" onclick="routage()">
+        <input class="publicite" type="submit" value="Envoyer une publicitée" onclick="publicite()">
+    </div>
+    <script>
+        function routage(){
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"")
+        }
+        function publicite(){
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"")
+        }
+    </script>
+
+    <div class="page" id='choix'></div>
+
+    <%- include('./partials/footer.ejs') %>
+
+</body>
+</html>

@@ -75,11 +75,11 @@ footer{
     background-color: black;
     height: 50px;
 }
-.Nouvel_Commande, .Recherche_Commande{
+.routage, .publicite{
     width: 100%;
     background-color: rgb(60, 131, 55);
 }
-.Nouvel_Commande:focus, .Recherche_Commande:focus{
+.routage:focus, .publicite:focus{
     background-color: rgb(238, 244, 234);
 }
 
