@@ -14,16 +14,33 @@ const individuSchema = new Schema({
         type: String,
         required: true
     }, 
-    categoriePro : String,
-    adresseNum : Number,
-    adresseType : String,
-    adresseCode : Number,
-    adresseVille : String,
-    adressePays : String,
+    categoriePro : {
+        type : String,
+        required: true
+    },
+    adresseNum : {
+        type : Number,
+        required: true
+    },
+    adresseType :  {
+        type : String,
+        required: true
+    },
+    adresseCode : {
+        type : Number,
+        required: true
+    },
+    adresseVille :  {
+        type : String,
+        required: true
+    },
     adresseInfos : String,
     adresseMail : String,
     numeroTel : Number,
-    statut : String, 
+    statut : {
+        type : String,
+        required: true
+    },
     cbNum : Number,
     cbDate : String,
     cbCode : Number
