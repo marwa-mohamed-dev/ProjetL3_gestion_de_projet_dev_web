@@ -52,9 +52,12 @@ app.get('/referentiel', (req, res) => {
     res.render('Referentiel', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
+/*
 app.get('/referentiel/newIndividu', (req, res) => {
     res.render('newIndividu', {title: 'Créer individu', style: "styles"});
 })
+*/
+
 app.get('/commandes', (req,res)=> {
     res.render('Commande', {title:'Commandes',style:"Commande"})
 })
@@ -64,7 +67,6 @@ app.get('/prospection', (req,res)=> {
 app.get('/anomalies', (req,res)=> {
     res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})
 })
-//blog routes
 
 // affiche liste de tous les individus de la base
 //ordonés avec celui ajouté le plus récemment en premier
@@ -81,9 +83,8 @@ app.get('/recherche', (req, res) => {
 // ajoute un individu à la base de données
 // fait marcher le bouton submit en soi
 // puis redirige vers la page administrateur
-app.post('/acceuil', (req, res) => {
+app.post('/referentiel', (req, res) => {
     const individu = new Individu(req.body);
-
     individu.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -92,6 +93,19 @@ app.post('/acceuil', (req, res) => {
             console.log(err);
         });
 });
+
+/*
+app.post('/referentiel', (req, res) => {
+    const article = new Article(req.body);
+    individu.save()
+        .then((result) => {
+            res.redirect('/referentiel');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+*/
 
 // affiche les informations d'un seul individu sélectionné
 // dans la liste de recherche
