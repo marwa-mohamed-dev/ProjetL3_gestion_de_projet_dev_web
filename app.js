@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/acceuil', (req, res) => {
-    res.render('acceuil', {title: 'Acceuil', style: 'acceuil'});
+    res.render('acceuil', {title: 'Accueil', style: 'acceuil'});
 });
   
 app.get('/referentiel', (req, res) => {

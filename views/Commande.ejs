@@ -10,19 +10,39 @@
         <input class="Nouvel_Commande" type="submit" value="Créer une nouvelle Commande" onclick="Nouvel_Commande()">
         <input class="Recherche_Commande" type="submit" value="Compléter une Commande" onclick="Recherche_Commande()">
     </div>
+
+    <div class="page"  >
+        <form action="" id='choix'>
+            <div id='articles'></div>
+        </form>
+        
+    </div>
     <script>
         function Nouvel_Commande(){
-            choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin',"")
+            // const articles = document.getElementById('articles');
+            const choix = document.getElementById('choix');
+            choix.innerHTML= "<div id='articles'><input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
+            choix.insertAdjacentHTML('afterbegin',"<label>Individu</label> <input type='text'> <label>Article</label> <input type='button' placeholder='+'' onclick='Ajout_Article()'>")
+            // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
+            choix.insertAdjacentHTML('beforeend',"<label>Réglement</label> <input class:'cheque' type='checkbox'><label>Chèque</label><input class:'carte' type='checkbox' onclick='paiementCarte()'><label>Carte Bancaire</label><label>Numéro carte</label><input type='text'><label>Date d'expiration</label><input type='text'>")
+        }
+
+        function Ajout_Article(){
+            const articles = document.getElementById('articles');
+            articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
         }
         function Recherche_Commande(){
             choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin',"")
+            choix.insertAdjacentHTML('afterbegin'," <form action:'' method:'POST'><label>Numéro commande</label><input type='text'><input type='submit' value='Rechercher'> </form>")
         }
+        
+        function paiementCarte(){
+            const carte = document.getElementsByClassName('carte')
+            if(carte.checked){
+            choix.insertAdjacentHTML('beforeend',"<label>Numéro carte</label><input type='text'><label>Date d'expiration</label><input type='text'>")
+        }
+        
     </script>
-
-    <div class="page" id='choix'></div>
-
     <%- include('./partials/footer.ejs') %>
 
 </body>
