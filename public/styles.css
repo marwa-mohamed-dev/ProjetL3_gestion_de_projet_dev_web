@@ -97,3 +97,43 @@ textarea{
     cursor: pointer;
     box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
   }
+
+  /*Pour l'utilisation du menu*/
+  .Menu{
+    grid-area:head-start/menu-start/head-end/menu-end;
+    margin: 30px;
+    margin-left:50px;
+    margin-right: 50px;
+    background-color:rgb(137, 197, 107);
+    cursor: pointer;
+  }
+
+  .Menu:hover, .Menu:focus {
+    background-color: rgb(109, 160, 84);
+  }
+  
+  .my_menu {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .Contenu_Menu {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .Contenu_Menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .Menu a:hover {background-color: #ddd;}
+  
+  .show {display: block;}  
