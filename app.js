@@ -97,7 +97,7 @@ app.post('/referentiel', (req, res) => {
 /*
 app.post('/referentiel', (req, res) => {
     const article = new Article(req.body);
-    individu.save()
+    article.save()
         .then((result) => {
             res.redirect('/referentiel');
         })
@@ -106,6 +106,7 @@ app.post('/referentiel', (req, res) => {
         });
 });
 */
+
 
 // affiche les informations d'un seul individu sélectionné
 // dans la liste de recherche
