@@ -21,16 +21,22 @@
         function Nouvel_Commande(){
             // const articles = document.getElementById('articles');
             const choix = document.getElementById('choix');
-            choix.innerHTML= "<div id='articles'><input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
+            choix.innerHTML= "<div id='articles'><input class:'numberArt' type='button' value=1 ><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
             choix.insertAdjacentHTML('afterbegin',"<label>Individu</label> <input type='text'> <label>Article</label> <input type='button' placeholder='+'' onclick='Ajout_Article()'>")
             // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
             choix.insertAdjacentHTML('beforeend',"<label>Réglement</label> <input class:'cheque' type='checkbox'><label>Chèque</label><input class:'carte' type='checkbox' onclick='paiementCarte()'><label>Carte Bancaire</label><label>Numéro carte</label><input type='text'><label>Date d'expiration</label><input type='text'>")
         }
 
         function Ajout_Article(){
-            const articles = document.getElementById('articles');
-            articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
+           /* const nbArt=(document.getElementById("articles").childElementCount)/5+1;
+            print("nbArt="+nbArt);
+            print("test="+nbArt<5);
+            if(nbArt>5){*/
+                const articles = document.getElementById('articles');
+                articles.insertAdjacentHTML('beforeend',"<input class:'numberArt' type='button' value="+nbArt+"><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
+             //}
         }
+
         function Recherche_Commande(){
             choix.innerHTML= "";
             choix.insertAdjacentHTML('afterbegin'," <form action:'' method:'POST'><label>Numéro commande</label><input type='text'><input type='submit' value='Rechercher'> </form>")
