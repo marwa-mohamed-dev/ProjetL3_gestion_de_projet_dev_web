@@ -24,7 +24,7 @@
             choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
             choix.insertAdjacentHTML('afterbegin',"<label>Individu</label> <input type='text'> <label>Article</label> <input type='button' placeholder='+'' onclick='Ajout_Article()'>")
             // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
-            choix.insertAdjacentHTML('beforeend',"<label>Réglement</label> <input class='cheque' type='checkbox'><label>Chèque</label><input class='carte' type='checkbox' onclick='paiementCarte()'><label>Carte Bancaire</label><label>Numéro carte</label><input type='text'><label>Date d'expiration</label><input type='text'>")
+            choix.insertAdjacentHTML('beforeend',"<label>Réglement</label> <input id='cheque' type='checkbox' onclick='paiementCheque()'><label>Chèque</label><input id='carte' type='checkbox' onclick='paiementCarte()'><label>Carte Bancaire</label> <div id='paiementElements'></div>")
         }
 
         function Ajout_Article(){
@@ -39,12 +39,30 @@
         }
         
         function paiementCarte(){
-            const carte = document.getElementsByClassName('carte')
+            const carte = document.getElementById('carte')
+            const paiementElements = document.getElementById('paiementElements')
+            const cheque = document.getElementById('cheque')
             if(carte.checked){
-            choix.insertAdjacentHTML('beforeend',"<label>Numéro carte</label><input type='text'><label>Date d'expiration</label><input type='text'>")
+                cheque.checked=false;
+                paiementElements.innerHTML="";
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte</label><input type='text'><label>Date d'expiration</label><input type='text'> ")
+            }
+            if(!carte.checked){
+                paiementElements.innerHTML="";
             }
         }
         
+        function paiementCheque(){
+            if(cheque.checked){
+                carte.checked=false;
+                paiementElements.innerHTML="";
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro cheque</label><input type='text'><label>Banque</label><input type='text'> ")
+            }
+            if(!cheque.checked){
+                paiementElements.innerHTML="";
+            }
+        }
+
     </script>
     <%- include('./partials/footer.ejs') %>
 
