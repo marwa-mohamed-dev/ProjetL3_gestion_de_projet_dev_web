@@ -52,6 +52,14 @@ app.get('/referentiel', (req, res) => {
     res.render('Referentiel', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
+app.get('/referentiel/Article', (req, res) => {
+    res.render('Article', {title: 'Administration du référentiel', style: 'Referentiel'});
+});
+
+app.get('/referentiel/Individu', (req, res) => {
+    res.render('Individu', {title: 'Administration du référentiel', style: 'Referentiel'});
+});
+
 /*
 app.get('/referentiel/newIndividu', (req, res) => {
     res.render('newIndividu', {title: 'Créer individu', style: "styles"});
