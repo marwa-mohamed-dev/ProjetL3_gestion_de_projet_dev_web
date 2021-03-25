@@ -3,9 +3,9 @@
    display:grid;
    grid-template-columns: [head-start com-start anom-start foot-start menu-start] 1fr [menu-end logo-start] 1fr [logo-end] 1fr [com-end anom-end ref-start cible-start] 1fr [search-start]1fr[search-end id-start] 1fr [id-end ref-end cible-end foot-end head-end];
    grid-template-rows:[head-start menu-start logo-start search-start id-start]1fr [head-end menu-end logo-end search-end id-end com-start ref-start] 4fr [com-end ref-end anom-start cible-start] 4fr [anom-end cible-end foot-start] 1fr [foot-end] ;
-   grid-row-gap:5%;
-   grid-column-gap: 40px;
-
+   min-width: 800px;
+   grid-row-gap: 5%;
+  
    width: 100vw;
    height:100vh;
    margin: 0px;
@@ -88,7 +88,7 @@
     color: rgb(255, 255, 255);
     text-align: center;
   }
-
+  
 /* titre à modifier pour chaque fonctionnalité*/
   .Titre{
     grid-area:head-start/titre-start/head-end/titre-end;
