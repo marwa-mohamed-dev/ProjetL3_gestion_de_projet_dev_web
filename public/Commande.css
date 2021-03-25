@@ -115,5 +115,44 @@ footer{
 }
 
 .page{
-    grid-area: page-start/page-start/page-end/page-end;
+  grid-area: page-start/page-start/page-end/page-end;
+  display:grid;
+  grid-template-columns:[bidon-start]1fr[form-start]3fr[form-end]1fr[bidon-end] ;
+  grid-template-rows: auto;
+}
+
+#choix{
+  grid-column: form-start/form-end;
+  margin-top: 5%;
+  display:grid;
+  grid-template-columns: 25px auto 25px 1fr 1fr;
+  grid-template-rows: 25px 25px 25px max-content 25px 25px 25px;
+  grid-row-gap: 3%;
+}
+
+#articles{
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns:[num-start]25px[num-end ref-start]1fr[ref-end input-start]1fr[input-end quant-start]1fr[quant-end input2-start]1fr[input2-end];
+  grid-auto-rows: 20px;
+  justify-items: center;
+}
+
+.titre{
+  grid-column: 1/3;
+}
+
+
+input[value="+"]{
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+#cheque{
+  grid-column-start:1;
+}
+
+#paiementElements{
+  grid-column: 1/-1;
 }
