@@ -7,15 +7,21 @@
 
     <%- include('./partials/nav.ejs') %>
     <div class="barre">
-        <input class="Recherche_Anomalie" type="submit" value="Rechercher une anomalie" onclick="Recherche_Anomalie()">
-        <input class="courrier" type="submit" value="Envoyer un courrier" onclick="courrier()">
+        <input class="Recherche_Anomalie" id="R_An" type="submit" value="Rechercher une anomalie" onclick="Recherche_Anomalie()">
+        <input class="courrier" id="C" type="submit" value="Envoyer un courrier" onclick="courrier()">
     </div>
     <script>
+        let on_C = document.getElementById("C")
+        let on_R_An = document.getElementById("pub")
         function Recherche_Anomalie(){
+            on_R_An.classList.add("on");
+            on_C.classList.remove("on");
             choix.innerHTML= "";
             choix.insertAdjacentHTML('afterbegin',"")
         }
         function courrier(){
+            on_C.classList.add("on");
+            on_R_An.classList.remove("on");
             choix.innerHTML= "";
             choix.insertAdjacentHTML('afterbegin',"")
         }

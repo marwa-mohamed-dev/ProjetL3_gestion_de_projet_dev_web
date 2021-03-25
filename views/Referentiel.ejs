@@ -7,40 +7,47 @@
 
     <%- include('./partials/nav.ejs') %>
 
-    <div class="barreRef">
-        <input class="Nouvel_Article" type="submit" value="Gérer les Articles" onclick=location.href="/referentiel/Article";>
-        <input type="submit" class="Nouvel_Individu" value="Gérer les Individus" onclick=location.href="/referentiel/Individu";>
+    <div class="barre">
+        <input class="Nouvel_Article" id="Art" type="submit" value="Créer un nouvel article" onclick=location.href='/referentiel/Article';>
+        <input class="Modif_Article" type="submit" value="Modifier un article" onclick=location.href="/referentiel/Article";>
+        <input type="submit" class="Nouvel_Individu" value="Créer un nouvel individu" onclick=location.href="/referentiel/Individu";>
+        <input class="Modif_Individu" type="submit" value="Modifier les informations d'un individu" onclick=location.href="/referentiel/Individu";>
 
         <!--<a href="/referentiel/newIndividu"></a>-->
     </div>
-    <!-- <script>
-        function Nouvel_Article(){
-            const choix=document.getElementById('choix')
-            choix.innerHTML= "";
-            let on = document.getElementsByClassName("Nouvel_Article");
-            //on.classList.add("on");
-            choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article' method='POST'><label>Désignation*</label><input type='text' name='designation' required><label>Prix de vente (€)*</label><input type='number' name='prix' required> <label>Description*</label><input type='text' name='description' required><input type='submit' value='Créer un nouvel Article'></form>");
-        }
+    <script>
 
-        function Recherche_Article(){
-            choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article'method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher'>");
-        }
+    //     function changementPageArticel(){
+    //         location.href='/referentiel/Article';
+    //     }
+    //     function Nouvel_Article(){
+    //         changementPageArticel();
+    //         const choix=document.getElementById('choix')
+    //         choix.innerHTML= "";
+    //         let on = document.getElementsByClassName("Nouvel_Article");
+    //         //on.classList.add("on");
+    //         choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article' method='POST'><label>Désignation*</label><input type='text' name='designation' required><label>Prix de vente (€)*</label><input type='number' name='prix' required> <label>Description*</label><input type='text' name='description' required><input type='submit' value='Créer un nouvel Article'></form>");
+    //     }
 
-        function Nouvel_Individu(){
-            choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin',"<form class='NewI' action:'/referentiel/Individu' method='POST'><label class='Col1'>Nom*</label><input class='Col1' type='text' name='nom' required><label class='Col2'>Prénom*</label><input class='Col2' type='text' name='prenom' required> <label>Date de Naissance*</label><input type='text' name='dateNaissance' required><label>Catégorie socio-professionnelle*</label><SELECT name='categoriePro' size='1'><OPTION>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><label>Adresse*</label><input class='Col1' type='text' placeholder='N° de voie' name='adresseNum'><input class='Col2' type='text' placeholder='Nom de la Voie' name='adresseType'><input class='Col1' type='text' placeholder='Code postal' name='adresseCode'><input class='Col2'type='text' placeholder='Ville' name='adresseVille'><input type='text' placeholder='Complément d`adresse' name='adresseInfos'><label class='Col1'>Numéro de téléphone</label><input class='Col1' type='text' name='numeroTel'><label class='Col2'>Adresse mail</label><input class='Col2' type='text' name='adresseMail'><label>Caractéristique commerciale*</label><SELECT name='statut' size='1'><OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT><input type='submit' value='Créer un nouvel Individu'></form>");
-        }
+    //     function Recherche_Article(){
+    //         choix.innerHTML= "";
+    //         choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article'method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher'>");
+    //     }
 
-        function Recherche_Individu(){
-            choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin'," <form class='' action:'/referentiel/Individu' method:'GET'><label>Nom</label><input type='text'><label >Prénom</label><input type='text'> <label>Date de Naissance</label><input type='text'><input type='submit' value='Rechercher'></form>")
-        }
+    //     function Nouvel_Individu(){
+    //         choix.innerHTML= "";
+    //         choix.insertAdjacentHTML('afterbegin',"<form class='NewI' action:'/referentiel/Individu' method='POST'><label class='Col1'>Nom*</label><input class='Col1' type='text' name='nom' required><label class='Col2'>Prénom*</label><input class='Col2' type='text' name='prenom' required> <label>Date de Naissance*</label><input type='text' name='dateNaissance' required><label>Catégorie socio-professionnelle*</label><SELECT name='categoriePro' size='1'><OPTION>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><label>Adresse*</label><input class='Col1' type='text' placeholder='N° de voie' name='adresseNum'><input class='Col2' type='text' placeholder='Nom de la Voie' name='adresseType'><input class='Col1' type='text' placeholder='Code postal' name='adresseCode'><input class='Col2'type='text' placeholder='Ville' name='adresseVille'><input type='text' placeholder='Complément d`adresse' name='adresseInfos'><label class='Col1'>Numéro de téléphone</label><input class='Col1' type='text' name='numeroTel'><label class='Col2'>Adresse mail</label><input class='Col2' type='text' name='adresseMail'><label>Caractéristique commerciale*</label><SELECT name='statut' size='1'><OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT><input type='submit' value='Créer un nouvel Individu'></form>");
+    //     }
+
+    //     function Recherche_Individu(){
+    //         choix.innerHTML= "";
+    //         choix.insertAdjacentHTML('afterbegin'," <form class='' action:'/referentiel/Individu' method:'GET'><label>Nom</label><input type='text'><label >Prénom</label><input type='text'> <label>Date de Naissance</label><input type='text'><input type='submit' value='Rechercher'></form>")
+    //     }
 
 
-    </script>
+    // </script>
 
-    <div class="page" id='choix'></div> -->
+    // <div class="page" id='choix'></div>
 
     <%- include('./partials/footer.ejs') %>
 
