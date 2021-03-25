@@ -21,16 +21,16 @@
         function Nouvel_Commande(){
             // const articles = document.getElementById('articles');
             const choix = document.getElementById('choix');
-            choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
-            choix.insertAdjacentHTML('afterbegin',"<label>Individu</label> <input type='text'> <label>Article</label> <input type='button' placeholder='+'' onclick='Ajout_Article()'>")
+            choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class=>Référence</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
+            choix.insertAdjacentHTML('afterbegin',"<label class='titre'>Individu</label> <input class='titre' type='text'> <label class='titre'>Article(s):</label> <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'>")
             // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
-            choix.insertAdjacentHTML('beforeend',"<label>Réglement</label> <input id='cheque' type='checkbox' onclick='paiementCheque()'><label>Chèque</label><input id='carte' type='checkbox' onclick='paiementCarte()'><label>Carte Bancaire</label> <div id='paiementElements'></div>")
+            choix.insertAdjacentHTML('beforeend',"<label class='titre'>Réglement:</label> <input id='cheque' type='checkbox' onclick='paiementCheque()'><label>Chèque</label><input id='carte' type='checkbox' onclick='paiementCarte()'><label>Carte Bancaire</label> <div id='paiementElements'></div>")
         }
 
         function Ajout_Article(){
             const nbArt = document.getElementsByClassName("numberArt").length+1;
             const articles = document.getElementById('articles');
-            articles.insertAdjacentHTML('beforeend',"<input class='numberArt' type='button' value="+nbArt+"><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
+            articles.insertAdjacentHTML('beforeend',"<input class='numberArt' type='button' value="+nbArt+"><label>Référence</label><input type='text'> <label>Quantité</label> <input type='number'>")
         }
 
         function Recherche_Commande(){
@@ -56,7 +56,7 @@
             if(cheque.checked){
                 carte.checked=false;
                 paiementElements.innerHTML="";
-                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro cheque</label><input type='text'><label>Banque</label><input type='text'> ")
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro chèque</label><input type='text'><label>Banque</label><input type='text'> ")
             }
             if(!cheque.checked){
                 paiementElements.innerHTML="";
