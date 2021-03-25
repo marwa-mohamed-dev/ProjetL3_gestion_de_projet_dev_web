@@ -7,8 +7,8 @@
 
     <%- include('./partials/nav.ejs') %>
     <div class="barre">
-        <input class="Nouvel_Commande" type="submit" value="Créer une nouvelle Commande" onclick="Nouvel_Commande()">
-        <input class="Recherche_Commande" type="submit" value="Compléter une Commande" onclick="Recherche_Commande()">
+        <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" onclick="Nouvel_Commande()">
+        <input class="Recherche_Commande" id="R_Comm" type="submit" value="Compléter une Commande" onclick="Recherche_Commande()">
     </div>
 
     <div class="page"  >
@@ -18,7 +18,11 @@
         
     </div>
     <script>
+        let on_New_Comm = document.getElementById("New_Comm")
+        let on_R_Comm = document.getElementById("R_Comm")
         function Nouvel_Commande(){
+            on_New_Comm.classList.add("on")
+            on_R_Comm.classList.remove("on")
             // const articles = document.getElementById('articles');
             const choix = document.getElementById('choix');
             choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class=>Référence</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
@@ -34,6 +38,8 @@
         }
 
         function Recherche_Commande(){
+            on_New_Comm.classList.remove("on")
+            on_R_Comm.classList.add("on")
             choix.innerHTML= "";
             choix.insertAdjacentHTML('afterbegin'," <form action:'' method:'POST'><label>Numéro commande</label><input type='text'><input type='submit' value='Rechercher'> </form>")
         }
