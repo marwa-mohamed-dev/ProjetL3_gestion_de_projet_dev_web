@@ -7,15 +7,21 @@
 
     <%- include('./partials/nav.ejs') %>
     <div class="barre">
-        <input class="routage" type="submit" value="Créer une cible de routage" onclick="routage()">
-        <input class="publicite" type="submit" value="Envoyer une publicitée" onclick="publicite()">
+        <input class="routage" id="route" type="submit" value="Créer une cible de routage" onclick="routage()">
+        <input class="publicite" id="pub" type="submit" value="Envoyer une publicitée" onclick="publicite()">
     </div>
     <script>
+        let on_route = document.getElementById("route");
+        let on_pub = document.getElementById("pub")
         function routage(){
+            on_route.classList.add("on");
+            on_pub.classList.remove("on");
             choix.innerHTML= "";
             choix.insertAdjacentHTML('afterbegin',"")
         }
         function publicite(){
+            on_pub.classList.add("on");
+            on_route.classList.remove("on");
             choix.innerHTML= "";
             choix.insertAdjacentHTML('afterbegin',"")
         }

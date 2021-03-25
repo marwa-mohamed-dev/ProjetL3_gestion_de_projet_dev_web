@@ -110,7 +110,7 @@ footer{
     width: 100%;
     background-color: rgb(60, 131, 55);
 }
-.routage:focus, .publicite:focus{
+.routage:focus, .publicite:focus, .on{
     background-color: rgb(238, 244, 234);
 }
 

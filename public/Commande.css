@@ -110,7 +110,7 @@ footer{
     width: 100%;
     background-color: rgb(60, 131, 55);
 }
-.Nouvel_Commande:focus, .Recherche_Commande:focus{
+.Nouvel_Commande:focus, .Recherche_Commande:focus, .on{
     background-color: rgb(238, 244, 234);
 }
 

@@ -8,24 +8,28 @@
     <%- include('./partials/nav.ejs') %>
 
     <div class="barre">
-        <input class="Nouvel_Article" type="submit" value="Créer un nouvel article" onclick="Nouvel_Article()">
-        <input class="Modif_Article" type="submit" value="Modifier un article" onclick="Recherche_Article()">
-        <input type="submit" class="Nouvel_Individu" value="Créer un nouvel individu" onclick=location.href="/referentiel/Individu";>
-        <input class="Modif_Individu" type="submit" value="Modifier les informations d'un individu" onclick=location.href="/referentiel/Individu";>
+        <input class="Nouvel_Article" id="New_Art" type="submit" value="Créer un nouvel article" onclick="Nouvel_Article()">
+        <input class="Modif_Article" id="Modif_Art" type="submit" value="Modifier un article" onclick="Recherche_Article()">
+        <input type="submit" class="Nouvel_Individu" id="new_Ind" value="Créer un nouvel individu" onclick=location.href="/referentiel/Individu";>
+        <input class="Modif_Individu" type="submit" id="Modif_Ind" value="Modifier les informations d'un individu" onclick=location.href="/referentiel/Individu";>
 
         <!--<a href="/referentiel/newIndividu"></a>-->
     </div>
     <script>
+        let on_Nouvel_Article = document.getElementById("New_Art");
+        let on_Modif_Article = document.getElementById("Modif_Art");
         function Nouvel_Article(){
             const choix=document.getElementById('choix')
             choix.innerHTML= "";
-            let on = document.getElementsByClassName("Nouvel_Article");
-            //on.classList.add("on");
+            on_Nouvel_Article.classList.add("on");
+            on_Modif_Article.classList.remove("on");
             choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article' method='POST'><label>Désignation*</label><input type='text' name='designation' required><label>Prix de vente (€)*</label><input type='number' name='prix' required> <label>Description*</label><input type='text' name='description' required><input type='submit' value='Créer un nouvel Article'></form>");
         }
 
         function Recherche_Article(){
             choix.innerHTML= "";
+            on_Modif_Article.classList.add("on");
+            on_Nouvel_Article.classList.remove("on");
             choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article'method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher'>");
         }
 
