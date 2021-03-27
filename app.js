@@ -91,7 +91,7 @@ app.get('/recherche', (req, res) => {
 // ajoute un individu à la base de données
 // fait marcher le bouton submit en soi
 // puis redirige vers la page administrateur
-app.post('/referentiel', (req, res) => {
+app.post('/referentiel/Individu', (req, res) => {
     const individu = new Individu(req.body);
     individu.save()
         .then((result) => {
@@ -102,8 +102,7 @@ app.post('/referentiel', (req, res) => {
         });
 });
 
-/*
-app.post('/referentiel', (req, res) => {
+app.post('/referentiel/Article', (req, res) => {
     const article = new Article(req.body);
     article.save()
         .then((result) => {
@@ -113,8 +112,6 @@ app.post('/referentiel', (req, res) => {
             console.log(err);
         });
 });
-*/
-
 
 // affiche les informations d'un seul individu sélectionné
 // dans la liste de recherche
