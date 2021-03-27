@@ -7,23 +7,59 @@
 
     <%- include('./partials/nav.ejs') %>
     <div class="barre">
-        <input class="routage" id="route" type="submit" value="Créer une cible de routage" onclick="routage()">
-        <input class="publicite" id="pub" type="submit" value="Envoyer une publicitée" onclick="publicite()">
+        <input class="creerPub" id="creer" type="submit" value="Créer une nouvelle cible de routage" onclick="Creer()">
+        <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="Valider()">    
+        <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="Recuperer()">
     </div>
     <script>
-        let on_route = document.getElementById("route");
-        let on_pub = document.getElementById("pub")
-        function routage(){
-            on_route.classList.add("on");
-            on_pub.classList.remove("on");
+        let on_creer = document.getElementById("creer");
+        let on_val = document.getElementById("val")
+        let on_recup = document.getElementById("recup")
+        function Creer(){
+            on_creer.classList.add("on");
+            on_val.classList.remove("on");
+            on_recup.classList.remove("on");
+            choix.innerHTML= "";
+            choix.insertAdjacentHTML('afterbegin',"<form action='' method='POST'> <label>Création de cible de routage</label><label>Catégorie socio-professionnelle</label><SELECT name='categoriePro' size='1'><OPTION>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><label>Age</label><label>de</label><input type='number'><label>à</label><input type='number'><label>Département de résidence</label><input type='text'><label>Sélectionner parmi les clients ?</label><SELECT name='Client' size='1'><OPTION>Oui</OPTION><OPTION>Non</OPTION></SELECT> <label>Choix de la publicité</label> <label>Type de catalogue</label> <input id='papier' type='checkbox' onclick='Papier()'><label>Catalogue Papier</label><input id='internet' type='checkbox' onclick='Internet()'><label>Canaux internet</label><div id='Catalogue'></div> <label>Titre</label><input type='text'><label>Description</label><input type='text'><div><label>Choix des articles</label></div><input type='submit' value='Soumettre à la validation'></form>")
+        }
+        function Valider(){
+            on_creer.classList.remove("on");
+            on_val.classList.add("on");
+            on_recup.classList.remove("on");
             choix.innerHTML= "";
             choix.insertAdjacentHTML('afterbegin',"")
         }
-        function publicite(){
-            on_pub.classList.add("on");
-            on_route.classList.remove("on");
+        function Recuperer(){
+            on_creer.classList.remove("on");
+            on_val.classList.remove("on");
+            on_recup.classList.add("on");
             choix.innerHTML= "";
             choix.insertAdjacentHTML('afterbegin',"")
+        }
+        let papierElements = document.getElementById('Catalogue')
+        function Papier(){
+            let papierElements = document.getElementById('Catalogue')
+            const papier = document.getElementById('papier')
+            const internet = document.getElementById('internet')
+            if(papier.checked){
+                internet.checked=false;
+                papierElements.innerHTML="";
+                papierElements.insertAdjacentHTML('beforeend',"<label>Qualité du papier</label><SELECT name='qualite' size='1'><OPTION>Standard</OPTION><OPTION>Supérieur</OPTION> <OPTION>Economique</OPTION> </SELECT>")
+            }
+            if(!papier.checked){
+                papierElements.innerHTML="";
+            }
+        }
+        
+        function Internet(){
+            let papierElements = document.getElementById('Catalogue')
+            if(internet.checked){
+                papier.checked=false;
+                papierElements.innerHTML="";
+            }
+            if(!internet.checked){
+                papierElements.innerHTML="";
+            }
         }
     </script>
 
