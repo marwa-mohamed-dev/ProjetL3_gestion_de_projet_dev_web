@@ -156,3 +156,13 @@ input[value="+"]{
 #paiementElements{
   grid-column: 1/-1;
 }
+
+.SearchCom{
+  text-align: center;
+  justify-self: center;
+}
+
+.NewGrid{
+  grid-template-columns: auto !important;
+  grid-template-rows: repeat(3,max-content) !important;
+}

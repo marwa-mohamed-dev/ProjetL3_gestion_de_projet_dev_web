@@ -12,7 +12,7 @@
     </div>
 
     <div class="page"  >
-        <form action="" id='choix'>
+        <form action=""  id='choix'>
             <div id='articles'></div>
         </form>
         
@@ -20,9 +20,12 @@
     <script>
         let on_New_Comm = document.getElementById("New_Comm")
         let on_R_Comm = document.getElementById("R_Comm")
+        let grid_form = document.getElementById("choix")
+
         function Nouvel_Commande(){
             on_New_Comm.classList.add("on")
             on_R_Comm.classList.remove("on")
+            grid_form.classList.remove("NewGrid");
             // const articles = document.getElementById('articles');
             const choix = document.getElementById('choix');
             choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class=>Référence</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
@@ -40,8 +43,9 @@
         function Recherche_Commande(){
             on_New_Comm.classList.remove("on")
             on_R_Comm.classList.add("on")
+            grid_form.classList.add("NewGrid");
             choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin'," <form action:'' method:'POST'><label>Numéro commande</label><input type='text'><input type='submit' value='Rechercher'> </form>")
+            choix.insertAdjacentHTML('afterbegin'," <form action:'' method:'POST'><label class='SearchCom'>Numéro commande</label><input class='SearchCom' type='text'><input class='SearchCom' type='submit' value='Rechercher'> </form>")
         }
         
         function paiementCarte(){
