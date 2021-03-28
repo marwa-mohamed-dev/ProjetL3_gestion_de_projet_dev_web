@@ -108,12 +108,21 @@ footer {
 .barre {
     grid-area: barre-start/barre-start/barre-end/barre-end;
     display: grid;
+<<<<<<< Updated upstream
     grid-template-columns: repeat(2, 1fr);
+=======
+<<<<<<< Updated upstream
+    grid-template-columns: repeat(2,1fr);
+=======
+    grid-template-columns: repeat(1fr);
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     grid-auto-rows: 50px;
     align-items: stretch;
-    background-color: black;
+    background-color: rgb(60, 131, 55);
     height: 50px;
 }
+<<<<<<< Updated upstream
 
 
 /*Contenu*/
@@ -127,6 +136,27 @@ footer {
 .courrier:focus,
 .Recherche_Anomalie:focus,
 .on {
+=======
+<<<<<<< Updated upstream
+.courrier, .Recherche_Anomalie{
+    width: 100%;
+    background-color: rgb(60, 131, 55);
+}
+.courrier:focus, .Recherche_Anomalie:focus, .on{
+=======
+
+
+/*Contenu*/
+
+.Recherche_Anomalie {
+    width: 100%;
+    background-color: rgb(60, 131, 55);
+}
+
+.R_An:focus,
+.on {
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     background-color: rgb(238, 244, 234);
 }
 
