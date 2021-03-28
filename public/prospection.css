@@ -117,3 +117,35 @@ footer{
 .page{
     grid-area: page-start/page-start/page-end/page-end;
 }
+
+#choix{
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+form{
+  grid-column-start:2;
+
+   display:grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+}
+
+form>label{
+  grid-column-start: 1;
+}
+
+.partie{
+  justify-self: center;
+  text-decoration: underline;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+#Catalogue{
+  margin-bottom: 10px;
+}
+
+input[value="Soumettre à la validation"]{
+  margin: auto;
+}
