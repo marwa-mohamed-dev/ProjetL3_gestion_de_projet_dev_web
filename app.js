@@ -41,23 +41,23 @@ app.use(express.urlencoded({ extended: true }));
 // requête de type app.get
 // routing
 app.get('/', (req, res) => {
-    res.render('Connexion', {title: 'Connexion' });
+    res.render('Connexion', { title: 'Connexion' });
 });
 
 app.get('/acceuil', (req, res) => {
-    res.render('acceuil', {title: 'Accueil', style: 'acceuil'});
+    res.render('acceuil', { title: 'Accueil', style: 'acceuil' });
 });
-  
+
 app.get('/referentiel', (req, res) => {
-    res.render('Referentiel', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('Referentiel', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
 app.get('/referentiel/Article', (req, res) => {
-    res.render('Article', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('Article', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
 app.get('/referentiel/Individu', (req, res) => {
-    res.render('Individu', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('Individu', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
 /*
@@ -66,14 +66,14 @@ app.get('/referentiel/newIndividu', (req, res) => {
 })
 */
 
-app.get('/commandes', (req,res)=> {
-    res.render('Commande', {title:'Commandes',style:"Commande"})
+app.get('/commandes', (req, res) => {
+    res.render('Commande', { title: 'Commandes', style: "Commande" })
 })
-app.get('/prospection', (req,res)=> {
-    res.render('prospection', {title:'Prospection',style:"prospection"})
+app.get('/prospection', (req, res) => {
+    res.render('prospection', { title: 'Prospection', style: "prospection" })
 })
-app.get('/anomalies', (req,res)=> {
-    res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})
+app.get('/anomalies', (req, res) => {
+    res.render('anomalie', { title: 'Gestion des Anomalies', style: "anomalie" })
 })
 
 // affiche liste de tous les individus de la base
@@ -81,7 +81,7 @@ app.get('/anomalies', (req,res)=> {
 app.get('/recherche', (req, res) => {
     Individu.find().sort({ createdAt: -1 })
         .then((result) => {
-            res.render('recherche', { title: 'Liste individus', individus: result, style: "styles"});
+            res.render('recherche', { title: 'Liste individus', individus: result, style: "recherche" });
         })
         .catch((err) => {
             console.log(err);
@@ -118,11 +118,11 @@ app.post('/referentiel', (req, res) => {
 
 // affiche les informations d'un seul individu sélectionné
 // dans la liste de recherche
-app.get('/recherche/:id',(req, res) => {
+app.get('/recherche/:id', (req, res) => {
     const id = req.params.id;
     Individu.findById(id)
         .then(result => {
-            res.render('details', { individu: result, title: "Détails individu", style: "styles"});
+            res.render('details', { individu: result, title: "Détails individu", style: "styles" });
         })
         .catch((err) => {
             console.log(err);
@@ -131,7 +131,7 @@ app.get('/recherche/:id',(req, res) => {
 
 
 // supprime un des individus sélectionné
-app.delete('/recherche/:id',(req, res) => {
+app.delete('/recherche/:id', (req, res) => {
     const id = req.params.id;
     Individu.findByIdAndDelete(id)
         .then(result => {
@@ -148,8 +148,5 @@ app.delete('/recherche/:id',(req, res) => {
 // use: fonction middleware qui marche que si les options du dessus 
 // n'ont pas été validées, eut-être placée à n'importe quel endroit
 app.use((req, res) => {
-    res.status(404).render('404', {title: '404 Error', style: "styles"});
+    res.status(404).render('404', { title: '404 Error', style: "styles" });
 });
-
-
-
