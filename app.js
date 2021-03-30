@@ -9,7 +9,7 @@ const Individu = require('./models/individu');
 const Article = require('./models/article');
 const Employee = require('./models/employee');
 const Commande = require('./models/commande');
-const CibleDeRoutage = require('.models/cibleDeRoutage');
+const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
 
@@ -115,7 +115,18 @@ app.get('/prospection', checkAuthenticated, (req,res)=> {
 app.get('/prospection', checkAuthenticated, (req, res) => {
     CibleDeRoutage.find().sort({ createdAt: -1 })
         .then((result) => {
-            res.render('prospection', { title: 'Cibles de routage', individus: result, style: "prospection" });
+            res.render('prospection', { title: 'Cibles de routage', cibles: result, style: "prospection" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.post('/prospection', checkAuthenticated, (req, res) => {
+    const cibleDeRoutage = new CibleDeRoutage(req.body);
+    cibleDeRoutage.save()
+        .then((result) => {
+            res.redirect('/prospection');
         })
         .catch((err) => {
             console.log(err);

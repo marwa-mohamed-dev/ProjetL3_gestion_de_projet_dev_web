@@ -1,16 +1,31 @@
 const mongoose = require('mongoose');
-const Individu = require('./individu');
+
 const Schema = mongoose.Schema;
 
 const CibleDeRoutageSchema = new Schema({
-    Individu: {
-        type: Individu,
-        required: true
-    },
-    trancheAge: {
+    titre:{
         type: String,
         required: true
+    },
+    // dateProspection:{
+    //     type: Date = new Date()
+    // },
+    description:{
+        type: String,
+        required: true
+    },
+    // individu: {
+    //     type: String,
+    //     required: true
+    // },
+    ageMin: {
+        type: Number,
+        required: true
     }, 
+    ageMax: {
+        type: Number,
+        required: true
+    },
     categoriePro : {
         type : String,
         required: true
@@ -18,11 +33,28 @@ const CibleDeRoutageSchema = new Schema({
     departementResidence : {
         type : String,
         required: true
+    },
+    client:{
+        type:String,
+        required : true
+    },
+    cataloguePapier : {
+        type:Boolean,
+        //required:true
+    },
+    typePapier : {
+        type:String,
+        //required:true
+    },
+    catalogueInternet : {
+        type:Boolean,
+        //required:true
+    },  
+    articles : {
+        type: String,
+        required: true
     }
-    // client:{
-    //     type:Boolean,
-    //     required : true
-    // }
+    
 
 }, { timestamps: true })
 
