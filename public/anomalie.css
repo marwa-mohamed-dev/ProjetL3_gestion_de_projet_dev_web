@@ -118,13 +118,11 @@ footer {
 
 /*Contenu*/
 
-.courrier,
 .Recherche_Anomalie {
     width: 100%;
     background-color: rgb(60, 131, 55);
 }
 
-.courrier:focus,
 .Recherche_Anomalie:focus,
 .on {
     background-color: rgb(238, 244, 234);
