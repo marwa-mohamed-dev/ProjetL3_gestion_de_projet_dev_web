@@ -9,7 +9,16 @@
 
     <div class="individus content">
         <h2>Liste des individus</h2>
-	
+
+        <form action="/recherche" method="GET">
+            <label>Nom</label>
+            <input type="text" name="nom" value="<%= searchOptions.nom %>">
+            <label>Prénom</label>
+            <input type="text" name="prenom" value="<%= searchOptions.prenom %>">
+            <button type="submit">Recherche</button>
+        </form>
+        <br>
+
         <% if (individus.length > 0) { %>
             <% individus.forEach(individu => { %>
                 <a class="single" href="/recherche/<%= individu._id %>">
@@ -21,6 +30,8 @@
         <% } else { %>
             <p>Personne n'est enregistré dans la base de données</p>
         <% } %>
+
+        
     </div>
 
     <%- include('./partials/footer.ejs') %>

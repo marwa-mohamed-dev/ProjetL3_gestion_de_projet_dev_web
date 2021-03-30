@@ -14,13 +14,11 @@ const articleSchema = new Schema({
     prix: {
         type: Number,
         required: true
-    }
-    /*
+    },
     enVente: {
         type: Boolean,
         required: true
     }
-    */
 
 }, { timestamps: true })
 

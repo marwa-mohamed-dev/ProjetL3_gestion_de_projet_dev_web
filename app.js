@@ -115,9 +115,18 @@ app.get('/anomalies', checkAuthenticated, (req,res)=> {
 // affiche liste de tous les individus de la base
 //ordonés avec celui ajouté le plus récemment en premier
 app.get('/recherche', checkAuthenticated, (req, res) => {
-    Individu.find().sort({ createdAt: -1 })
+    let searchOptions = {}
+    if (req.query.nom != null && req.query.prenom != null) {
+        searchOptions.nom = new RegExp(req.query.nom, 'i');
+        searchOptions.prenom = new RegExp(req.query.prenom, 'i')
+    }
+    Individu.find(searchOptions).sort({ createdAt: -1 })
         .then((result) => {
-            res.render('recherche', { title: 'Liste individus', individus: result, style: "recherche" });
+            res.render('recherche', {
+                title: 'Liste individus',
+                individus: result,
+                style: "recherche",
+                searchOptions: req.query});
         })
         .catch((err) => {
             console.log(err);
@@ -138,6 +147,7 @@ app.post('/referentiel/Individu', checkAuthenticated, (req, res) => {
         });
 });
 
+// créer un nouvel article
 app.post('/referentiel/Article', checkAuthenticated, (req, res) => {
     const article = new Article(req.body);
     article.save()
@@ -148,6 +158,17 @@ app.post('/referentiel/Article', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
+// afficher la liste des articles dans l'onglet modifications
+/*app.get('/referentiel/Article', checkAuthenticated, (req, res) => {
+    Article.find().sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('Article', { articles: result, style: "recherche" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});*/
 
 // affiche les informations d'un seul individu sélectionné
 // dans la liste de recherche
