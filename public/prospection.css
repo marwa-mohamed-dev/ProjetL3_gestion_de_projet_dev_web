@@ -37,7 +37,8 @@ nav{
 
 .Identifiant{
     grid-area: head-start/id-start/head-end/id-end;
-    margin:30px;
+    margin:31px;
+    padding:9px;
     background-color:rgb(137, 197, 107);
   }
 
@@ -123,17 +124,17 @@ footer{
   grid-template-columns: 1fr 2fr 1fr;
 }
 
-form{
+div>form{
   grid-column-start:2;
 
    display:grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
 }
-
+/*
 form>label{
   grid-column-start: 1;
-}
+}*/
 
 .partie{
   justify-self: center;
@@ -147,5 +148,15 @@ form>label{
 }
 
 input[value="Soumettre à la validation"]{
-  margin: auto;
+  width: 200px;
+  height: 40px;
+  background-color: #f6f8f6;
+  border-radius: 5px;
+  border: none;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
 }
