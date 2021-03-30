@@ -68,6 +68,7 @@ app.use(methodOverride('_method'))
 
 // requête de type app.get
 // routing
+
 app.get('/', checkNotAuthenticated, (req, res) => {
     res.render('Connexion', {title: 'Connexion' });
 });
@@ -116,7 +117,7 @@ app.get('/anomalies', checkAuthenticated, (req,res)=> {
 app.get('/recherche', checkAuthenticated, (req, res) => {
     Individu.find().sort({ createdAt: -1 })
         .then((result) => {
-            res.render('recherche', { title: 'Liste individus', individus: result, style: "styles"});
+            res.render('recherche', { title: 'Liste individus', individus: result, style: "recherche" });
         })
         .catch((err) => {
             console.log(err);
@@ -154,7 +155,7 @@ app.get('/recherche/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findById(id)
         .then(result => {
-            res.render('details', { individu: result, title: "Détails individu", style: "styles"});
+            res.render('details', { individu: result, title: "Détails individu", style: "styles" });
         })
         .catch((err) => {
             console.log(err);
@@ -199,8 +200,5 @@ function checkNotAuthenticated(req, res, next){
 // use: fonction middleware qui marche que si les options du dessus 
 // n'ont pas été validées, eut-être placée à n'importe quel endroit
 app.use((req, res) => {
-    res.status(404).render('404', {title: '404 Error', style: "styles"});
+    res.status(404).render('404', { title: '404 Error', style: "styles" });
 });
-
-
-
