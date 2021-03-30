@@ -148,5 +148,15 @@ form>label{
 }
 
 input[value="Soumettre à la validation"]{
-  margin: auto;
+  width: 200px;
+  height: 40px;
+  background-color: #f6f8f6;
+  border-radius: 5px;
+  border: none;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
 }
