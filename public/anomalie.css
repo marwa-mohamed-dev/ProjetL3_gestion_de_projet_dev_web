@@ -111,26 +111,31 @@ footer {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 50px;
     align-items: stretch;
-    background-color: black;
+    background-color: rgb(60, 131, 55);
     height: 50px;
 }
 
 
 /*Contenu*/
 
-.Recherche_Anomalie {
+
+/* .Recherche_Anomalie {
     width: 100%;
     background-color: rgb(60, 131, 55);
-}
+} */
 
 .Recherche_Anomalie:focus,
 .on {
     background-color: rgb(238, 244, 234);
 }
 
-.page {
+
+/*Pas activer grid-area*/
+
+
+/* .page {
     grid-area: page-start/page-start/page-end/page-end;
-}
+} */
 
 form {
     display: grid;
