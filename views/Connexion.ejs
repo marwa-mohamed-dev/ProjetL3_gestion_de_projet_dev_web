@@ -9,11 +9,16 @@
     
 </head>
 <body>    
-    <form class="conteneur" action="/acceuil" method="GET">
-    <img src="Fenouille.png" width="250px"/>
-    <input id="Id" name="" type="text" placeholder="Identifiant" required>
-    <input id="password" name="" type="password" placeholder="Mot de passe" required>
-    <input class="submit" type="submit" value="Connexion"> 
+    <form class="conteneur" action="/" method="POST">
+        <img src="Fenouille.png" width="250px"/>
+        <input id="Id" name="identifiant" type="text" placeholder="Identifiant" required>
+        <input id="password" name="mdp" type="password" placeholder="Mot de passe" required>
+        <input class="submit" type="submit" value="Connexion"> 
     </form>
+    <% if (messages.error){ %>
+        <div class="erreur"> 
+            <%= messages.error %>
+        </div>
+    <% } %>
 </body>
 </html>

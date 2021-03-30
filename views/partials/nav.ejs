@@ -11,7 +11,10 @@
     <a href="/acceuil"><img id="logo" src="Fenouille.png" alt="Logo Fenouil" ></a>
     <h1 class="Titre"><%= title %></h1>
     <input class="Recherche" type="button" value="Recherche" onclick="location.href='/recherche';">
-    <input class="Identifiant" type="button" value="Déconnexion" onclick="location.href='/';">        
+    <!-- <input class="Identifiant" type="button" value="Déconnexion" onclick="location.href='/';"> -->
+    <form action="/logout?_method=DELETE" method="POST">
+      <button type="submit" class="Identifiant">Déconnexion</button>
+    </form>      
 </nav>
 
 <script>

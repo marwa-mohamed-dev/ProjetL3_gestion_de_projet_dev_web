@@ -3,27 +3,47 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const commandeSchema = new Schema({
-    numCommande: {
-        type: String,
-        required: true
-    },
+    // numCommande: {
+    //     type: String,
+    //     required: true
+    // },
+
     client: {
         // à mettre type object Individu
         type: String,
         required: true
     },
-    article: {
+    articles: {
+        type: String,
+        required: true
+    },
+    quantite: {
         type: Number,
         required: true
     },
-    paiement: {
+    pCheque: {
         type: String,
-        required: true
+        //required: true
     },
-    date: {
+    pCarte: {
         type: String,
-        required: true,
+        //required: true
     },
+    numeroCarte: {
+        type: Number,
+    },
+    dateExpiration: {
+        type: String,
+    },
+    numeroCheque: {
+        type: Number,
+    },
+    banque: {
+        type: String,
+    },
+    // date: {
+    //     type: String,
+    // },
     
     
 
