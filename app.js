@@ -105,6 +105,17 @@ app.get('/referentiel/newIndividu', (req, res) => {
 app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('Commande', {title:'Commandes',style:"Commande"})
 })
+app.post('/commandes', checkAuthenticated, (req, res) => {
+    const commande = new Commande(req.body);
+    commande.save()
+        .then((result) => {
+            res.redirect('/commandes');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 app.get('/prospection', checkAuthenticated, (req,res)=> {
     res.render('prospection', {title:'Prospection',style:"prospection"})
 })

@@ -4,7 +4,7 @@
     <%- include('./partials/head.ejs') %>
 
 <body>
-
+ 
     <%- include('./partials/nav.ejs') %>
     <div class="barre">
         <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" onclick="Nouvel_Commande()">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="page"  >
-        <form action=""  id='choix'>
+        <form action="/commandes" method="POST" id='choix'>
             <div id='articles'></div>
         </form>
         
@@ -28,10 +28,10 @@
             grid_form.classList.remove("NewGrid");
             // const articles = document.getElementById('articles');
             const choix = document.getElementById('choix');
-            choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class='ref'>Référence <input type='text'></label> <label>Quantité <input type='number' min='1' max='999'></label> </div>";
-            choix.insertAdjacentHTML('afterbegin',"<label class='titre'>Individu <input type='text' size='10'> </label> <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'> </label>")
+            choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class='ref'>Référence <input type='text' name='articles' required></label> <label>Quantité <input type='number' min='1' max='999' name='quantite' required></label> </div>";
+            choix.insertAdjacentHTML('afterbegin',"<label class='titre'>Individu <input type='text' size='10' name='client' required> </label> <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'> </label>")
             // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
-            choix.insertAdjacentHTML('beforeend',"<label class='titre'>Réglement:</label> <label class='modePaie'><input id='cheque' type='checkbox' onclick='paiementCheque()'>Chèque</label> <label><input id='carte' type='checkbox' onclick='paiementCarte()'>Carte Bancaire</label> <div id='paiementElements'></div> <input type='submit' value='Créer la commande'>")
+            choix.insertAdjacentHTML('beforeend',"<label class='titre'>Réglement:</label> <label class='modePaie'><input id='cheque' type='checkbox' onclick='paiementCheque()' name='pCheque'>Chèque</label> <label><input id='carte' type='checkbox' onclick='paiementCarte()' name='pCarte'>Carte Bancaire</label> <div id='paiementElements'></div> <input type='submit' value='Créer la commande'>")
         }
 
         function Ajout_Article(){
@@ -55,7 +55,8 @@
             if(carte.checked){
                 cheque.checked=false;
                 paiementElements.innerHTML="";
-                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte <input type='text'></label><label>Date d'expiration <input type='text'></label> ")
+                const paiementElements = document.getElementById('paiementElements')
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte <input type='text' name='numeroCarte' required></label><label>Date d'expiration <input type='text' name='dateExpiration' required></label> ")
             }
             if(!carte.checked){
                 paiementElements.innerHTML="";
@@ -66,8 +67,8 @@
             if(cheque.checked){
                 carte.checked=false;
                 paiementElements.innerHTML="";
-                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro chèque <input type='text'></label><label>Banque <input type='text'></label> ")
-            }
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro chèque <input type='text' name='numeroCheque' required></label><label>Banque <input type='text' name='banque'></label> ")
+                }
             if(!cheque.checked){
                 paiementElements.innerHTML="";
             }
