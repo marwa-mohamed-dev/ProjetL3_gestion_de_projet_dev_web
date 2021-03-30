@@ -33,9 +33,13 @@
                     choix.innerHTML = "";
                     on_Modif_Article.classList.add("on");
                     on_Nouvel_Article.classList.remove("on");
+<<<<<<< Updated upstream
                     choix.insertAdjacentHTML('afterbegin', 
                         "<form action:'/referentiel/Article' method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number' name='numArticle'><label>Désignation</label><input type='text' name='designation'><input type='submit' value='Rechercher' onclick='retourRef()'></form>",
                         );
+=======
+                    choix.insertAdjacentHTML('afterbegin', "<form action:'/referentiel/Article' method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number' name='numArticle'><label>Désignation</label><input type='text' name='description'><input type='submit' value='Rechercher' onclick='retourRef()'></form>");
+>>>>>>> Stashed changes
                 }
 
 
