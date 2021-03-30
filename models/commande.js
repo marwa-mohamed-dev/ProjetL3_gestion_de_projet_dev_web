@@ -23,11 +23,11 @@ const commandeSchema = new Schema({
     },
     pCheque: {
         type: String,
-        required: true
+        //required: true
     },
     pCarte: {
         type: String,
-        required: true
+        //required: true
     },
     numeroCarte: {
         type: Number,
