@@ -4,59 +4,34 @@
 <%- include('./partials/head.ejs') %>
 
     <body>
-
         <%- include('./partials/nav.ejs') %>
-            <div class="barre">
-                <input class="Recherche_Anomalie" id="R_An" type="submit" value="Rechercher une anomalie" onclick="Recherche_Anomalie()">
-                <input class="courrier" id="C" type="submit" value="Envoyer un courrier" onclick="courrier()">
+
+            <div class="barre"></div>
+            <div class="page" id="choix">
+
+                <form action="" method='GET' id="R_An">
+                    <label>Numéro Commande</label>
+                    <input type="text" id="Cnum" name="Cnum">
+                    <label>Nom Individu</label>
+                    <input type="text" id="nom" name="nom">
+                    <label>Prénom Individu</label>
+                    <input type="text" id="prenom" name="prenom">
+                    <label>Date d'anomalie</label>
+                    <input type='date'>
+                    <input type='submit' value='Rechercher'>
+                </form>
             </div>
             <script>
-                let on_C = document.getElementById("C")
-                let on_R_An = document.getElementById("pub")
-
-                function Recherche_Anomalie() {
-                    on_R_An.classList.add("on");
-                    on_C.classList.remove("on");
-                    choix.innerHTML = "";
-                    choix.insertAdjacentHTML('afterbegin', "")
-                }
-
-                function courrier() {
-                    on_C.classList.add("on");
-                    on_R_An.classList.remove("on");
-                    choix.innerHTML = "";
-                    choix.insertAdjacentHTML('afterbegin', "")
-                }
+                let on_R_An = document.getElementById("R_An")
+                    /*
+                                    function Recherche_Anomalie() {
+                                        on_R_An.classList.add("on");
+                                        choix.innerHTML = "";
+                                        choix.insertAdjacentHTML('afterbegin', "<form action='' method='GET'><label>Numéro Commande</label><input type='text'><label>Nom Individu</label><input type='text'></input><label>Date d'anomalie</label> <input type='date'><input type='submit' value='Rechercher'></form>")
+                                    }*/
             </script>
 
-            <%- include('./partials/nav.ejs') %>
-
-                <div class="barre"></div>
-                <div class="page" id="choix">
-
-                    <form action="" method='GET' id="R_An">
-                        <label>Numéro Commande</label>
-                        <input type="text" id="Cnum" name="Cnum">
-                        <label>Nom Individu</label>
-                        <input type="text" id="nom" name="nom">
-                        <label>Prénom Individu</label>
-                        <input type="text" id="prenom" name="prenom">
-                        <label>Date d'anomalie</label>
-                        <input type='date'>
-                        <input type='submit' value='Rechercher'>
-                    </form>
-                </div>
-                <script>
-                    let on_R_An = document.getElementById("R_An")
-                        /*
-                                        function Recherche_Anomalie() {
-                                            on_R_An.classList.add("on");
-                                            choix.innerHTML = "";
-                                            choix.insertAdjacentHTML('afterbegin', "<form action='' method='GET'><label>Numéro Commande</label><input type='text'><label>Nom Individu</label><input type='text'></input><label>Date d'anomalie</label> <input type='date'><input type='submit' value='Rechercher'></form>")
-                                        }*/
-                </script>
-
-                <%- include('./partials/footer.ejs') %>
+            <%- include('./partials/footer.ejs') %>
 
     </body>
 
