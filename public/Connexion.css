@@ -77,9 +77,9 @@ img{
 
 .erreur{
     grid-area: 4/3/5/5;
-    display: grid;
+    /*display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: auto;*/
     background-color:#f2aeae;
     border-radius: 10px;
     text-align: center;
@@ -87,8 +87,9 @@ img{
     color: #9e0000;
 }
 
+/*
 .erreur img{
     grid-area: 1/1/2/2;
     width: 100px;
     height: 40px;
-}
+}*/
