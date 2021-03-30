@@ -39,7 +39,7 @@ const CibleDeRoutageSchema = new Schema({
         required : true
     },
     cataloguePapier : {
-        type:Boolean,
+        type:String,
         //required:true
     },
     typePapier : {
@@ -47,7 +47,7 @@ const CibleDeRoutageSchema = new Schema({
         //required:true
     },
     catalogueInternet : {
-        type:Boolean,
+        type:String,
         //required:true
     },  
     articles : {
