@@ -69,7 +69,26 @@ app.get('/referentiel/newIndividu', (req, res) => {
 app.get('/commandes', (req,res)=> {
     res.render('Commande', {title:'Commandes',style:"Commande"})
 })
+<<<<<<< Updated upstream
 app.get('/prospection', (req,res)=> {
+=======
+
+// ajoute un individu à la base de données
+// fait marcher le bouton submit en soi
+// puis redirige vers la page administrateur
+app.post('/commandes', checkAuthenticated, (req, res) => {
+    const commande = new Commande(req.body);
+    commande.save()
+        .then((result) => {
+            res.redirect('/commandes');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.get('/prospection', checkAuthenticated, (req,res)=> {
+>>>>>>> Stashed changes
     res.render('prospection', {title:'Prospection',style:"prospection"})
 })
 app.get('/anomalies', (req,res)=> {

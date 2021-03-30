@@ -12,7 +12,7 @@
     </div>
 
     <div class="page"  >
-        <form action=""  id='choix'>
+        <form action="/commandes" method="POST" id='choix'>
             <div id='articles'></div>
         </form>
         
@@ -28,10 +28,17 @@
             grid_form.classList.remove("NewGrid");
             // const articles = document.getElementById('articles');
             const choix = document.getElementById('choix');
+<<<<<<< Updated upstream
             choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class=>Référence</label><input type='text'> <label>Quantité</label> <input type='number'></div>";
             choix.insertAdjacentHTML('afterbegin',"<label class='titre'>Individu</label> <input class='titre' type='text'> <label class='titre'>Article(s):</label> <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'>")
             // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
             choix.insertAdjacentHTML('beforeend',"<label class='titre'>Réglement:</label> <input id='cheque' type='checkbox' onclick='paiementCheque()'><label>Chèque</label><input id='carte' type='checkbox' onclick='paiementCarte()'><label>Carte Bancaire</label> <div id='paiementElements'></div>")
+=======
+            choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class='ref'>Référence <input type='text' name='articles' required></label> <label>Quantité <input type='number' min='1' max='999' name='quantite' required></label> </div>";
+            choix.insertAdjacentHTML('afterbegin',"<label class='titre'>Individu <input type='text' size='10' name='client' required> </label> <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'> </label>")
+            // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
+            choix.insertAdjacentHTML('beforeend',"<label class='titre'>Réglement:</label> <label class='modePaie'><input id='cheque' type='checkbox' onclick='paiementCheque()' name='pCheque'>Chèque</label> <label><input id='carte' type='checkbox' onclick='paiementCarte()' name='pCarte'>Carte Bancaire</label> <div id='paiementElements'></div> <input type='submit' value='Créer la commande'>")
+>>>>>>> Stashed changes
         }
 
         function Ajout_Article(){
@@ -45,7 +52,7 @@
             on_R_Comm.classList.add("on")
             grid_form.classList.add("NewGrid");
             choix.innerHTML= "";
-            choix.insertAdjacentHTML('afterbegin'," <form action:'' method:'POST'><label class='SearchCom'>Numéro commande</label><input class='SearchCom' type='text'><input class='SearchCom' type='submit' value='Rechercher'> </form>")
+            choix.insertAdjacentHTML('afterbegin'," <form action:'/commandes' method:'GET'><label class='SearchCom'>Numéro commande</label><input class='SearchCom' type='text'><input class='SearchCom' type='submit' value='Rechercher'> </form>")
         }
         
         function paiementCarte(){
@@ -55,7 +62,11 @@
             if(carte.checked){
                 cheque.checked=false;
                 paiementElements.innerHTML="";
+<<<<<<< Updated upstream
                 paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte</label><input type='text'><label>Date d'expiration</label><input type='text'> ")
+=======
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte <input type='text' name='numeroCarte' required></label><label>Date d'expiration <input type='text' name='dateExpiration' required></label> ")
+>>>>>>> Stashed changes
             }
             if(!carte.checked){
                 paiementElements.innerHTML="";
@@ -66,7 +77,11 @@
             if(cheque.checked){
                 carte.checked=false;
                 paiementElements.innerHTML="";
+<<<<<<< Updated upstream
                 paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro chèque</label><input type='text'><label>Banque</label><input type='text'> ")
+=======
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro chèque <input type='text' name='numeroCheque' required></label><label>Banque <input type='text' name='banque'></label> ")
+>>>>>>> Stashed changes
             }
             if(!cheque.checked){
                 paiementElements.innerHTML="";
