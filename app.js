@@ -9,6 +9,7 @@ const Individu = require('./models/individu');
 const Article = require('./models/article');
 const Employee = require('./models/employee');
 const Commande = require('./models/commande');
+const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
 
@@ -119,6 +120,30 @@ app.post('/commandes', checkAuthenticated, (req, res) => {
 app.get('/prospection', checkAuthenticated, (req,res)=> {
     res.render('prospection', {title:'Prospection',style:"prospection"})
 })
+
+// affiche liste de tous cibles de routage
+//ordonés avec celui ajouté le plus récemment en premier
+app.get('/prospection', checkAuthenticated, (req, res) => {
+    CibleDeRoutage.find().sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('prospection', { title: 'Cibles de routage', cibles: result, style: "prospection" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.post('/prospection', checkAuthenticated, (req, res) => {
+    const cibleDeRoutage = new CibleDeRoutage(req.body);
+    cibleDeRoutage.save()
+        .then((result) => {
+            res.redirect('/prospection');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 app.get('/anomalies', checkAuthenticated, (req,res)=> {
     res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})
 })
