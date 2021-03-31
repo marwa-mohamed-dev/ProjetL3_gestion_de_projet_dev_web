@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<%- include('./partials/head.ejs') %>
+<%- include('../partials/head.ejs') %>
 
     <body>
 
-        <%- include('./partials/nav.ejs') %>
+        <%- include('../partials/nav.ejs') %>
 
             <div class="barre">
                 <input class="Nouvel_Article" id="New_Art" type="submit" value="Créer un nouvel article" onclick="Nouvel_Article()">
@@ -15,8 +15,6 @@
             </div>
             <script>
                 let on_Nouvel_Article = document.getElementById("New_Art");
-                let on_Modif_Article = document.getElementById("Modif_Art");
-
 
                 function Nouvel_Article() {
                     const choix = document.getElementById('choix')
@@ -25,15 +23,6 @@
                     on_Modif_Article.classList.remove("on");
                     choix.insertAdjacentHTML('afterbegin', "<form action:'/referentiel' method='POST'><label>Désignation*</label><input type='text' name='designation' required><label>Prix de vente (€)*</label><input type='number' name='prix' min='0.00' step='0.01' required> <label>Description</label><input type='text' name='description'><input type='submit' value='Créer un nouvel Article'></form>");
                 }
-
-                function Recherche_Article() {
-                    choix.innerHTML = "";
-                    on_Modif_Article.classList.add("on");
-                    on_Nouvel_Article.classList.remove("on");
-                    choix.insertAdjacentHTML('afterbegin', "<form action:'/referentiel/Article'method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher'></form>");
-                }
-
-
 
                 // function Nouvel_Individu(){
                 //     choix.innerHTML= "";
@@ -48,7 +37,7 @@
 
             <div class="page" id='choix'></div>
 
-            <%- include('./partials/footer.ejs') %>
+            <%- include('../partials/footer.ejs') %>
 
     </body>
 
