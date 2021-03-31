@@ -77,19 +77,19 @@ img{
 
 .erreur{
     grid-area: 4/3/5/5;
-    /*display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;*/
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-template-rows: auto;
     background-color:#f2aeae;
     border-radius: 10px;
-    text-align: center;
-    padding: 10px 50px;
+    align-items: center;
+    padding: 10px 20px;
     color: #9e0000;
 }
 
-/*
+
 .erreur img{
     grid-area: 1/1/2/2;
-    width: 100px;
-    height: 40px;
-}*/
+    width: 60px;
+    height: 50px;
+}
