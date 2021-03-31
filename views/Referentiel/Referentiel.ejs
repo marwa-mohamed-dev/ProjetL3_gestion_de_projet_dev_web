@@ -8,19 +8,29 @@
         <%- include('../partials/nav.ejs') %>
 
             <div class="barre">
-                <input class="Nouvel_Article" id="Art" type="submit" value="Gestion d'articles" onclick="article()">
-                <input class="Modif_Individu" type="submit" value="Gestion d'individus" onclick="individu()">
-
+                <input class="Nouvel_Individu" type="submit" id="Art" value="Créer un nouvel individu" onclick="Cindividu()">
+                <input class="Modif_Individu" type="submit" id="Art" value="Modifier les informations d'un individu" onclick="Mindividu()">
+                <input class="Nouvel_Article"  type="submit" id="Art" value="Créer un nouvel article" onclick="Carticle()">
+                <input class="Modif_Article"  type="submit" id="Art" value="Modifier un article" onclick="Marticle()">
                 <!--<a href="/referentiel/newIndividu"></a>-->
             </div>
             <script>
-                function article() {
+                function Carticle() {
                     location.replace("http://localhost:3000/referentiel/CreerArticle")
                 }
 
-                function individu() {
+                function Marticle() {
+                    location.replace("http://localhost:3000/referentiel/ModifArticle")
+                }
+
+                function Cindividu() {
                     location.replace("http://localhost:3000/referentiel/CreerIndividu")
                 }
+
+                function Mindividu() {
+                    location.replace("http://localhost:3000/referentiel/ModifIndividu")
+                }
+                
                 //     function changementPageArticel(){
                 //         location.href='/referentiel/Article';
                 //     }

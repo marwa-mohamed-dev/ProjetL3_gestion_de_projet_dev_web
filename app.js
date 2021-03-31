@@ -101,6 +101,10 @@ app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./Referentiel/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
+app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
+    res.render('./Referentiel/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
+});
+
 /*
 app.get('/referentiel/newIndividu', (req, res) => {
     res.render('newIndividu', {title: 'Créer individu', style: "styles"});

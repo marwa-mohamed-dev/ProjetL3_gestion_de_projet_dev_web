@@ -8,21 +8,44 @@
         <%- include('../partials/nav.ejs') %>
 
             <div class="barre">
-                <input class="Nouvel_Article" id="New_Art" type="submit" value="Créer un nouvel article" onclick="Nouvel_Article()">
-                <input class="Modif_Article" id="Modif_Art" type="submit" value="Modifier un article" onclick="Recherche_Article()">
-
+                <input class="Nouvel_Individu" type="submit" id="new_Ind" value="Créer un nouvel individu" onclick="Cindividu()">
+                <input class="Modif_Individu" type="submit" id="Modif_Ind" value="Modifier les informations d'un individu" onclick="Mindividu()">
+                <input class="Nouvel_Article"  type="submit" id="New_Art" value="Créer un nouvel article">
+                <input class="Modif_Article"  type="submit" id="Modif_Art" value="Modifier un article" onclick="Marticle()">
                 <!--<a href="/referentiel/newIndividu"></a>-->
             </div>
+
+            <div class="page" id='choix'></div>
+
             <script>
                 let on_Nouvel_Article = document.getElementById("New_Art");
-
-                function Nouvel_Article() {
-                    const choix = document.getElementById('choix')
-                    choix.innerHTML = "";
-                    on_Nouvel_Article.classList.add("on");
-                    on_Modif_Article.classList.remove("on");
-                    choix.insertAdjacentHTML('afterbegin', "<form action:'/referentiel' method='POST'><label>Désignation*</label><input type='text' name='designation' required><label>Prix de vente (€)*</label><input type='number' name='prix' min='0.00' step='0.01' required> <label>Description</label><input type='text' name='description'><input type='submit' value='Créer un nouvel Article'></form>");
+                let on_Modif_Article = document.getElementById("Modif_Art");
+                const choix = document.getElementById('choix')
+                
+                choix.innerHTML = "";
+                on_Nouvel_Article.classList.add("on");
+                on_Modif_Article.classList.remove("on");
+                choix.insertAdjacentHTML('afterbegin', "<form action:'/referentiel' method='POST'><label>Désignation*</label><input type='text' name='designation' required><label>Prix de vente (€)*</label><input type='number' name='prix' min='0.00' step='0.01' required> <label>Description</label><input type='text' name='description'><input type='submit' value='Créer un nouvel Article'></form>");
+               
+                function Marticle() {
+                    location.replace("http://localhost:3000/referentiel/ModifArticle")
                 }
+
+                function Cindividu() {
+                    location.replace("http://localhost:3000/referentiel/CreerIndividu")
+                }
+
+                function Mindividu() {
+                    location.replace("http://localhost:3000/referentiel/ModifIndividu")
+                }
+
+                // function Nouvel_Article() {
+                //     const choix = document.getElementById('choix')
+                //     choix.innerHTML = "";
+                //     on_Nouvel_Article.classList.add("on");
+                //     on_Modif_Article.classList.remove("on");
+                //     choix.insertAdjacentHTML('afterbegin', "<form action:'/referentiel' method='POST'><label>Désignation*</label><input type='text' name='designation' required><label>Prix de vente (€)*</label><input type='number' name='prix' min='0.00' step='0.01' required> <label>Description</label><input type='text' name='description'><input type='submit' value='Créer un nouvel Article'></form>");
+                // }
 
                 // function Nouvel_Individu(){
                 //     choix.innerHTML= "";
@@ -34,8 +57,6 @@
                 //     choix.insertAdjacentHTML('afterbegin'," <form class='' action:'/referentiel/Individu' method:'GET'><label>Nom</label><input type='text'><label >Prénom</label><input type='text'> <label>Date de Naissance</label><input type='text'><input type='submit' value='Rechercher'></form>")
                 // }
             </script>
-
-            <div class="page" id='choix'></div>
 
             <%- include('../partials/footer.ejs') %>
 
