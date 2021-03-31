@@ -55,7 +55,7 @@
             if(carte.checked){
                 cheque.checked=false;
                 paiementElements.innerHTML="";
-                const paiementElements = document.getElementById('paiementElements')
+                
                 paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte <input type='text' name='numeroCarte' required></label><label>Date d'expiration <input type='text' name='dateExpiration' required></label> ")
             }
             if(!carte.checked){
