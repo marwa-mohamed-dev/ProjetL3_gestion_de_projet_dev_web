@@ -11,6 +11,12 @@
         <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="Valider()">    
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="Recuperer()">
     </div>
+
+    <% articles.forEach(article =>{ %>
+
+        <option label="<%=article.designation%>" value="<%=article.id%>"></option>
+    <% }) %>
+
     <script>
         let on_creer = document.getElementById("creer");
         let on_val = document.getElementById("val")

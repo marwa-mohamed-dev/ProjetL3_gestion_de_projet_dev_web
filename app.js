@@ -102,7 +102,7 @@ app.get('/referentiel/newIndividu', (req, res) => {
     res.render('newIndividu', {title: 'Créer individu', style: "styles"});
 })
 */
-
+app.use('/commandes',Commande)
 app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('Commande', {title:'Commandes',style:"Commande"})
 })
@@ -132,6 +132,10 @@ app.get('/prospection', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
+app.use('/prospection',CibleDeRoutage)
+
+
 
 app.post('/prospection', checkAuthenticated, (req, res) => {
     const cibleDeRoutage = new CibleDeRoutage(req.body);

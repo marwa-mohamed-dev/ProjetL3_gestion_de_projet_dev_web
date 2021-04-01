@@ -7,17 +7,19 @@ const CibleDeRoutageSchema = new Schema({
         type: String,
         required: true
     },
-    // dateProspection:{
-    //     type: Date = new Date()
-    // },
+    dateProspection:{
+        type: Date,
+        default: Date.now
+    },
     description:{
         type: String,
         required: true
     },
-    // individu: {
-    //     type: String,
-    //     required: true
-    // },
+    individu: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Individu'
+    },
     ageMin: {
         type: Number,
         required: true
@@ -51,8 +53,9 @@ const CibleDeRoutageSchema = new Schema({
         //required:true
     },  
     articles : {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Article'
     }
     
 
