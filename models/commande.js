@@ -8,14 +8,15 @@ const commandeSchema = new Schema({
     //     required: true
     // },
 
-    client: {
-        // à mettre type object Individu
-        type: String,
-        required: true
+    individu: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Individu'
     },
-    articles: {
-        type: String,
-        required: true
+    articles : {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Article'
     },
     quantite: {
         type: Number,
@@ -41,9 +42,10 @@ const commandeSchema = new Schema({
     banque: {
         type: String,
     },
-    // date: {
-    //     type: String,
-    // },
+    date: {
+        type: Date,
+        default: Date.now
+    },
     
     
 
