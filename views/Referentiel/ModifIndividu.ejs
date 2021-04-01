@@ -10,12 +10,22 @@
             <div class="barre">
                 <input class="Nouvel_Individu" type="submit" id="new_Ind" value="Créer un nouvel individu" onclick="Cindividu()">
                 <input class="Modif_Individu" type="submit" id="Modif_Ind" value="Modifier les informations d'un individu">
-                <input class="Nouvel_Article"  type="submit" id="New_Art" value="Créer un nouvel article"  onclick="Carticle()">
-                <input class="Modif_Article"  type="submit" id="Modif_Art"value="Modifier un article" onclick="Marticle()">
+                <input class="Nouvel_Article" type="submit" id="New_Art" value="Créer un nouvel article" onclick="Carticle()">
+                <input class="Modif_Article" type="submit" id="Modif_Art" value="Modifier un article" onclick="Marticle()">
                 <!--<a href="/referentiel/newIndividu"></a>-->
             </div>
 
-            <div class="page" id='choix'></div>
+            <div class="page" id='choix'>
+                <form class='' action: '/referentiel/CreerIndividu' method: 'GET'>
+                    <label>Nom</label>
+                    <input type='text' required>
+                    <label>Prénom</label>
+                    <input type='text'>
+                    <label>Date de Naissance</label>
+                    <input type='text'>
+                    <input type='submit' value='Rechercher'>
+                </form>
+            </div>
 
             <script>
                 let on_Nouvel_Individu = document.getElementById("new_Ind");
@@ -24,7 +34,7 @@
                 on_Modif_Individu.classList.add("on");
                 choix.innerHTML = "";
                 choix.insertAdjacentHTML('afterbegin', " <form class='' action:'/referentiel/CreerIndividu' method:'GET'><label>Nom</label><input type='text' required><label >Prénom</label><input type='text'> <label>Date de Naissance</label><input type='text'><input type='submit' value='Rechercher'></form>")
-                
+
                 function Carticle() {
                     location.replace("http://localhost:3000/referentiel/CreerArticle")
                 }
@@ -49,7 +59,7 @@
                 //     choix.innerHTML= "";
                 //     choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article'method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher'>");
                 // }
-                
+
                 /*function retourRef() {
                     location.replace("http://localhost:3000/referentiel")
                 }*/

@@ -14,16 +14,24 @@
                 <input class="Modif_Article" id="Modif_Art" type="submit" value="Modifier un article">
                 <!--<a href="/referentiel/newIndividu"></a>-->
             </div>
-            <div class="page" id='choix'></div>
-            
+            <div class="page" id='choix'>
+                <form action: '/referentiel' method='GET' class='ReshearchArt'>
+                    <label>Numéro unique</label>
+                    <input type='number'>
+                    <label>Désignation</label>
+                    <input type='text'>
+                    <input type='submit' value='Rechercher'>
+                </form>
+            </div>
+
             <script>
                 let on_Modif_Article = document.getElementById("Modif_Art");
                 let on_Nouvel_Article = document.getElementById("New_Art");
-                
-                choix.innerHTML = "";
-                on_Modif_Article.classList.add("on");
-                on_Nouvel_Article.classList.remove("on");
-                choix.insertAdjacentHTML('afterbegin', "<form action:'/referentiel' method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher'></form>");
+
+                // choix.innerHTML = "";
+                // on_Modif_Article.classList.add("on");
+                // on_Nouvel_Article.classList.remove("on");
+                // choix.insertAdjacentHTML('afterbegin', "<form action:'/referentiel' method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher'></form>");
 
                 function Carticle() {
                     location.replace("http://localhost:3000/referentiel/CreerArticle")
