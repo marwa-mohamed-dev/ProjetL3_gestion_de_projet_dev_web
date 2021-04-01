@@ -16,7 +16,8 @@ const individuSchema = new Schema({
     }, 
     categoriePro : {
         type : String,
-        required: true
+        required: true,
+        default: 'inconnu'
     },
     adresseNum : {
         type : Number,
