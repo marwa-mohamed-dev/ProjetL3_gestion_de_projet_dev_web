@@ -86,15 +86,23 @@ app.post('/', checkNotAuthenticated, passport.authenticate('local', {
 }))
   
 app.get('/referentiel', checkAuthenticated, (req, res) => {
-    res.render('Referentiel', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('./Referentiel/Referentiel', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
-app.get('/referentiel/Article', checkAuthenticated, (req, res) => {
-    res.render('Article', {title: 'Administration du référentiel', style: 'Referentiel'});
+app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
+    res.render('./Referentiel/CreerArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
-app.get('/referentiel/Individu', checkAuthenticated, (req, res) => {
-    res.render('Individu', {title: 'Administration du référentiel', style: 'Referentiel'});
+app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
+    res.render('./Referentiel/ModifArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
+});
+
+app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
+    res.render('./Referentiel/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
+});
+
+app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
+    res.render('./Referentiel/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
 /*
@@ -172,7 +180,7 @@ app.get('/recherche', checkAuthenticated, (req, res) => {
 // ajoute un individu à la base de données
 // fait marcher le bouton submit en soi
 // puis redirige vers la page administrateur
-app.post('/referentiel/Individu', checkAuthenticated, (req, res) => {
+app.post('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     const individu = new Individu(req.body);
     individu.save()
         .then((result) => {
@@ -184,7 +192,7 @@ app.post('/referentiel/Individu', checkAuthenticated, (req, res) => {
 });
 
 // créer un nouvel article
-app.post('/referentiel/Article', checkAuthenticated, (req, res) => {
+app.post('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
     const article = new Article(req.body);
     article.save()
         .then((result) => {

@@ -16,10 +16,10 @@ const articleSchema = new Schema({
         type: Number,
         required: true
     },
-    enVente: {
-        type: Boolean,
-        required: true
-    }
+
+     enVente: {
+         type: Boolean,
+     }
 
 }, { timestamps: true })
 

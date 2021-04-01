@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head.ejs') %>
+
+    <body>
+
+        <%- include('../partials/nav.ejs') %>
+
+            <div class="barre">
+                <input class="Nouvel_Individu" type="submit" id="new_Ind" value="Créer un nouvel individu" onclick=>
+                <input class="Modif_Individu" type="submit" id="Modif_Ind" value="Modifier les informations d'un individu" onclick="Mindividu()">
+                <input class="Nouvel_Article"  type="submit" id="New_Art" value="Créer un nouvel article"  onclick="Carticle()">
+                <input class="Modif_Article"  type="submit" id="Modif_Art"value="Modifier un article" onclick="Marticle()">
+                <!--<a href="/referentiel/newIndividu"></a>-->
+            </div>
+
+            <div class="page" id='choix'></div>
+
+            <script>
+                let on_Nouvel_Individu = document.getElementById("new_Ind");
+                let on_Modif_Individu = document.getElementById("Modif_Ind");
+                on_Nouvel_Individu.classList.add("on");
+                on_Modif_Individu.classList.remove("on");
+                choix.innerHTML = "";
+                choix.insertAdjacentHTML('afterbegin', "<form class='NewI' action:'/referentiel' method='POST'><label class='Col1'>Nom*</label><input class='Col1' type='text' name='nom' required><label class='Col2'>Prénom*</label><input class='Col2' type='text' name='prenom' required> <label>Date de Naissance*</label><input type='text' name='dateNaissance' placeholder='01/01/1950' required><label>Catégorie socio-professionnelle*</label><SELECT name='categoriePro' size='1' required><OPTION selected disabled>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><label>Adresse*</label><input class='Col1' type='text' placeholder='N° de voie*' name='adresseNum' pattern='[0-9]+' required><input class='Col2' type='text' placeholder='Nom de la Voie*' name='adresseType' required><input class='Col1' type='text' placeholder='Code postal*' pattern='[0-9]{5}' name='adresseCode'required><input class='Col2'type='text' placeholder='Ville*' name='adresseVille' required><input type='text' placeholder='Complément d`adresse' name='adresseInfos'><label class='Col1'>Numéro de téléphone*</label><input class='Col1' type='tel' name='numeroTel' placeholder='0XXXXXXXXX' pattern='[0]{1}[0-9]{9}' required><label class='Col2'>Adresse mail</label><input class='Col2' type='email' name='adresseMail' placeholder='exemple@gmail.com' ><label>Caractéristique commerciale*</label><SELECT name='statut' size='1' required><OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT><input type='submit' value='Créer un nouvel Individu'></form>");
+
+                function Carticle() {
+                    location.replace("http://localhost:3000/referentiel/CreerArticle")
+                }
+
+                function Marticle() {
+                    location.replace("http://localhost:3000/referentiel/ModifArticle")
+                }
+
+                function Mindividu() {
+                    location.replace("http://localhost:3000/referentiel/ModifIndividu")
+                }
+                //     on.classList.add("on");
+                // function Nouvel_Article(){
+                //     const choix=document.getElementById('choix')
+                //     choix.innerHTML= "";
+                //     let on = document.getElementsByClassName("Nouvel_Article");
+                //     //on.classList.add("on");
+                //     choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article' method='POST'><label>Désignation*</label><input type='text' name='designation' required><label>Prix de vente (€)*</label><input type='number' name='prix' required> <label>Description*</label><input type='text' name='description' required><input type='submit' value='Créer un nouvel Article'></form>");
+                // }
+
+                // function Recherche_Article(){
+                //     choix.innerHTML= "";
+                //     choix.insertAdjacentHTML('afterbegin',"<form action:'/referentiel/Article'method='GET' class='ReshearchArt'><label>Numéro unique</label><input type='number'><label >Désignation</label><input type='text'><input type='submit' value='Rechercher'>");
+                // }
+                
+                /*function retourRef() {
+                    location.replace("http://localhost:3000/referentiel")
+                }*/
+
+                // function Nouvel_Individu() {
+                //     on_Nouvel_Individu.classList.add("on");
+                //     on_Modif_Individu.classList.remove("on");
+                //     choix.innerHTML = "";
+                //     choix.insertAdjacentHTML('afterbegin', "<form class='NewI' action:'/referentiel' method='POST'><label class='Col1'>Nom*</label><input class='Col1' type='text' name='nom' required><label class='Col2'>Prénom*</label><input class='Col2' type='text' name='prenom' required> <label>Date de Naissance*</label><input type='text' name='dateNaissance' placeholder='01/01/1950' required><label>Catégorie socio-professionnelle*</label><SELECT name='categoriePro' size='1' required><OPTION selected disabled>Catégorie<OPTION>Agriculteurs exploitants<OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT><label>Adresse*</label><input class='Col1' type='text' placeholder='N° de voie*' name='adresseNum' pattern='[0-9]+' required><input class='Col2' type='text' placeholder='Nom de la Voie*' name='adresseType' required><input class='Col1' type='text' placeholder='Code postal*' pattern='[0-9]{5}' name='adresseCode'required><input class='Col2'type='text' placeholder='Ville*' name='adresseVille' required><input type='text' placeholder='Complément d`adresse' name='adresseInfos'><label class='Col1'>Numéro de téléphone*</label><input class='Col1' type='tel' name='numeroTel' placeholder='0XXXXXXXXX' pattern='[0]{1}[0-9]{9}' required><label class='Col2'>Adresse mail</label><input class='Col2' type='email' name='adresseMail' placeholder='exemple@gmail.com' ><label>Caractéristique commerciale*</label><SELECT name='statut' size='1' required><OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT><input type='submit' value='Créer un nouvel Individu'></form>");
+                // }
+
+                // function Modifier_Individu() {
+                //     on_Nouvel_Individu.classList.remove("on");
+                //     on_Modif_Individu.classList.add("on");
+                //     choix.innerHTML = "";
+                //     choix.insertAdjacentHTML('afterbegin', " <form class='' action:'/referentiel/CreerIndividu' method:'GET'><label>Nom</label><input type='text' required><label >Prénom</label><input type='text'> <label>Date de Naissance</label><input type='text'><input type='submit' value='Rechercher'></form>")
+                // }
+            </script>
+
+            <%- include('../partials/footer.ejs') %>
+
+    </body>
+
+</html>
