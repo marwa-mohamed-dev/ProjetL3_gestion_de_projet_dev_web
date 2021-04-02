@@ -86,11 +86,11 @@ app.post('/', checkNotAuthenticated, passport.authenticate('local', {
 }))
   
 app.get('/referentiel', checkAuthenticated, (req, res) => {
-    res.render('./Referentiel/Referentiel', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('./adminRef/Referentiel', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
 app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
-    res.render('./Referentiel/CreerArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('./adminRef/CreerArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
 /*app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
@@ -98,18 +98,16 @@ app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
 });*/
 
 app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
-    res.render('./Referentiel/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('./adminRef/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
 app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
-    res.render('./Referentiel/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('./adminRef/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
-/*
-app.get('/referentiel/newIndividu', (req, res) => {
-    res.render('newIndividu', {title: 'Créer individu', style: "styles"});
+app.get('/referentiel/Article', (req, res) => {
+    res.render('./adminRef/Article', {title: 'article', style: 'Referentiel'});
 })
-*/
 
 app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('Commande', {title:'Commandes',style:"Commande"})
@@ -250,7 +248,7 @@ app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
     }
     Article.find(searchOptions).sort({ createdAt: -1 })
         .then((result) => {
-            res.render('./Referentiel/ModifArticle', {
+            res.render('./adminRef/ModifArticle', {
                 title: 'Administration du référentiel',
                 articles: result,
                 style: "Referentiel",
@@ -263,11 +261,11 @@ app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
 
 // affiche les informations d'un seul article sélectionné
 // dans la liste de recherche
-app.get('/referentiel/ModifArticle:id', checkAuthenticated, (req, res) => {
+app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findById(id)
         .then(result => {
-            res.render('Article', { article: result, title: "Détails article", style: "styles" });
+            res.render('./adminRef/Article', { article: result, title: "Administration du référentiel", style: "referentiel" });
         })
         .catch((err) => {
             console.log(err);
@@ -279,7 +277,7 @@ app.delete('/referentiel/ModifArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: 'ModifArticle' });
+            res.json({ redirect: '/referentiel/ModifArticle' });
         })
         .catch((err) => {
             console.log(err);
