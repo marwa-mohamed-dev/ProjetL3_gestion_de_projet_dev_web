@@ -16,17 +16,27 @@
             </div>
             <div class="page" id='choix'>
                 <form action='/referentiel/ModifArticle' method='GET' class='ReshearchArt'>
-                    <label>Numéro unique</label>
-                    <input type='number'>
                     <label>Désignation</label>
-                    <input type='text'>
+                    <input type="text" name="designation" value="<%= searchOptions.designation %>">
                     <input type='submit' value='Rechercher'>
                 </form>
+
+                <% if (articles.length > 0) { %>
+                    <% articles.forEach(article => { %>
+                        <a class="single" href="/referentiel/Article/<%= article._id %>">
+                            <h3 class="designation"><%= article.designation %></h3>
+                        </a>
+                    <% }) %>
+                <% } else { %>
+                    <p>Aricle n'est enregistré dans la base de données</p>
+                <% } %>
+        
             </div>
 
             <script>
                 let on_Modif_Article = document.getElementById("Modif_Art");
-                let on_Nouvel_Article = document.getElementById("New_Art");
+                on_Modif_Article.classList.add("on");
+                //let on_Nouvel_Article = document.getElementById("New_Art");
 
                 // choix.innerHTML = "";
                 // on_Modif_Article.classList.add("on");
