@@ -37,7 +37,10 @@ const individuSchema = new Schema({
     },
     adresseInfos : String,
     adresseMail : String,
-    numeroTel : Number,
+    numeroTel :  {
+        type : Number,
+        required: true
+    },
     statut : {
         type : String,
         required: true
