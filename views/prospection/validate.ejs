@@ -13,7 +13,6 @@
     </div>
     
     <div class="page" >
-        <% let none = "false" %> 
         <% if (cibleDeRoutages.length > 0) { %>
             <% cibleDeRoutages.forEach(cible => { %>
                 <%if(!cible.valide) { %>
@@ -21,11 +20,9 @@
                         <h3 class="nom"><%= cible.titre %></h3>
                     </a>
                     <p><%= cible.dateProspection.toDateString() %></p>
-                <% } else{ %>
-                    <% none = "true"%> 
-                <% } %>
+                <% } 
             <% }) %>
-        <% } if (none) { %>
+        <% } else { %>
             <p>Pas de publicité en attente de validation</p>
         <% } %>
     </div>
