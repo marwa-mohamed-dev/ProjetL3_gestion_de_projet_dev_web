@@ -102,7 +102,7 @@ app.get('/referentiel/newIndividu', (req, res) => {
     res.render('newIndividu', {title: 'Créer individu', style: "styles"});
 })
 */
-app.use('/commandes',Commande)
+
 app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('Commande', {title:'Commandes',style:"Commande"})
 })
@@ -118,35 +118,104 @@ app.post('/commandes', checkAuthenticated, (req, res) => {
 });
 
 app.get('/prospection', checkAuthenticated, (req,res)=> {
-    res.render('prospection', {title:'Prospection',style:"prospection"})
+    res.render('./prospection/page', {title:'Prospection',style:"prospection"})
 })
 
 // affiche liste de tous cibles de routage
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/prospection', checkAuthenticated, (req, res) => {
-    CibleDeRoutage.find().sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('prospection', { title: 'Cibles de routage', cibles: result, style: "prospection" });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// app.get('/prospection', checkAuthenticated, (req, res) => {
+//     CibleDeRoutage.find().sort({ createdAt: -1 })
+//         .then((result) => {
+//             res.render('prospection', { title: 'Cibles de routage', cibles: result, style: "prospection" });
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// });
 
-app.use('/prospection',CibleDeRoutage)
+//app.use('/prospection',CibleDeRoutage)
+
+// affiche liste de tous les individus de la base
+//ordonés avec celui ajouté le plus récemment en premier
+// app.get('/prospection', checkAuthenticated, (req, res) => {
+
+//     Article.find().sort({ createdAt: -1 })
+//         .then((result) => {
+//             res.render('prospection', {
+//                 articles: result,
+//                 style: "prospection"});
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// });
 
 
-
-app.post('/prospection', checkAuthenticated, (req, res) => {
+//creer une cible de routage
+app.post('/creationCiblederoutage', checkAuthenticated, (req, res) => {
     const cibleDeRoutage = new CibleDeRoutage(req.body);
     cibleDeRoutage.save()
         .then((result) => {
-            res.redirect('/prospection');
+            res.redirect('/creationCiblederoutage');
         })
         .catch((err) => {
             console.log(err);
         });
 });
+//recuperation liste articles pour creation cible de routage
+app.get('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
+    try {
+        const articles = await Article.find({})
+        const individus = await Individu.find({})
+        //const cibleDeRoutage = new cibleDeRoutage()
+        res.render('./prospection/new',{
+            articles : articles,
+            individus : individus,
+            //cibleDeRoutage: cibleDeRoutage
+            title: 'Cibles de routage', 
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+app.get('/validationCibleDeRoutage', checkAuthenticated, async (req, res) => {
+    try {
+        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        res.render('./prospection/validate',{
+            cibleDeRoutages : cibleDeRoutages,
+            title: 'Cibles de routage', 
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+app.get('/envoyerPublicite', checkAuthenticated, async (req, res) => {
+    try {
+        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        res.render('./prospection/recuperer',{
+            cibleDeRoutages : cibleDeRoutages,
+            title: 'Cibles de routage', 
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+app.get('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findById(id)
+        .then(result => {
+            res.render('./prospection/details', { cible: result, title: 'cible de routage', style: "prospection" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+
 
 app.get('/anomalies', checkAuthenticated, (req,res)=> {
     res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})

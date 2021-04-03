@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('../partials/head.ejs') %>
+
+<body>
+
+    <%- include('../partials/nav.ejs') %>
+    <div class="barre">
+        <input class="creerPub" id="creer" type="submit" value="Créer une nouvelle cible de routage" onclick="creer()">
+        <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="valider()">    
+        <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
+    </div>
+    
+    <div class="page" >
+        <% let none = "false" %> 
+        <% if (cibleDeRoutages.length > 0) { %>
+            <% cibleDeRoutages.forEach(cible => { %>
+                <%if(!cible.valide) { %>
+                    <a class="single" href="./validationCiblederoutage/<%= cible._id %>">
+                        <h3 class="nom"><%= cible.titre %></h3>
+                    </a>
+                    <p><%= cible.dateProspection.toDateString() %></p>
+                <% } else{ %>
+                    <% none = "true"%> 
+                <% } %>
+            <% }) %>
+        <% } if (none) { %>
+            <p>Pas de publicité en attente de validation</p>
+        <% } %>
+    </div>
+    <script>
+        let on_val = document.getElementById("val")
+        on_val.classList.add("on");
+        function creer(){
+            location.replace("http://localhost:3000/creationCiblederoutage")
+        }
+        function valider(){
+            location.replace("http://localhost:3000/validationCiblederoutage")
+        }
+        function recuperer(){
+            location.replace("http://localhost:3000/envoyerPublicite")
+        }
+    </script>
+
+    <%- include('../partials/footer.ejs') %>
+
+</body>
+</html>
