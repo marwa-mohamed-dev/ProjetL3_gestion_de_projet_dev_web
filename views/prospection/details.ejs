@@ -24,7 +24,7 @@
         ////////////////////
         const trashcan = document.querySelector('a.delete');
         trashcan.addEventListener('click', (e) => {
-          const endpoint = `/recherche/${trashcan.dataset.doc}`;
+          const endpoint = `/validationCiblederoutage/${trashcan.dataset.doc}`;
           fetch(endpoint, {
             method: 'DELETE',
           })

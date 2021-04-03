@@ -214,7 +214,16 @@ app.get('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
-
+app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/validationCiblederoutage' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 
 app.get('/anomalies', checkAuthenticated, (req,res)=> {
