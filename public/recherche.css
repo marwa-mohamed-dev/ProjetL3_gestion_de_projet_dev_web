@@ -40,7 +40,8 @@ nav {
 
 .Identifiant {
     grid-area: head-start/id-start/head-end/id-end;
-    margin: 30px;
+    margin:31px;
+    padding:9px;
     background-color: rgb(137, 197, 107);
 }
 
@@ -119,4 +120,36 @@ ul {
     padding: 0;
     text-decoration: none;
     color: #222;
+}
+
+.liste{
+    display: grid;
+    grid-template-columns: repeat(6,16.66%);
+    grid-template-rows: auto;
+    grid-row-gap:10px;
+    grid-column-gap:40px;
+    justify-items: center;
+}
+.single{
+    text-decoration: none;
+    color: #222;
+}
+
+.search{
+    display: grid;
+    grid-template-columns: 20px 200px;
+    grid-template-rows: 3;
+}
+
+.search>label{
+    grid-column: 2;
+}
+
+.search>input{
+    grid-column: 2;
+    width: 150px;
+}
+.search>button{
+    grid-column: 2;
+    width:80px;
 }

@@ -8,9 +8,9 @@
     <%- include('./partials/nav.ejs') %>
 
     <div class="individus content">
-        <h2>Liste des individus</h2>
+        <h2>Recherche</h2>
 
-        <form action="/recherche" method="GET">
+        <form action="/recherche" method="GET" class="search">
             <label>Nom</label>
             <input type="text" name="nom" value="<%= searchOptions.nom %>">
             <label>Prénom</label>
@@ -18,19 +18,20 @@
             <button type="submit">Recherche</button>
         </form>
         <br>
-
-        <% if (individus.length > 0) { %>
-            <% individus.forEach(individu => { %>
-                <a class="single" href="/recherche/<%= individu._id %>">
-                    <h3 class="nom"><%= individu.nom %></h3>
-                    <h3 class="prenom"><%= individu.prenom %></h3>
-                    <p classe="dateNaissance"><%= individu.dateNaissance %></p>
-                </a>
-            <% }) %>
-        <% } else { %>
-            <p>Personne n'est enregistré dans la base de données</p>
-        <% } %>
-
+        <h2>Liste des individus</h2>
+        <div class="liste">
+            <% if (individus.length > 0) { %>
+                <% individus.forEach(individu => { %>
+                    <a class="single" href="/recherche/<%= individu._id %>">
+                        <h3 class="nom"><%= individu.nom %></h3>
+                        <h3 class="prenom"><%= individu.prenom %></h3>
+                        <p classe="dateNaissance"><%= individu.dateNaissance %></p>
+                    </a>
+                <% }) %>
+            <% } else { %>
+                <p>Personne n'est enregistré dans la base de données</p>
+            <% } %>
+        </div>
         
     </div>
 
