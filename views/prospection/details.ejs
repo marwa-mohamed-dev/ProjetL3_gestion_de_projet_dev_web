@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('../partials/head.ejs') %>
+
+<body>
+
+    <%- include('../partials/nav.ejs') %>
+    <div class="barre">
+        <input class="creerPub" id="creer" type="submit" value="Créer une nouvelle cible de routage" onclick="creer()">
+        <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="valider()">    
+        <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
+    </div>
+    
+    <!-- <div class="page" id='choix'> -->
+    <div>
+        <h2><%= cible.titre %></h2>
+        <a class="delete" data-doc="<%= cible._id %>">delete</a>
+        <a class="validate" data-doc="<%= cible._id %>" onclick="clicked()">Valider</a>
+    </div>
+    <script>
+        let on_val = document.getElementById("val")
+        on_val.classList.add("on");
+        ////////////////////
+        const trashcan = document.querySelector('a.delete');
+        trashcan.addEventListener('click', (e) => {
+          const endpoint = `/validationCiblederoutage/${trashcan.dataset.doc}`;
+          fetch(endpoint, {
+            method: 'DELETE',
+          })
+            .then(response => response.json())
+            .then((data) => window.location.href = data.redirect)
+            .catch(err => console.log(err));
+        });
+        //////////////////
+        const validate = document.querySelector('a.validate')
+        validate.addEventListener('click', (e) => {
+            const endpoint = `/validationCiblederoutage/${validate.dataset.doc}`;
+          fetch(endpoint, {
+            method: 'PUT',
+          })
+            .then(response => response.json())
+            .then((data) => window.location.href = data.redirect)
+            .catch(err => console.log(err));
+        })
+        
+        //////////////////
+        function creer(){
+            location.replace("http://localhost:3000/creationCiblederoutage")
+        }
+        function valider(){
+            location.replace("http://localhost:3000/validationCiblederoutage")
+        }
+        function recuperer(){
+            location.replace("http://localhost:3000/envoyerPublicite")
+        }
+    </script>
+
+    <%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

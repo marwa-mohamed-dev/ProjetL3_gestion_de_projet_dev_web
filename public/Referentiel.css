@@ -186,3 +186,22 @@ form>input[type="submit"] {
     margin-left: 30%;
     margin-right: 0px;
 }
+
+.liste{
+    display: grid;
+    grid-template-columns: repeat(4,25%);
+    grid-template-rows: auto;
+    justify-items: center;
+}
+.single{
+    text-decoration: none;
+    color: #222;
+}
+
+.dateNaissance{
+    display:none;
+    opacity:1;}
+    
+.single:hover .dateNaissance{
+    display:block;
+}
