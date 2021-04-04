@@ -11,9 +11,12 @@ const individuSchema = new Schema({
         required: true
     },
     dateNaissance : {
-        type: String,
+        type: Date,
         required: true
-    }, 
+    },
+    age :{
+        type: Number
+    },
     categoriePro : {
         type : String,
         required: true

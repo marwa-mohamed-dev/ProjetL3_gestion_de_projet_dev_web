@@ -38,7 +38,7 @@ const CibleDeRoutageSchema = new Schema({
         required: true
     },
     departementResidence : {
-        type : String,
+        type : Number,
         required: true
     },
     client:{

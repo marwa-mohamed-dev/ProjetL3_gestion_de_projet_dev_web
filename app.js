@@ -157,7 +157,7 @@ app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
     const cibleDeRoutage = new CibleDeRoutage(req.body);
     const liste = new Array();
     individus.forEach(individu=> {
-        if((individu.categoriePro === cibleDeRoutage.categoriePro) && (individu.adressVille === cibleDeRoutage.departementResidence) && (((individu.statut === 'enregistré')&&(cibleDeRoutage.client==='non'))||((individu.statut === 'client')&&(cibleDeRoutage.client==='oui')))){
+        if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (((individu.statut === 'enregistré')&&(cibleDeRoutage.client==='non'))||((individu.statut === 'client')&&(cibleDeRoutage.client==='oui')))){
             liste.push(individu)
         }
     })
@@ -166,6 +166,7 @@ app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
     //CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {listeIndividus: liste}})
         .then((result) => {
             res.redirect('/creationCiblederoutage');
+            console.log(liste)
         })
         .catch((err) => {
             console.log(err);
@@ -275,6 +276,7 @@ app.get('/recherche', checkAuthenticated, (req, res) => {
 // puis redirige vers la page administrateur
 app.post('/referentiel/Individu', checkAuthenticated, (req, res) => {
     const individu = new Individu(req.body);
+    individu.age = getAge(individu.dateNaissance)
     individu.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -283,7 +285,11 @@ app.post('/referentiel/Individu', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
-
+function getAge(date) { 
+    var diff = Date.now() - date.getTime();
+    var age = new Date(diff); 
+    return Math.abs(age.getUTCFullYear() - 1970);
+}
 // créer un nouvel article
 app.post('/referentiel/Article', checkAuthenticated, (req, res) => {
     const article = new Article(req.body);
