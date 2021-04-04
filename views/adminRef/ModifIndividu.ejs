@@ -25,17 +25,19 @@
                     <input type="text" name="dateNaissance" value="%= searchOptions.dateNaissance %>">-->
                     <input type='submit' value='Rechercher'>
                 </form>
-
-                <% if (individus.length > 0) { %>
-                    <% individus.forEach(individu => { %>
-                        <a class="single" href="/referentiel/Individu/<%= individu._id %>">
-                            <h3 class="nom"><%= individu.nom %> <%= individu.prenom %></h3>
-                            <!--<p classe="dateNaissance">%= individu.dateNaissance %></p>-->
-                        </a>
-                    <% }) %>
-                <% } else { %>
-                    <p>Personne n'est enregistré dans la base de données</p>
-                <% } %>
+                
+                <div class="liste">
+                    <% if (individus.length > 0) { %>
+                        <% individus.forEach(individu => { %>
+                            <a class="single" href="/referentiel/Individu/<%= individu._id %>">
+                                <h3 class="nom"><%= individu.nom %> <%= individu.prenom %></h3>
+                                <p class="dateNaissance"><%= individu.dateNaissance %></p>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <p>Personne n'est enregistré dans la base de données</p>
+                    <% } %>
+                </div>
             </div>
 
             <script>
