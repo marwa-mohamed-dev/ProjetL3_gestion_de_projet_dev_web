@@ -20,7 +20,7 @@ const CibleDeRoutageSchema = new Schema({
         type: String,
         required: true
     },
-    individus: {
+    listeIndividus: {
         type: mongoose.Schema.Types.Array,
         //required: true,
         ref: 'Individu'

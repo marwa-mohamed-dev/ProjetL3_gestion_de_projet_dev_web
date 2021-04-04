@@ -157,15 +157,15 @@ app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
     const cibleDeRoutage = new CibleDeRoutage(req.body);
     const liste = new Array();
     individus.forEach(individu=> {
-        if(individu.categoriePro === cibleDeRoutage.categoriePro){
+        if((individu.categoriePro === cibleDeRoutage.categoriePro) && (individu.adressVille === cibleDeRoutage.departementResidence) && (((individu.statut === 'enregistré')&&(cibleDeRoutage.client==='non'))||((individu.statut === 'client')&&(cibleDeRoutage.client==='oui')))){
             liste.push(individu)
         }
     })
+    cibleDeRoutage.listeIndividus = liste
     cibleDeRoutage.save()
-    CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {titre: 'test'}})
+    //CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {listeIndividus: liste}})
         .then((result) => {
             res.redirect('/creationCiblederoutage');
-            console.log(liste)
         })
         .catch((err) => {
             console.log(err);
