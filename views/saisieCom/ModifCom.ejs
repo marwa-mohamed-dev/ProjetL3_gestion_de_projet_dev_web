@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('../partials/head.ejs') %>
+
+<body>
+ 
+    <%- include('../partials/nav.ejs') %>
+    <div class="barre">
+        <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" onclick="Ccommande()">
+        <input class="Recherche_Commande" id="R_Comm" type="submit" value="Compléter une Commande" >
+    </div>
+
+    <div class="page"  >
+        <form action="/modifCom" method="POST" id='choix' class="NewGrid">
+            <label class='SearchCom'>Numéro commande</label>
+            <input class='SearchCom' type='text'>
+            <input class='SearchCom' type='submit' value='Rechercher'>
+        </form>
+        
+    </div>
+    <script>
+        let on_New_Comm = document.getElementById("New_Comm")
+        let on_R_Comm = document.getElementById("R_Comm")
+        //let grid_form = document.getElementById("choix")
+        on_New_Comm.classList.remove("on")
+        on_R_Comm.classList.add("on")
+
+        function Ccommande() {
+            location.replace("http://localhost:3000/creerCom")
+        }
+        // function Recherche_Commande(){
+        //     //grid_form.classList.add("NewGrid");
+        //     choix.innerHTML= "";
+        //     choix.insertAdjacentHTML('afterbegin'," <form action:'' method:'POST'><label class='SearchCom'>Numéro commande</label><input class='SearchCom' type='text'><input class='SearchCom' type='submit' value='Rechercher'> </form>")
+        // }
+
+    </script>
+    <%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

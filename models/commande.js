@@ -14,11 +14,11 @@ const commandeSchema = new Schema({
         required: true
     },
     articles: {
-        type: String,
+        type: Array,
         required: true
     },
     quantite: {
-        type: Number,
+        type: Array,
         required: true
     },
     pCheque: {

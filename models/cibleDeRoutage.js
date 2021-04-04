@@ -3,21 +3,28 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CibleDeRoutageSchema = new Schema({
+    valide:{
+        type: Boolean,
+        required: true,
+        default: false
+    },
     titre:{
         type: String,
         required: true
     },
-    // dateProspection:{
-    //     type: Date = new Date()
-    // },
+    dateProspection:{
+        type: Date,
+        default: Date.now
+    },
     description:{
         type: String,
         required: true
     },
-    // individu: {
-    //     type: String,
-    //     required: true
-    // },
+    listeIndividus: {
+        type: mongoose.Schema.Types.Array,
+        //required: true,
+        ref: 'Individu'
+    },
     ageMin: {
         type: Number,
         required: true
@@ -31,7 +38,7 @@ const CibleDeRoutageSchema = new Schema({
         required: true
     },
     departementResidence : {
-        type : String,
+        type : Number,
         required: true
     },
     client:{
@@ -50,11 +57,32 @@ const CibleDeRoutageSchema = new Schema({
         type:String,
         //required:true
     },  
-    articles : {
-        type: String,
-        required: true
+    // articles : {
+    //     type: mongoose.Schema.Types.Array,
+    //     required: true,
+    //     ref: 'Article'
+    // },
+    article1 : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article'
+    },
+    article2 : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article'
+    },
+    article3 : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article'
+    },
+    article4 : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article'
+    },
+    article5 : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article'
     }
-    
+
 
 }, { timestamps: true })
 

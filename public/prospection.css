@@ -146,7 +146,9 @@ form>label{
 #Catalogue{
   margin-bottom: 10px;
 }
-
+.hidden{
+  visibility: hidden;
+}
 input[value="Soumettre à la validation"]{
   width: 200px;
   height: 40px;

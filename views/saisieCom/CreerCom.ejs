@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('../partials/head.ejs') %>
+
+<body>
+ 
+    <%- include('../partials/nav.ejs') %>
+    <div class="barre">
+        <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" >
+        <input class="Recherche_Commande" id="R_Comm" type="submit" value="Compléter une Commande" onclick="Mcommande() ">
+    </div>
+
+    <div class="page"  >
+        <form action="/creerCom" method="POST" id='choix'>
+            <label class='titre'>Individu <input type='text' size='10' name='client' required> </label>
+            <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'> </label>
+            <div id='articles'>
+                <input class='numberArt' type='button' value=1 >
+                <label class='ref'>Référence <input type='text' name='articles' required></label>
+                <label>Quantité <input type='number' min='1' max='999' name='quantite' required></label>
+            </div>
+            <label class='titre'>Réglement:</label>
+            <label class='modePaie'><input id='cheque' type='checkbox' onclick='paiementCheque()' name='pCheque'>Chèque</label>
+            <label><input id='carte' type='checkbox' onclick='paiementCarte()' name='pCarte'>Carte Bancaire</label>
+            <div id='paiementElements'></div> 
+            <input type='submit' value='Créer la commande'>
+        </form>
+        
+    </div>
+    <script>
+        let on_New_Comm = document.getElementById("New_Comm")
+        let on_R_Comm = document.getElementById("R_Comm")
+        let grid_form = document.getElementById("choix")
+        on_New_Comm.classList.add("on")
+        on_R_Comm.classList.remove("on")
+        grid_form.classList.remove("NewGrid");
+
+        function Mcommande() {
+            location.replace("http://localhost:3000/modifCom")
+        }
+
+        // function Nouvel_Commande(){
+        //     on_New_Comm.classList.add("on")
+        //     on_R_Comm.classList.remove("on")
+        //     grid_form.classList.remove("NewGrid");
+        //     // const articles = document.getElementById('articles');
+        //     const choix = document.getElementById('choix');
+        //     choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class='ref'>Référence <input type='text' name='articles' required></label> <label>Quantité <input type='number' min='1' max='999' name='quantite' required></label> </div>";
+        //     choix.insertAdjacentHTML('afterbegin',"<label class='titre'>Individu <input type='text' size='10' name='client' required> </label> <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'> </label>")
+        //     // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
+        //     choix.insertAdjacentHTML('beforeend',"<label class='titre'>Réglement:</label> <label class='modePaie'><input id='cheque' type='checkbox' onclick='paiementCheque()' name='pCheque'>Chèque</label> <label><input id='carte' type='checkbox' onclick='paiementCarte()' name='pCarte'>Carte Bancaire</label> <div id='paiementElements'></div> <input type='submit' value='Créer la commande'>")
+        // }
+
+        function Ajout_Article(){
+            const nbArt = document.getElementsByClassName("numberArt").length+1;
+            const articles = document.getElementById('articles');
+            articles.insertAdjacentHTML('beforeend',"<input class='numberArt' type='button' value="+nbArt+"><label class='ref'>Référence <input type='text' name='articles' required></label> <label>Quantité <input type='number' min='1' max='999'name='quantite' required></label>")
+        }
+        
+        function paiementCarte(){
+            const carte = document.getElementById('carte')
+            const paiementElements = document.getElementById('paiementElements')
+            const cheque = document.getElementById('cheque')
+            if(carte.checked){
+                cheque.checked=false;
+                paiementElements.innerHTML="";
+                
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte <input type='text' name='numeroCarte' required></label><label>Date d'expiration <input type='text' name='dateExpiration' placeholder='mm/aa' required></label> ")
+            }
+            if(!carte.checked){
+                paiementElements.innerHTML="";
+            }
+        }
+        
+        function paiementCheque(){
+            if(cheque.checked){
+                carte.checked=false;
+                paiementElements.innerHTML="";
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro chèque <input type='text' name='numeroCheque' required></label><label>Banque <input type='text' name='banque'></label> ")
+                }
+            if(!cheque.checked){
+                paiementElements.innerHTML="";
+            }
+        }
+
+    </script>
+    <%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

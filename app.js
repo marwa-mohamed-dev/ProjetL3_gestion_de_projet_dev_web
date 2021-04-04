@@ -112,15 +112,22 @@ app.get('/referentiel/Article', (req, res) => {
 app.get('/referentiel/Individu', (req, res) => {
     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
 })
-
 app.get('/commandes', checkAuthenticated, (req,res)=> {
-    res.render('Commande', {title:'Commandes',style:"Commande"})
+    res.render('./saisieCom/AcceuilCom', {title:'Commandes',style:"Commande"})
 })
-app.post('/commandes', checkAuthenticated, (req, res) => {
+
+app.get('/creerCom', checkAuthenticated, (req,res)=> {
+    res.render('./saisieCom/CreerCom', {title:'Commandes',style:"Commande"})
+})
+
+app.get('/modifCom', checkAuthenticated, (req,res)=> {
+    res.render('./saisieCom/ModifCom', {title:'Commandes',style:"Commande"})
+})
+app.post('/creerCom', checkAuthenticated, (req, res) => {
     const commande = new Commande(req.body);
     commande.save()
         .then((result) => {
-            res.redirect('/commandes');
+            res.redirect('/creerCom');
         })
         .catch((err) => {
             console.log(err);
@@ -128,31 +135,133 @@ app.post('/commandes', checkAuthenticated, (req, res) => {
 });
 
 app.get('/prospection', checkAuthenticated, (req,res)=> {
-    res.render('prospection', {title:'Prospection',style:"prospection"})
+    res.render('./prospection/page', {title:'Prospection',style:"prospection"})
 })
 
 // affiche liste de tous cibles de routage
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/prospection', checkAuthenticated, (req, res) => {
-    CibleDeRoutage.find().sort({ createdAt: -1 })
+// app.get('/prospection', checkAuthenticated, (req, res) => {
+//     CibleDeRoutage.find().sort({ createdAt: -1 })
+//         .then((result) => {
+//             res.render('prospection', { title: 'Cibles de routage', cibles: result, style: "prospection" });
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// });
+
+//app.use('/prospection',CibleDeRoutage)
+
+// affiche liste de tous les individus de la base
+//ordonés avec celui ajouté le plus récemment en premier
+// app.get('/prospection', checkAuthenticated, (req, res) => {
+
+//     Article.find().sort({ createdAt: -1 })
+//         .then((result) => {
+//             res.render('prospection', {
+//                 articles: result,
+//                 style: "prospection"});
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// });
+
+
+//creer une cible de routage
+app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
+    const individus = await Individu.find({})
+    const cibleDeRoutage = new CibleDeRoutage(req.body);
+    const liste = new Array();
+    individus.forEach(individu=> {
+        if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (((individu.statut === 'enregistré')&&(cibleDeRoutage.client==='non'))||((individu.statut === 'client')&&(cibleDeRoutage.client==='oui')))){
+            liste.push(individu)
+        }
+    })
+    cibleDeRoutage.listeIndividus = liste
+    cibleDeRoutage.save()
+    //CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {listeIndividus: liste}})
         .then((result) => {
-            res.render('prospection', { title: 'Cibles de routage', cibles: result, style: "prospection" });
+            res.redirect('/creationCiblederoutage');
+            console.log(liste)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+//recuperation liste articles pour creation cible de routage
+app.get('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
+    try {
+        const articles = await Article.find({})
+        //const individus = await Individu.find({})
+        //const cibleDeRoutage = new cibleDeRoutage()
+        res.render('./prospection/new',{
+            articles : articles,
+            // individus : individus,
+            //cibleDeRoutage: cibleDeRoutage
+            title: 'Cibles de routage', 
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+app.get('/validationCibleDeRoutage', checkAuthenticated, async (req, res) => {
+    try {
+        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        res.render('./prospection/validate',{
+            cibleDeRoutages : cibleDeRoutages,
+            title: 'Cibles de routage', 
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+app.get('/envoyerPublicite', checkAuthenticated, async (req, res) => {
+    try {
+        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        res.render('./prospection/recuperer',{
+            cibleDeRoutages : cibleDeRoutages,
+            title: 'Cibles de routage', 
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+app.get('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findById(id)
+        .then(result => {
+            res.render('./prospection/details', { cible: result, title: 'cible de routage', style: "prospection" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/validationCiblederoutage' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findByIdAndUpdate(id,{valide: true})
+        .then(result => {
+            res.json({ redirect: '/validationCiblederoutage' });
         })
         .catch((err) => {
             console.log(err);
         });
 });
 
-app.post('/prospection', checkAuthenticated, (req, res) => {
-    const cibleDeRoutage = new CibleDeRoutage(req.body);
-    cibleDeRoutage.save()
-        .then((result) => {
-            res.redirect('/prospection');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
 
 app.get('/anomalies', checkAuthenticated, (req,res)=> {
     res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})
@@ -184,6 +293,7 @@ app.get('/recherche', checkAuthenticated, (req, res) => {
 // puis redirige vers la page administrateur
 app.post('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     const individu = new Individu(req.body);
+    individu.age = getAge(individu.dateNaissance)
     individu.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -192,7 +302,11 @@ app.post('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
-
+function getAge(date) { 
+    var diff = Date.now() - date.getTime();
+    var age = new Date(diff); 
+    return Math.abs(age.getUTCFullYear() - 1970);
+}
 // créer un nouvel article
 app.post('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
     const article = new Article(req.body);
