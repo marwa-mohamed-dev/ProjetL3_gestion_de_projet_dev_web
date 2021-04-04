@@ -112,15 +112,22 @@ app.get('/referentiel/Article', (req, res) => {
 app.get('/referentiel/Individu', (req, res) => {
     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
 })
-
 app.get('/commandes', checkAuthenticated, (req,res)=> {
-    res.render('Commande', {title:'Commandes',style:"Commande"})
+    res.render('./saisieCom/AcceuilCom', {title:'Commandes',style:"Commande"})
 })
-app.post('/commandes', checkAuthenticated, (req, res) => {
+
+app.get('/creerCom', checkAuthenticated, (req,res)=> {
+    res.render('./saisieCom/CreerCom', {title:'Commandes',style:"Commande"})
+})
+
+app.get('/modifCom', checkAuthenticated, (req,res)=> {
+    res.render('./saisieCom/ModifCom', {title:'Commandes',style:"Commande"})
+})
+app.post('/creerCom', checkAuthenticated, (req, res) => {
     const commande = new Commande(req.body);
     commande.save()
         .then((result) => {
-            res.redirect('/commandes');
+            res.redirect('/creerCom');
         })
         .catch((err) => {
             console.log(err);
