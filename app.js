@@ -152,11 +152,20 @@ app.get('/prospection', checkAuthenticated, (req,res)=> {
 
 
 //creer une cible de routage
-app.post('/creationCiblederoutage', checkAuthenticated, (req, res) => {
+app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
+    const individus = await Individu.find({})
     const cibleDeRoutage = new CibleDeRoutage(req.body);
+    const liste = new Array();
+    individus.forEach(individu=> {
+        if(individu.categoriePro === cibleDeRoutage.categoriePro){
+            liste.push(individu)
+        }
+    })
     cibleDeRoutage.save()
+    CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {titre: 'test'}})
         .then((result) => {
             res.redirect('/creationCiblederoutage');
+            console.log(liste)
         })
         .catch((err) => {
             console.log(err);
@@ -166,11 +175,11 @@ app.post('/creationCiblederoutage', checkAuthenticated, (req, res) => {
 app.get('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
     try {
         const articles = await Article.find({})
-        const individus = await Individu.find({})
+        //const individus = await Individu.find({})
         //const cibleDeRoutage = new cibleDeRoutage()
         res.render('./prospection/new',{
             articles : articles,
-            individus : individus,
+            // individus : individus,
             //cibleDeRoutage: cibleDeRoutage
             title: 'Cibles de routage', 
             style: "prospection"
@@ -217,6 +226,16 @@ app.get('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
 app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     CibleDeRoutage.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/validationCiblederoutage' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findByIdAndUpdate(id,{valide: true})
         .then(result => {
             res.json({ redirect: '/validationCiblederoutage' });
         })
