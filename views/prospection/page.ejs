@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('../partials/head.ejs') %>
+
+<body>
+
+    <%- include('../partials/nav.ejs') %>
+    <div class="barre">
+        <input class="creerPub" id="creer" type="submit" value="Créer une nouvelle cible de routage" onclick="creer()">
+        <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="valider()">    
+        <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
+    </div>
+    <script>
+        function creer(){
+            location.replace("http://localhost:3000/creationCiblederoutage")
+        }
+        function valider(){
+            location.replace("http://localhost:3000/validationCiblederoutage")
+        }
+        function recuperer(){
+            location.replace("http://localhost:3000/envoyerPublicite")
+        }
+    </script>
+    <div class="page" id='choix'></div>
+    <%- include('../partials/footer.ejs') %>
+
+
+</body>
+</html>
