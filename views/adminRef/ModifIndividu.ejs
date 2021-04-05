@@ -29,10 +29,12 @@
                 <div class="liste">
                     <% if (individus.length > 0) { %>
                         <% individus.forEach(individu => { %>
-                            <a class="single" href="/referentiel/Individu/<%= individu._id %>">
-                                <h3 class="nom"><%= individu.nom %> <%= individu.prenom %></h3>
-                                <p class="dateNaissance"><%= individu.dateNaissance %></p>
-                            </a>
+                            <%if(!individu.valide) { %>
+                                <a class="single" href="/referentiel/Individu/<%= individu._id %>">
+                                    <h3 class="nom"><%= individu.nom %> <%= individu.prenom %></h3>
+                                    <p class="dateNaissance"><%= individu.dateNaissance.toDateString()%></p>
+                                </a>   
+                            <% } %>
                         <% }) %>
                     <% } else { %>
                         <p>Personne n'est enregistré dans la base de données</p>
