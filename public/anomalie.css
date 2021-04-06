@@ -33,12 +33,12 @@ nav {
     background-color: rgb(137, 197, 107);
 }
 
-.Identifiant {
+.Identifiant{
     grid-area: head-start/id-start/head-end/id-end;
-    margin: 31px;
-    padding: 9px;
-    background-color: rgb(137, 197, 107);
-}
+    margin:31px;
+    padding:9px;
+    background-color:rgb(137, 197, 107);
+  }
 
 .Menu {
     grid-area: head-start/menu-start/head-end/menu-end;
@@ -134,7 +134,7 @@ footer {
     grid-area: page-start/page-start/page-end/page-end;
 } */
 
-form {
+#R_An{
     display: grid;
     grid-template-columns: repeat(4, 25%);
     grid-auto-rows: auto;
@@ -154,12 +154,10 @@ form>select {
 form>input[type="submit"] {
     width: 200px;
     height: 40px;
-    background-color: #048804;
+    background-color: #f6f8f6;
     border-radius: 5px;
     border: none;
     color: rgb(0, 0, 0);
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 16px;
     text-decoration: none;
     cursor: pointer;
     margin-top: 5px;
@@ -171,7 +169,6 @@ p,
 h1,
 h2,
 h3,
-a,
 ul {
     margin: 0;
     padding: 0;

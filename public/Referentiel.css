@@ -186,7 +186,6 @@ form>input[type="submit"] {
     margin-left: 30%;
     margin-right: 0px;
 }
-
 .liste{
     display: grid;
     grid-template-columns: repeat(4,25%);
