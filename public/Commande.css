@@ -134,7 +134,7 @@ footer{
 #articles{
   grid-column: 2/4;
   display: grid;
-  grid-template-columns:[num-start]25px[num-end ref-start]1fr[ref-end quant-start]1fr[quant-end];
+  grid-template-columns:[num-start]25px[num-end ref-start]2fr[ref-end quant-start]1fr[quant-end];
   grid-auto-rows: auto;
   justify-items: center;
 }

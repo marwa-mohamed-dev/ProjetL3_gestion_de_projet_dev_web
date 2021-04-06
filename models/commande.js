@@ -3,18 +3,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const commandeSchema = new Schema({
-    // numCommande: {
-    //     type: String,
-    //     required: true
-    // },
+    numCommande: {
+         type: Number,
+     },
 
     client: {
         // à mettre type object Individu
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Individu",
         required: true
     },
     articles: {
-        type: Array,
+        type: mongoose.Schema.Types.Array,
+        ref:"Article",
         required: true
     },
     quantite: {

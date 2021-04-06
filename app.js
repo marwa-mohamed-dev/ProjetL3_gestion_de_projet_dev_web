@@ -116,15 +116,19 @@ app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('./saisieCom/AcceuilCom', {title:'Commandes',style:"Commande"})
 })
 
-app.get('/creerCom', checkAuthenticated, (req,res)=> {
-    res.render('./saisieCom/CreerCom', {title:'Commandes',style:"Commande"})
+app.get('/creerCom', checkAuthenticated, async (req,res)=> {
+    const articles = await Article.find({})
+    const individus = await Individu.find({})
+    res.render('./saisieCom/CreerCom', {articles:articles, individus:individus, title:'Commandes',style:"Commande"})
 })
 
 app.get('/modifCom', checkAuthenticated, (req,res)=> {
     res.render('./saisieCom/ModifCom', {title:'Commandes',style:"Commande"})
 })
 app.post('/creerCom', checkAuthenticated, (req, res) => {
+    const num=generateNumCom();
     const commande = new Commande(req.body);
+    commande.numCommande=num;
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
@@ -133,6 +137,13 @@ app.post('/creerCom', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
+function generateNumCom() { 
+    var num = Math.trunc(Math.random()*100000000);
+    while(num<10000000){
+        num=num*10}
+    return num;
+}
 
 app.get('/prospection', checkAuthenticated, (req,res)=> {
     res.render('./prospection/page', {title:'Prospection',style:"prospection"})

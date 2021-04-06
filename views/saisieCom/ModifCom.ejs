@@ -12,18 +12,18 @@
     </div>
 
     <div class="page"  >
-        <form action="/modifCom" method="POST" id='choix' class="NewGrid">
+        <form action="/modifCom" method="GET" id='choix' class="NewGrid">
             <label class='SearchCom'>Numéro commande</label>
-            <input class='SearchCom' type='text'>
+            <input class='SearchCom' type='text' name="numéroCom" >
             <input class='SearchCom' type='submit' value='Rechercher'>
         </form>
         
     </div>
     <script>
-        let on_New_Comm = document.getElementById("New_Comm")
+        //let on_New_Comm = document.getElementById("New_Comm")
         let on_R_Comm = document.getElementById("R_Comm")
         //let grid_form = document.getElementById("choix")
-        on_New_Comm.classList.remove("on")
+        //on_New_Comm.classList.remove("on")
         on_R_Comm.classList.add("on")
 
         function Ccommande() {

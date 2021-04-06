@@ -13,11 +13,23 @@
 
     <div class="page"  >
         <form action="/creerCom" method="POST" id='choix'>
-            <label class='titre'>Individu <input type='text' size='10' name='client' required> </label>
+            <label class='titre'>Individu
+            <select name="client" id="">
+                <option value="" disabled selected>choisir 1 individu</option>
+                <% individus.forEach(individu =>{ %>
+                    <option label="<%= individu.nom %> <%= individu.prenom %>" value="<%= individu.id %>"></option>
+                <% }) %>
+            </select>  </label>
             <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'> </label>
             <div id='articles'>
                 <input class='numberArt' type='button' value=1 >
-                <label class='ref'>Référence <input type='text' name='articles' required></label>
+                <label class='ref'>Désignation
+                <select name="articles" id="">
+                    <option value="" disabled selected>choisir 1 article</option>
+                    <% articles.forEach(article =>{ %>
+                        <option label="<%= article.designation %>" value="<%= article.id %>"></option>
+                    <% }) %>
+                </select></label>
                 <label>Quantité <input type='number' min='1' max='999' name='quantite' required></label>
             </div>
             <label class='titre'>Réglement:</label>
@@ -30,11 +42,11 @@
     </div>
     <script>
         let on_New_Comm = document.getElementById("New_Comm")
-        let on_R_Comm = document.getElementById("R_Comm")
-        let grid_form = document.getElementById("choix")
+        //let on_R_Comm = document.getElementById("R_Comm")
+        //let grid_form = document.getElementById("choix")
         on_New_Comm.classList.add("on")
-        on_R_Comm.classList.remove("on")
-        grid_form.classList.remove("NewGrid");
+        //on_R_Comm.classList.remove("on")
+        //grid_form.classList.remove("NewGrid");
 
         function Mcommande() {
             location.replace("http://localhost:3000/modifCom")
@@ -55,7 +67,7 @@
         function Ajout_Article(){
             const nbArt = document.getElementsByClassName("numberArt").length+1;
             const articles = document.getElementById('articles');
-            articles.insertAdjacentHTML('beforeend',"<input class='numberArt' type='button' value="+nbArt+"><label class='ref'>Référence <input type='text' name='articles' required></label> <label>Quantité <input type='number' min='1' max='999'name='quantite' required></label>")
+            articles.insertAdjacentHTML('beforeend',"<input class='numberArt' type='button' value="+nbArt+"><label class='ref'>Désignation <select name='articles' id=''> <option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article.id %>'> </option><% }) %>+</select> </label> <label>Quantité <input type='number' min='1' max='999'name='quantite' required></label>")
         }
         
         function paiementCarte(){
