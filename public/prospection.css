@@ -117,6 +117,10 @@ footer{
 
 .page{
     grid-area: page-start/page-start/page-end/page-end;
+    display: grid;
+    grid-template-columns: repeat(4,25%);
+    grid-template-rows: auto;
+    justify-items: center;
 }
 
 #choix{
@@ -161,4 +165,17 @@ input[value="Soumettre à la validation"]{
   margin-top: 5px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.single{
+  text-decoration: none;
+  color: #222;
+}
+
+.single p{
+  display:none;
+  opacity:1;}
+  
+.single:hover p{
+  display:block;
 }

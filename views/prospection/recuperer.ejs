@@ -18,8 +18,9 @@
                 <%if(cible.valide) { %>
                     <a class="single" href="./prospection/<%= cible._id %>">
                     <h3 class="nom"><%= cible.titre %></h3>
+                    <p><%= cible.dateProspection.toDateString() %></p>
                 </a>
-                <p><%= cible.dateProspection.toDateString() %></p>
+                
                 <%} %>
             <% }) %>
         <% } else { %>
