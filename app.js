@@ -12,6 +12,18 @@ const Commande = require('./models/commande');
 const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
+//////////////////////////////////////////////
+const multer = require('multer');
+const path = require('path');
+const uploadPath = path.join('public', Article.imageBasePath)
+const imageMimeTypes = ['images/jpeg', 'images/jpg', 'images/png', 'images/gif']
+const upload = multer({
+    dest: uploadPath
+    // fileFilter: (req, file, callback) => {
+    //     callback(null, imageMimeTypes.includes(file.mimetype))
+    // }
+})
+
 
 // //////////////////////////////////////////
 const flash = require('express-flash');
@@ -90,7 +102,16 @@ app.get('/referentiel', checkAuthenticated, (req, res) => {
 });
 
 app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/CreerArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
+    try {
+        const article = new Article();
+        res.render('./adminRef/CreerArticle', {
+            title: 'Administration du référentiel',
+            style: 'Referentiel',
+            article: article
+        })
+    } catch (err) {
+        console.log(err);
+    } 
 });
 
 /*app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
@@ -209,7 +230,7 @@ app.get('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
         res.render('./prospection/new',{
             articles : articles,
             // individus : individus,
-            //cibleDeRoutage: cibleDeRoutage
+            // cibleDeRoutage: cibleDeRoutage
             title: 'Cibles de routage', 
             style: "prospection"
         })
@@ -318,9 +339,16 @@ function getAge(date) {
     var age = new Date(diff); 
     return Math.abs(age.getUTCFullYear() - 1970);
 }
+
 // créer un nouvel article
-app.post('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
-    const article = new Article(req.body);
+app.post('/referentiel/CreerArticle', checkAuthenticated, upload.single('image'), async (req, res) => {
+    const fileName = req.file != null ? req.file.filename : null;
+    const article = new Article({
+        designation: req.body.designation,
+        prix: req.body.prix,
+        nomImage: fileName,
+        description: req.body.description
+    })
     article.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -410,7 +438,7 @@ app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
         searchOptions.nom= new RegExp(req.query.nom, 'i');
         searchOptions.prenom = new RegExp(req.query.prenom, 'i');
     }
-    Individu.find(searchOptions).sort({ createdAt: -1 })
+    Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
         .then((result) => {
             res.render('./adminRef/ModifIndividu', {
                 title: 'Administration du référentiel',

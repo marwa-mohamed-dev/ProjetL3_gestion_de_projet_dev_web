@@ -24,6 +24,7 @@
                     <% if (articles.length > 0) { %>
                         <% articles.forEach(article => { %>
                             <a class="single" href="/referentiel/Article/<%= article._id %>">
+                                <img height="50" width="50" src="<%= article.imagePath %>">
                                 <h3 class="designation"><%= article.designation %></h3>
                             </a>
                         <% }) %>
