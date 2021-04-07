@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head.ejs') %>
+
+    <body>
+
+        <%- include('../partials/nav.ejs') %>
+
+        <div class="barre">
+            <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" onclick="Ccommande() ">
+            <input class="Recherche_Commande" id="R_Comm" type="submit" value="Compléter une Commande" onclick="Mcommande() ">
+        </div>
+            
+        <div class="page" id='choix'>
+            <div class="details content">
+                    <h2><%= commande.numCommande %></h2>
+                    <div class="content">
+                        <!--<input type='text' name='dateNaissance' placeholder=%= individu.dateNaissance %> required>
+                        <p>%= commande. %></p>-->
+                    </div>
+                    <a class="delete" data-doc="<%= commande._id %>">delete</a>
+                </div>
+            </div>
+
+        <script>
+            let on_Modif_Commande = document.getElementById("R_Comm");
+            on_Modif_Commande.classList.add("on");
+
+            const trashcan = document.querySelector('a.delete');
+            trashcan.addEventListener('click', (e) => {
+                const endpoint = `/commande/${trashcan.dataset.doc}`;
+                fetch(endpoint, {
+                method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+                });
+
+            function Ccommande() {
+              location.replace("http://localhost:3000/creerCom")
+            }
+
+            function Mcommande() {
+              location.replace("http://localhost:3000/modifCom")
+            }
+        </script>
+
+        <%- include('../partials/footer.ejs') %>
+
+    </body>
+
+</html>

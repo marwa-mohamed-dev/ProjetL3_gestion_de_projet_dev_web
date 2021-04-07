@@ -93,17 +93,9 @@ app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
     res.render('./adminRef/CreerArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
-/*app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
-    res.render('./Referentiel/ModifArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
-});*/
-
 app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
-
-/*app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
-});*/
 
 app.get('/referentiel/Article', (req, res) => {
     res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
@@ -122,13 +114,14 @@ app.get('/creerCom', checkAuthenticated, async (req,res)=> {
     res.render('./saisieCom/CreerCom', {articles:articles, individus:individus, title:'Commandes',style:"Commande"})
 })
 
-app.get('/modifCom', checkAuthenticated, (req,res)=> {
-    res.render('./saisieCom/ModifCom', {title:'Commandes',style:"Commande"})
-})
 app.post('/creerCom', checkAuthenticated, (req, res) => {
     const num=generateNumCom();
     const commande = new Commande(req.body);
-    commande.numCommande=num;
+    // const iden=req.params.id;
+    // const ind= Individu.findById(iden);
+    // console.log(iden);
+    // console.log(ind.nom);
+    commande.numCommande=num.toString();
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
@@ -141,9 +134,53 @@ app.post('/creerCom', checkAuthenticated, (req, res) => {
 function generateNumCom() { 
     var num = Math.trunc(Math.random()*100000000);
     while(num<10000000){
-        num=num*10}
+        num=num*10;}
     return num;
 }
+
+// affiche liste de toutes les commandes de la base
+//ordonés avec celle ajoutée le plus récemment en premier
+app.get('/modifCom', checkAuthenticated, (req, res) => {
+    let searchOptions = {}
+    if (req.query.numCommande != null) {
+        searchOptions.numCommande = new RegExp(req.query.numCommande);
+    }
+    Commande.find(searchOptions).sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('./saisieCom/ModifCom', {
+                title: 'Commandes',
+                commandes: result,
+                style: "Commande",
+                searchOptions: req.query});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+// affiche les informations de l'individu sélectionné
+// dans la liste de recherche
+app.get('/commande/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Commande.findById(id)
+        .then(result => {
+            res.render('./saisieCom/Commande', { commande: result, title: "Commande", style: "commande" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+// supprime l'individu sélectionné
+app.delete('/commande/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Commande.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/modifCom' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 app.get('/prospection', checkAuthenticated, (req,res)=> {
     res.render('./prospection/page', {title:'Prospection',style:"prospection"})
@@ -371,7 +408,9 @@ function getAge(date) {
 }
 // créer un nouvel article
 app.post('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
+    const num=generateRef();
     const article = new Article(req.body);
+    article.reference=num;
     article.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -380,6 +419,13 @@ app.post('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
+function generateRef() { 
+    var num = Math.trunc(Math.random()*100000000);
+    while(num<10000000){
+        num=num*10;}
+    return num;
+}
 
 // affiche les informations d'un seul individu sélectionné
 // dans la liste de recherche
