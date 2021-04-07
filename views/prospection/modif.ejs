@@ -12,7 +12,17 @@
         <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="valider()">    
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
     </div>
+    
+    <!-- <div class="page" id='choix'> -->
+    <div>
+        <form action="">
+
+        </form>
+    </div>
     <script>
+        let on_modif = document.getElementById("Modif")
+        on_modif.classList.add("on");
+        //////////////////
         function creer(){
             location.replace("http://localhost:3000/creationCiblederoutage")
         }
@@ -26,9 +36,8 @@
             location.replace("http://localhost:3000/ciblederoutageRefuses")
         }
     </script>
-    <div class="page" id='choix'></div>
-    <%- include('../partials/footer.ejs') %>
 
+    <%- include('../partials/footer.ejs') %>
 
 </body>
 </html>

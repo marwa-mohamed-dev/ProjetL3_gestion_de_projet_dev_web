@@ -8,6 +8,7 @@
     <%- include('../partials/nav.ejs') %>
     <div class="barre">
         <input class="creerPub" id="creer" type="submit" value="Créer une nouvelle cible de routage" onclick="creer()">
+        <input class="ModifPub" id="Modif" type="submit" value="Modifier les cibles de routages refusés" onclick="Modifier()">
         <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="valider()">    
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
     </div>
@@ -38,6 +39,9 @@
         }
         function recuperer(){
             location.replace("http://localhost:3000/envoyerPublicite")
+        }
+        function Modifier(){
+            location.replace("http://localhost:3000/ciblederoutageRefuses")
         }
     </script>
 

@@ -101,17 +101,17 @@ footer{
 .barre{
     grid-area: barre-start/barre-start/barre-end/barre-end;
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(4,1fr);
     grid-auto-rows: 50px;
     align-items: stretch;
     background-color: black;
     height: 50px;
 }
-.creerPub, .valPub, .recupPub{
+.creerPub, .valPub, .recupPub, .ModifPub{
     width: 100%;
     background-color: rgb(60, 131, 55);
 }
-.creerPub:focus, .valPub:focus, .recupPub:focus, .on{
+.creerPub:focus, .valPub:focus, .recupPub:focus, .ModifPub:focus, .on{
     background-color: rgb(238, 244, 234);
 }
 
