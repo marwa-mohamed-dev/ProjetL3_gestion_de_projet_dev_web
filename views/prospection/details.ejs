@@ -7,7 +7,8 @@
 
     <%- include('../partials/nav.ejs') %>
     <div class="barre">
-        <input class="creerPub" id="creer" type="submit" value="Créer une nouvelle cible de routage" onclick="creer()">
+        <input class="creerPub" id="creer" type="submit" value="Modifier les cibles de routages refusés" onclick="creer()">
+        <input class="ModifPub" id="Modif" type="submit" value="Créer une nouvelle cible de routage" onclick="Modifier()">
         <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="valider()">    
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
     </div>
@@ -15,8 +16,21 @@
     <!-- <div class="page" id='choix'> -->
     <div>
         <h2><%= cible.titre %></h2>
+        <p><%cible.description%></p>
+        Cible de routage : 
+        <p><%cible.listeIndividus%></p>
+        <h3> Conditions de cible de routage choisis </h3>
+        <%if(cible.ageMin !=-1 && cible.ageMax != -1) { %>
+            <p>de <%cible.ageMin%> à <%cible.ageMax%></p>
+            <%console.log(cible.ageMin)%>
+        <%}%>
+        <% if (cible.categoriePro != ''){ %>
+            <p><%cible.catgoriePro%> </p>
+        <% } %>
+
         <a class="delete" data-doc="<%= cible._id %>">delete</a>
-        <a class="validate" data-doc="<%= cible._id %>" onclick="clicked()">Valider</a>
+        <a class="validate" data-doc="<%= cible._id %>" >Valider</a>
+        <a class="refuse" data-doc="<%= cible._id %>">Refuser</a>
     </div>
     <script>
         let on_val = document.getElementById("val")
@@ -43,7 +57,16 @@
             .then((data) => window.location.href = data.redirect)
             .catch(err => console.log(err));
         })
-        
+        const refuse = document.querySelector('a.refuse')
+        refuse.addEventListener('click', (e) => {
+            const endpoint = `/validationCiblederoutage/${refuse.dataset.doc}`;
+          fetch(endpoint, {
+            method: 'POST',
+          })
+            .then(response => response.json())
+            .then((data) => window.location.href = data.redirect)
+            .catch(err => console.log(err));
+        })
         //////////////////
         function creer(){
             location.replace("http://localhost:3000/creationCiblederoutage")
@@ -53,6 +76,9 @@
         }
         function recuperer(){
             location.replace("http://localhost:3000/envoyerPublicite")
+        }
+        function Modifier(){
+            location.replace("http://localhost:3000/ciblederoutageRefuses")
         }
     </script>
 

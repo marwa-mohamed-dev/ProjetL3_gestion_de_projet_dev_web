@@ -157,9 +157,16 @@ app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
     const cibleDeRoutage = new CibleDeRoutage(req.body);
     const liste = new Array();
     individus.forEach(individu=> {
-        if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (((individu.statut === 'enregistré')&&(cibleDeRoutage.client==='non'))||((individu.statut === 'client')&&(cibleDeRoutage.client==='oui')))){
-            liste.push(individu)
+        if(cibleDeRoutage.client==='Non'){
+            if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Enregistré')){
+                liste.push(individu)
+            }
+        } else {
+            if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Client')){
+                liste.push(individu)
+            }
         }
+       
     })
     cibleDeRoutage.listeIndividus = liste
     cibleDeRoutage.save()
@@ -214,6 +221,32 @@ app.get('/envoyerPublicite', checkAuthenticated, async (req, res) => {
         console.log(err);
     }
 })
+
+
+app.get('/ciblederoutageRefuses', checkAuthenticated, async (req, res) => {
+    try {
+        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        res.render('./prospection/visualiserRefuses',{
+            cibleDeRoutages : cibleDeRoutages,
+            title: 'Cibles de routage', 
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+app.get('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findById(id)
+        .then(result => {
+            res.render('./prospection/modif', { cible: result, title: 'cible de routage', style: "prospection" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 app.get('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     CibleDeRoutage.findById(id)
@@ -236,7 +269,25 @@ app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
 });
 app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findByIdAndUpdate(id,{valide: true})
+    CibleDeRoutage.findByIdAndUpdate(id,{valide: true, refus: false})
+    //ajouter pour changement de statut
+    const cible = cibleCibleDeRoutage.findById(id)
+    const insdividus = cible.individus
+    individus.forEach(individu=> {
+        individu.statut = 'Prospect'
+        individu.dateProspect = Date.now
+    })
+        .then(result => {
+            res.json({ redirect: '/validationCiblederoutage' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findByIdAndUpdate(id,{refus: true})
         .then(result => {
             res.json({ redirect: '/validationCiblederoutage' });
         })

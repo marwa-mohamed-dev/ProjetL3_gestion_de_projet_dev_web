@@ -7,7 +7,8 @@
 
     <%- include('../partials/nav.ejs') %>
     <div class="barre">
-        <input class="creerPub" id="creer" type="submit" value="Créer une nouvelle cible de routage" onclick="creer()">
+        <input class="creerPub" id="creer" type="submit" value="Modifier les cibles de routages refusés" onclick="creer()">
+        <input class="ModifPub" id="Modif" type="submit" value="Créer une nouvelle cible de routage" onclick="Modifier()">
         <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="valider()">    
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
     </div>
@@ -28,10 +29,11 @@
                     <OPTION>Autres    
                 </SELECT>
             </label> 
-            <label>Age: de <input type='number' min='0' max='110' name='ageMin' > à <input type='number' min='0' max='110' name='ageMax'></label>
-            <label>Département de résidence <input type='text' name='departementResidence'> </label>
+            <label>Age: de <input id="min" type='number' min='0' max='110' name='ageMin' > à <input type='number' min=getMin() max='110' name='ageMax'></label>
+            <label>Département de résidence <input type='number' min='0' name='departementResidence'> </label>
             <label>Clients ? 
                 <SELECT name='client' size='1'>
+                    <option selected>  </option>
                     <OPTION>Oui</OPTION>
                     <OPTION>Non</OPTION>
                 </SELECT>
@@ -44,53 +46,26 @@
                 <label><input id='internet' type='checkbox' onclick='Internet()' name='catalogueInternet'>Canaux internet</label> 
             </label> 
             <div id='Catalogue'></div> 
-            <label>Titre <input type='text' name='titre'> </label>
-            <label>Description <input type='text' name='description' ></label>
+            <label>Titre <input type='text' name='titre' required> </label>
+            <label>Description <input type='text' name='description' required></label>
             <div id="articles"><label>Choix des articles</label>
-                <select name="article1" id="">
+                <select name="articles" class="numberArt">
                     <option value="" disabled selected>choisir 1 article</option>
                     <% articles.forEach(article =>{ %>
                         <option label="<%= article.designation %>" value="<%= article.id %>"></option>
                     <% }) %>
                 </select>
-                <input type='button' id="button1" value='+' placeholder='+' onclick='Ajout_Article2()'>
-                <select name="article2" id="article2" class="hidden">
-                    <option value="" disabled selected>choisir 1 article</option>
-                    <% articles.forEach(article =>{ %>
-                        <option label="<%= article.designation %>" value="<%= article.id %>"></option>
-                    <% }) %>
-                </select>
-                <input type='button' id="suppr1" value="-" placeholder=' - ' class="hidden" onclick='Supprimer_Article2()'>
-                <input type='button' id="button2" value='+' placeholder='+' class="hidden" onclick='Ajout_Article3()'>
-                <select name="article3" id="article3" class="hidden">
-                    <option value="" disabled selected>choisir 1 article</option>
-                    <% articles.forEach(article =>{ %>
-                        <option label="<%= article.designation %>" value="<%= article.id %>"></option>
-                    <% }) %>
-                </select>
-                <input type='button' id="suppr2" value="-" placeholder=' - ' class="hidden" onclick='Supprimer_Article3()'>
-                <input type='button' id="button3" value='+' placeholder='+' class="hidden" onclick='Ajout_Article4()'>
-                <select name="article4" id="article4" class="hidden">
-                    <option value="" disabled selected>choisir 1 article</option>
-                    <% articles.forEach(article =>{ %>
-                        <option label="<%= article.designation %>" value="<%= article.id %>"></option>
-                    <% }) %>
-                </select>
-                <input type='button' id="suppr3" value="-" placeholder=' - ' class="hidden" onclick='Supprimer_Article4()'>
-                <input type='button'id="button4" value='+' placeholder='+' class="hidden" onclick='Ajout_Article5()'>
-                <select name="article5" id="article5" class="hidden">
-                    <option value="" disabled selected>choisir 1 article</option>
-                    <% articles.forEach(article =>{ %>
-                        <option label="<%= article.designation %>" value="<%= article.id %>"></option>
-                    <% }) %>
-                </select>
-                <input type='button' id="suppr4" value="-" placeholder=' - ' class="hidden" onclick='Supprimer_Article5()'>
             </div> 
+            <input type='button' id="ajout" value='+' placeholder='+' onclick='Ajout_Article()'>
+            <input type='button' id="suppr" value="-" placeholder=' - ' class="hidden" onclick='Supprimer_Article()'>
             <input type='submit' value='Soumettre à la validation'>
         </form>
         
     </div>
     <script>
+        function getMin(){
+            return document.getElementById(min).value
+        }
         function creer(){
             location.replace("http://localhost:3000/creationCiblederoutage")
         }
@@ -100,89 +75,33 @@
         function recuperer(){
             location.replace("http://localhost:3000/envoyerPublicite")
         }
+        function Modifier(){
+            location.replace("http://localhost:3000/ciblederoutageRefuses")
+        }
         /////////////////////////////////
         let on_creer = document.getElementById("creer");
         on_creer.classList.add("on");
+        const articles = document.getElementById('articles');
+        const suppr = document.getElementById('suppr');
+        const ajout = document.getElementById('ajout');
         //////////////////////////////
-        const suppr1 = document.getElementById('suppr1')
-        const suppr2 = document.getElementById('suppr2')
-        const suppr3 = document.getElementById('suppr3')
-        const suppr4 = document.getElementById('suppr4')
-        const article2 = document.getElementById('article2')
-        const article3 = document.getElementById('article3')
-        const article4 = document.getElementById('article4')
-        const article5 = document.getElementById('article5')
-        const button1 = document.getElementById('button1')
-        const button2 = document.getElementById('button2')
-        const button3 = document.getElementById('button3')
-        const button4 = document.getElementById('button4')
-        function Ajout_Article2(){
-            article2.classList.remove('hidden')
-            suppr1.classList.remove('hidden')
-            button2.classList.remove('hidden')
-            button1.classList.add('hidden')
-        }
-        function Supprimer_Article2(){
-            article2.classList.add('hidden')
-            button1.classList.remove('hidden')
-            button2.classList.add('hidden')
-            suppr1.classList.add('hidden')
-        }
-        function Ajout_Article3(){
-            article3.classList.remove('hidden')
-            button3.classList.remove('hidden')
-            button2.classList.add('hidden')
-            suppr1.classList.add('hidden')
-            suppr2.classList.remove('hidden')
-        }
-        function Supprimer_Article3(){
-            article3.classList.add('hidden')
-            button2.classList.remove('hidden')
-            button3.classList.add('hidden')
-            suppr1.classList.remove('hidden')
-            suppr2.classList.add('hidden')
-        }
-        function Ajout_Article4(){
-            article4.classList.remove('hidden')
-            button4.classList.remove('hidden')
-            button3.classList.add('hidden')
-            suppr2.classList.add('hidden')
-            suppr3.classList.remove('hidden')
-        }
-        function Supprimer_Article4(){
-            article4.classList.add('hidden')
-            button3.classList.remove('hidden')
-            button4.classList.add('hidden')
-            suppr2.classList.remove('hidden')
-            suppr3.classList.add('hidden')
-        }
-        function Ajout_Article5(){
-            const button4 = document.getElementById('button4')
-            article5.classList.remove('hidden')
-            button4.classList.add('hidden')
-            suppr3.classList.add('hidden')
-            suppr4.classList.remove('hidden')
-        }
-        function Supprimer_Article5(){
-            article5.classList.add('hidden')
-            button4.classList.remove('hidden')
-            suppr3.classList.remove('hidden')
-            suppr4.classList.add('hidden')
-        }
-        ////////////////////////////////////
-        let papierElements = document.getElementById('Catalogue')
-        function Papier(){
-            let papierElements = document.getElementById('Catalogue')
-            const papier = document.getElementById('papier')
-            const internet = document.getElementById('internet')
-            if(papier.checked){
-                internet.checked=false;
-                papierElements.innerHTML="";
-                papierElements.insertAdjacentHTML('beforeend',"<label>Qualité du papier </label><SELECT name='typePapier' size='1'><OPTION>Standard</OPTION><OPTION>Supérieur</OPTION> <OPTION>Economique</OPTION> </SELECT>")
+        function Ajout_Article(){
+            const nbArt = document.getElementsByClassName("numberArt").length+1;
+            articles.insertAdjacentHTML('beforeend',"<select name='articles' class='numberArt'><option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article.id %>'></option><% }) %></select>")
+            if(nbArt>1){
+                suppr.classList.remove('hidden')
             }
-            if(!papier.checked){
-                papierElements.innerHTML="";
-            }
+            if(nbArt>=5){
+                ajout.classList.add('hidden')
+            } 
+        }
+        function Supprimer_Article(){
+            const nbArt = document.getElementsByClassName("numberArt").length;
+            articles.removeChild(articles.lastChild)
+            ajout.classList.remove('hidden')
+            if(nbArt==2){
+                suppr.classList.add('hidden')
+            }       
         }
         //////////////////////////////////////
         function Internet(){
