@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const commandeSchema = new Schema({
     numCommande: {
-         type: Number,
+         type: String,
      },
 
     client: {
@@ -46,8 +46,6 @@ const commandeSchema = new Schema({
     //     type: String,
     // },
     
-    
-
 }, { timestamps: true })
 
 const Commande = mongoose.model('Commande', commandeSchema);
