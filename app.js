@@ -126,9 +126,9 @@ app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });*/
 
-app.get('/referentiel/Article', (req, res) => {
-    res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
-})
+// app.get('/referentiel/Article', (req, res) => {
+//     res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
+// })
 
 app.get('/referentiel/Individu', (req, res) => {
     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
@@ -385,7 +385,7 @@ app.delete('/recherche/:id', checkAuthenticated, (req, res) => {
 });
 
 // affiche liste de tous les articles de la base
-//ordonés avec celui ajouté le plus récemment en premier
+// ordonnés avec celui ajouté le plus récemment en premier
 app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
     let searchOptions = {};
     if (/*req.query.reference != null &&*/req.query.designation != null) {
@@ -417,6 +417,18 @@ app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
+app.put('referentiel/Article/:id', (req, res) => {
+    const id = req.params.id;
+    const article = Article.findById(id)
+    article.save()
+        .then((result) => {
+            res.redirect('/referentiel');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+})
 
 // supprime l'article sélectionné
 app.delete('/referentiel/ModifArticle/:id', checkAuthenticated, (req, res) => {
