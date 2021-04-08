@@ -48,6 +48,10 @@ const individuSchema = new Schema({
         type : String,
         required: true
     },
+    commandes : {
+        type: mongoose.Schema.Types.Array,
+        ref: 'Commandes'
+    },
     dateProspect :Date,
     cbNum : Number,
     cbDate : String,

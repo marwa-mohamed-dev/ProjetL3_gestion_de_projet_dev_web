@@ -16,16 +16,19 @@
     <!-- <div class="page" id='choix'> -->
     <div>
         <h2><%= cible.titre %></h2>
-        <p><%cible.description%></p>
-        Cible de routage : 
-        <p><%cible.listeIndividus%></p>
+        <p><%=cible.description%></p>
+        <h2>Cible de routage : </h2>
+        <% cible.listeIndividus.forEach(individu => { %>
+            <p><%=individu.nom%></p>
+        }); %> 
+        <p><%=cible.listeIndividus%></p>
         <h3> Conditions de cible de routage choisis </h3>
         <%if(cible.ageMin !=null && cible.ageMax != null) { %>
-            <p>de <%cible.ageMin%> à <%cible.ageMax%></p>
+            <p>de <%=cible.ageMin%> à <%=cible.ageMax%></p>
             <%console.log(cible.ageMin)%>
         <%}%>
         <% if (cible.categoriePro != ''){ %>
-            <p><%cible.catgoriePro%> </p>
+            <p><%=cible.catgoriePro%> </p>
         <% } %>
 
         <a class="delete" data-doc="<%= cible._id %>">delete</a>

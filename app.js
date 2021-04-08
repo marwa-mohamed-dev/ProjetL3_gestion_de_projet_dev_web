@@ -303,9 +303,20 @@ app.get('/ciblederoutageRefuses', checkAuthenticated, async (req, res) => {
 
 app.get('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findById(id)
+    const cible = CibleDeRoutage.findById(id)
         .then(result => {
-            res.render('./prospection/modif', { cible: result, title: 'cible de routage', style: "prospection" });
+            res.render('./prospection/modif', { cible: cible, title: 'cible de routage', style: "prospection" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.delete('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/ciblederoutageRefuses' });
         })
         .catch((err) => {
             console.log(err);
@@ -332,21 +343,24 @@ app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
 app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findByIdAndUpdate(id,{valide: true, dateValide: new Date(), refus: false, individus: individus.forEach(individu=> {individu.statut = 'Prospect',individu.dateProspect =new Date()})})
+    
+    CibleDeRoutage.findByIdAndUpdate(id,{valide: true, dateValide: new Date(), refus: false})
     //changement de statut
-    //CibleDeRoutage.findById(id)
-    // const cible = CibleDeRoutage.findById(id)
-    // const individus = cible.individus
+    CibleDeRoutage.findById(id)
+    const cible = CibleDeRoutage.findById(id)
+    const individus = cible.listeIndividus
     // console.log(individus)
-    // console.log(cible.individus)
     // console.log(cible.titre)
-    // individus.forEach(individu=> {
-    //     individu.statut = 'Prospect'
-    //     individu.dateProspect = Date.now
-    // })
         .then(result => {
+            // console.log(individus)
+    // console.log(cible.titre)
+            individus.forEach(individu=> {
+            individu.statut = 'Prospect'
+            individu.dateProspect = Date.now
+            })
             res.json({ redirect: '/validationCiblederoutage' });
         })
         .catch((err) => {
