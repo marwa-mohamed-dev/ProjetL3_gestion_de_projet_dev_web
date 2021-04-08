@@ -12,6 +12,17 @@ const Commande = require('./models/commande');
 const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
+//////////////////////////////////////////////
+const multer = require('multer');
+const path = require('path');
+const uploadPath = path.join('public', Article.imageBasePath)
+const imageMimeTypes = ['images/jpeg', 'images/jpg', 'images/png', 'images/gif']
+const upload = multer({
+    dest: uploadPath
+    // fileFilter: (req, file, callback) => {
+    //     callback(null, imageMimeTypes.includes(file.mimetype))
+    // }
+})
 
 // //////////////////////////////////////////
 const flash = require('express-flash');
@@ -19,6 +30,7 @@ const session = require('express-session');
 const passport = require('passport');
 const methodOverride = require('method-override');
 const initializePassport = require('./passport-config');
+const { authorize } = require('passport');
 initializePassport(
     passport,
     identifiant => users.find(user => user.identifiant === identifiant),
@@ -90,20 +102,34 @@ app.get('/referentiel', checkAuthenticated, (req, res) => {
 });
 
 app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/CreerArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
+    try {
+        const article = new Article();
+        res.render('./adminRef/CreerArticle', {
+            title: 'Administration du référentiel',
+            style: 'Referentiel',
+            article: article
+        })
+    } catch (err) {
+        console.log(err);
+    } 
 });
 
 app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
-app.get('/referentielArticle', (req, res) => {
-    res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
-})
+/*app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
+    res.render('./adminRef/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
+});*/
 
-app.get('/referentielIndividu', (req, res) => {
-    res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
-})
+// app.get('/referentielArticle', (req, res) => {
+//     res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
+// })
+
+// app.get('/referentielIndividu', (req, res) => {
+//     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
+// })
+
 app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('./saisieCom/AcceuilCom', {title:'Commandes',style:"Commande"})
 })
@@ -253,7 +279,7 @@ app.get('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
         res.render('./prospection/new',{
             articles : articles,
             // individus : individus,
-            //cibleDeRoutage: cibleDeRoutage
+            // cibleDeRoutage: cibleDeRoutage
             title: 'Cibles de routage', 
             style: "prospection"
         })
@@ -406,11 +432,18 @@ function getAge(date) {
     var age = new Date(diff); 
     return Math.abs(age.getUTCFullYear() - 1970);
 }
+
 // créer un nouvel article
-app.post('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
-    const num=generateRef();
-    const article = new Article(req.body);
-    article.reference=num;
+app.post('/referentiel/CreerArticle', checkAuthenticated, upload.single('image'), async (req, res) => {
+    const fileName = req.file != null ? req.file.filename : null;
+    const num = generateRef();
+    const article = new Article({
+        designation: req.body.designation,
+        prix: req.body.prix,
+        nomImage: fileName,
+        description: req.body.description
+    })
+    article.reference = num;
     article.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -487,6 +520,20 @@ app.get('/referentielArticle/:id', checkAuthenticated, (req, res) => {
         });
 });
 
+app.put('/referentielArticle/:id', checkAuthenticated, async (req, res) => {
+    let article
+    try {
+        article = await Article.findById(req.params.id)
+        article.designation = req.body.designation
+        article.prix = req.body.prix
+        article.description = req.body.description
+        await article.save()
+        res.redirect('/referentiel/ModifArticle')
+    } catch {
+        res.redirect('/referentiel')
+    }
+})
+
 // supprime l'article sélectionné
 app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
@@ -507,7 +554,7 @@ app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
         searchOptions.nom= new RegExp(req.query.nom, 'i');
         searchOptions.prenom = new RegExp(req.query.prenom, 'i');
     }
-    Individu.find(searchOptions).sort({ createdAt: -1 })
+    Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
         .then((result) => {
             res.render('./adminRef/ModifIndividu', {
                 title: 'Administration du référentiel',
@@ -532,6 +579,28 @@ app.get('/referentielIndividu/:id', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
+app.put('/referentielIndividu/:id', checkAuthenticated, async (req, res) =>{
+    let individu
+    try {
+        individu = await Individu.findById(req.params.id)
+        individu.nom = req.body.nom
+        individu.prenom = req.body.prenom
+        individu.dateNaissance = req.body.dateNaissance
+        individu.categoriePro = req.body.categoriePro
+        individu.adresseNum = req.body.adresseNum
+        individu.adresseType = req.body.adresseType
+        individu.adresseCode = req.body.adresseCode
+        individu.adresseVille = req.body.adresseVille
+        individu.adresseInfos = req.body.adresseInfos
+        individu.adresseMail = req.body.adresseMail
+        individu.numeroTel = req.body.numeroTel
+        await individu.save()
+        res.redirect('/referentiel/ModifIndividu')
+    } catch {
+        res.redirect('/referentiel')
+    }
+})
 
 // supprime l'individu sélectionné
 app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
