@@ -425,6 +425,7 @@ app.put('/referentiel/Article/:id', checkAuthenticated, async (req, res) => {
         article = await Article.findById(req.params.id)
         article.designation = req.body.designation
         article.prix = req.body.prix
+        article.description = req.body.description
         await article.save()
         res.redirect('/referentiel/ModifArticle')
     } catch {
