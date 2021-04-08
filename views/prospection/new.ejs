@@ -114,6 +114,17 @@
                 papierElements.innerHTML="";
             }
         }
+        function Papier(){
+            let papierElements = document.getElementById('Catalogue')
+            if(papier.checked){
+                internet.checked=false;
+                //papierElements.innerHTML="";
+                papierElements.insertAdjacentHTML('afterbegin',"<select name='typePapier'><option>Standard</option><option>Supérieur</option><option>Economique</option></select>")
+            }
+            if(!papier.checked){
+                papierElements.innerHTML="";
+            }
+        }
         // let on_val = document.getElementById("val")
         // let on_recup = document.getElementById("recup")
         // function Creer(){
