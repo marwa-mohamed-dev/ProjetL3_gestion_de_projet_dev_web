@@ -31,6 +31,7 @@ const session = require('express-session');
 const passport = require('passport');
 const methodOverride = require('method-override');
 const initializePassport = require('./passport-config');
+const { authorize } = require('passport');
 initializePassport(
     passport,
     identifiant => users.find(user => user.identifiant === identifiant),
@@ -130,9 +131,9 @@ app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
 //     res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
 // })
 
-app.get('/referentiel/Individu', (req, res) => {
-    res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
-})
+// app.get('/referentiel/Individu', (req, res) => {
+//     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
+// })
 app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('./saisieCom/AcceuilCom', {title:'Commandes',style:"Commande"})
 })
@@ -418,7 +419,7 @@ app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-app.put('referentiel/Article/:id', (req, res) => {
+app.put('referentiel/Article/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     const article = Article.findById(id)
     article.save()
@@ -475,6 +476,30 @@ app.get('/referentiel/Individu/:id', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
+app.put('/referentiel/Individu/:id', checkAuthenticated, async (req, res) =>{
+    // const id = req.params.id;
+    // const individu = Individu.findById(id)
+    // individu.save()
+    //     .then((result) => {
+    //         res.redirect('/referentiel');
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     });
+    let individu
+    try {
+        console.log('dans le try')
+        individu = await Individu.findById(req.params.id)
+        individu.nom = req.body.nom
+        await individu.save()
+    } catch {
+        res.render('referentiel/ModifIndividu', {
+            individu : individu,
+            errorMessage: 'Error updating Individu'
+        })
+    }
+})
 
 // supprime l'individu sélectionné
 app.delete('/referentiel/ModifIndividu/:id', checkAuthenticated, (req, res) => {

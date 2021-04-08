@@ -16,14 +16,41 @@
             
             <div class="page" id='choix'>
                 <div class="details content">
-                    <h2><%= individu.nom %> <%= individu.prenom %></h2>
+                    <!-- <h2><%= individu.nom %> <%= individu.prenom %></h2>
                     <div class="content">
                         <input type='text' name='dateNaissance' placeholder=<%= individu.dateNaissance %> required>
                         <p><%= individu.categoriePro %></p>
                         <p><%= individu.adresseNum %><%= individu.adresseType %></p>
                         <p><%= individu.adresseCode %><%= individu.adresseVille %></p>
                         <p>tel:<%= individu.numeroTel %> mail:<%= individu.Mail %></p>
-                    </div>
+                    </div> -->
+                    <form class='NewI' action='/referentiel/Individu/<%= individu.id %>?_method=PUT' method='POST'>
+                        <label class='Col1'>Nom*</label>
+                        <input class='Col1' type='text' name='nom' value='<%= individu.nom %>' required>
+                        <label class='Col2'>Prénom*</label>
+                        <input class='Col2' type='text' name='prenom' value='<%= individu.prenom %>' required>
+                        <label>Date de Naissance*</label>
+                        <input type='date' name='dateNaissance' placeholder='<%= individu.dateNaissance %>' required>
+                        <label>Catégorie socio-professionnelle*</label>
+                        <!-- <SELECT name='categoriePro' size='1' required>
+                            <OPTION selected disabled>Catégorie<OPTION>Agriculteurs exploitants <OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Autres</SELECT> -->
+                        <label>Adresse*</label>
+                        <input class='Col1' type='text' name='adresseNum' pattern='[0-9]+' value='<%= individu.adresseNum %>' required>
+                        <input class='Col2' type='text' name='adresseType' value='<%= individu.adresseType %>' required>
+                        <input class='Col1' type='text' pattern='[0-9]{5}' name='adresseCode' value='<%= individu.adresseCode %>' required>
+                        <input class='Col2' type='text' name='adresseVille' value='<%= individu.adresseVille %>' required>
+                        <input type='text' placeholder='Complément d`adresse' name='adresseInfos' value='<%= individu.adresseInfos %>'>
+                        <label class='Col1'>Numéro de téléphone*</label>
+                        <input class='Col1' type='tel' name='numeroTel' placeholder='0XXXXXXXXX' value="<%= individu.numeroTel %>" required>
+                        <!-- pattern='[0]{1}[0-9]{9}' -->
+                        <label class='Col2'>Adresse mail</label>
+                        <input class='Col2' type='email' name='adresseMail' placeholder='exemple@gmail.com' value="<%= individu.adresseMail %>">
+                        <label>Caractéristique commerciale*</label>
+                        <!-- <SELECT name='statut' size='1' required>
+                                                            <OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT> -->
+                        <a href="/referentiel/ModifIndividu">Annuler</a>
+                        <input type='submit' value='Modifier Individu'>
+                    </form>
                     <a class="delete" data-doc="<%= individu._id %>">delete</a>
                 </div>
             </div>
