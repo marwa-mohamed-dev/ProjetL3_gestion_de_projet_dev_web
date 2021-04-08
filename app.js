@@ -419,16 +419,17 @@ app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-app.put('referentiel/Article/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    const article = Article.findById(id)
-    article.save()
-        .then((result) => {
-            res.redirect('/referentiel');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+app.put('/referentiel/Article/:id', checkAuthenticated, async (req, res) => {
+    let article
+    try {
+        article = await Article.findById(req.params.id)
+        article.designation = req.body.designation
+        article.prix = req.body.prix
+        await article.save()
+        res.redirect('/referentiel/ModifArticle')
+    } catch {
+        res.redirect('/referentiel')
+    }
 })
 
 // supprime l'article sélectionné
@@ -478,26 +479,24 @@ app.get('/referentiel/Individu/:id', checkAuthenticated, (req, res) => {
 });
 
 app.put('/referentiel/Individu/:id', checkAuthenticated, async (req, res) =>{
-    // const id = req.params.id;
-    // const individu = Individu.findById(id)
-    // individu.save()
-    //     .then((result) => {
-    //         res.redirect('/referentiel');
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     });
     let individu
     try {
-        console.log('dans le try')
         individu = await Individu.findById(req.params.id)
         individu.nom = req.body.nom
+        individu.prenom = req.body.prenom
+        //individu.dateNaissance = req.body.dateNaissance
+        // individu.categoriePro = req.body.categoriePro
+        individu.adresseNum = req.body.adresseNum
+        individu.adresseType = req.body.adresseType
+        individu.adresseCode = req.body.adresseCode
+        individu.adresseVille = req.body.adresseVille
+        individu.adresseInfos = req.body.adresseInfos
+        individu.adresseMail = req.body.adresseMail
+        individu.numeroTel = req.body.numeroTel
         await individu.save()
+        res.redirect('/referentiel/ModifIndividu')
     } catch {
-        res.render('referentiel/ModifIndividu', {
-            individu : individu,
-            errorMessage: 'Error updating Individu'
-        })
+        res.redirect('/referentiel')
     }
 })
 
