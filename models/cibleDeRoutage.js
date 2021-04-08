@@ -5,7 +5,10 @@ const Schema = mongoose.Schema;
 const CibleDeRoutageSchema = new Schema({
     valide:{
         type: Boolean,
-        required: true,
+        default: false
+    },
+    refus:{
+        type: Boolean,
         default: false
     },
     titre:{
@@ -22,66 +25,61 @@ const CibleDeRoutageSchema = new Schema({
     },
     listeIndividus: {
         type: mongoose.Schema.Types.Array,
-        //required: true,
         ref: 'Individu'
     },
     ageMin: {
         type: Number,
-        required: true
+        default:-1
     }, 
     ageMax: {
         type: Number,
-        required: true
+        default:-1
     },
     categoriePro : {
         type : String,
-        required: true
+        default:''
     },
     departementResidence : {
         type : Number,
-        required: true
+        default:-1
     },
     client:{
         type:String,
-        required : true
     },
     cataloguePapier : {
         type:String,
-        //required:true
     },
     typePapier : {
         type:String,
-        //required:true
     },
     catalogueInternet : {
         type:String,
-        //required:true
     },  
-    // articles : {
-    //     type: mongoose.Schema.Types.Array,
-    //     required: true,
+    articles : {
+        type: mongoose.Schema.Types.Array,
+        required: true,
+        ref: 'Article'
+    },
+    // article1 : {
+    //     type: mongoose.Schema.Types.ObjectId,
     //     ref: 'Article'
     // },
-    article1 : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Article'
-    },
-    article2 : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Article'
-    },
-    article3 : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Article'
-    },
-    article4 : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Article'
-    },
-    article5 : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Article'
-    }
+    // article2 : {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Article'
+    // },
+    // article3 : {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Article'
+    // },
+    // article4 : {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Article'
+    // },
+    // article5 : {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Article'
+    // }
 
 
 }, { timestamps: true })

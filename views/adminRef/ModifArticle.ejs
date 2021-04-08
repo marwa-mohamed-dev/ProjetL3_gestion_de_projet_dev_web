@@ -15,7 +15,7 @@
                 <!--<a href="/referentiel/newIndividu"></a>-->
             </div>
             <div class="page" id='choix'>
-                <form action='/referentiel/ModifArticle' method='GET' class='ReshearchArt'>
+                <form action='/referentielModifArticle' method='GET' class='ReshearchArt'>
                     <label>Désignation</label>
                     <input type="text" name="designation" value="<%= searchOptions.designation %>">
                     <input type='submit' value='Rechercher'>
@@ -53,7 +53,7 @@
                 }
 
                 function Mindividu() {
-                    location.replace("http://localhost:3000/referentiel/ModifIndividu")
+                    location.replace("http://localhost:3000/referentielModifIndividu")
                 }
 
                 // function Recherche_Article() {

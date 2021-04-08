@@ -48,6 +48,7 @@ const individuSchema = new Schema({
         type : String,
         required: true
     },
+    dateProspect :Date,
     cbNum : Number,
     cbDate : String,
     cbCode : Number

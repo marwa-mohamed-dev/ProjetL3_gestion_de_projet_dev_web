@@ -114,10 +114,6 @@ app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
     } 
 });
 
-/*app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
-    res.render('./Referentiel/ModifArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
-});*/
-
 app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
@@ -126,13 +122,14 @@ app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });*/
 
-// app.get('/referentiel/Article', (req, res) => {
+// app.get('/referentielArticle', (req, res) => {
 //     res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
 // })
 
-// app.get('/referentiel/Individu', (req, res) => {
+// app.get('/referentielIndividu', (req, res) => {
 //     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
 // })
+
 app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('./saisieCom/AcceuilCom', {title:'Commandes',style:"Commande"})
 })
@@ -143,13 +140,14 @@ app.get('/creerCom', checkAuthenticated, async (req,res)=> {
     res.render('./saisieCom/CreerCom', {articles:articles, individus:individus, title:'Commandes',style:"Commande"})
 })
 
-app.get('/modifCom', checkAuthenticated, (req,res)=> {
-    res.render('./saisieCom/ModifCom', {title:'Commandes',style:"Commande"})
-})
 app.post('/creerCom', checkAuthenticated, (req, res) => {
     const num=generateNumCom();
     const commande = new Commande(req.body);
-    commande.numCommande=num;
+    // const iden=req.params.id;
+    // const ind= Individu.findById(iden);
+    // console.log(iden);
+    // console.log(ind.nom);
+    commande.numCommande=num.toString();
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
@@ -162,9 +160,53 @@ app.post('/creerCom', checkAuthenticated, (req, res) => {
 function generateNumCom() { 
     var num = Math.trunc(Math.random()*100000000);
     while(num<10000000){
-        num=num*10}
+        num=num*10;}
     return num;
 }
+
+// affiche liste de toutes les commandes de la base
+//ordonés avec celle ajoutée le plus récemment en premier
+app.get('/modifCom', checkAuthenticated, (req, res) => {
+    let searchOptions = {}
+    if (req.query.numCommande != null) {
+        searchOptions.numCommande = new RegExp(req.query.numCommande);
+    }
+    Commande.find(searchOptions).sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('./saisieCom/ModifCom', {
+                title: 'Commandes',
+                commandes: result,
+                style: "Commande",
+                searchOptions: req.query});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+// affiche les informations de l'individu sélectionné
+// dans la liste de recherche
+app.get('/commande/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Commande.findById(id)
+        .then(result => {
+            res.render('./saisieCom/Commande', { commande: result, title: "Commande", style: "commande" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+// supprime l'individu sélectionné
+app.delete('/commande/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Commande.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/modifCom' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 app.get('/prospection', checkAuthenticated, (req,res)=> {
     res.render('./prospection/page', {title:'Prospection',style:"prospection"})
@@ -206,9 +248,16 @@ app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
     const cibleDeRoutage = new CibleDeRoutage(req.body);
     const liste = new Array();
     individus.forEach(individu=> {
-        if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (((individu.statut === 'enregistré')&&(cibleDeRoutage.client==='non'))||((individu.statut === 'client')&&(cibleDeRoutage.client==='oui')))){
-            liste.push(individu)
+        if(cibleDeRoutage.client==='Non'){
+            if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Enregistré')){
+                liste.push(individu)
+            }
+        } else {
+            if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Client')){
+                liste.push(individu)
+            }
         }
+       
     })
     cibleDeRoutage.listeIndividus = liste
     cibleDeRoutage.save()
@@ -263,6 +312,32 @@ app.get('/envoyerPublicite', checkAuthenticated, async (req, res) => {
         console.log(err);
     }
 })
+
+
+app.get('/ciblederoutageRefuses', checkAuthenticated, async (req, res) => {
+    try {
+        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        res.render('./prospection/visualiserRefuses',{
+            cibleDeRoutages : cibleDeRoutages,
+            title: 'Cibles de routage', 
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+app.get('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findById(id)
+        .then(result => {
+            res.render('./prospection/modif', { cible: result, title: 'cible de routage', style: "prospection" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 app.get('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     CibleDeRoutage.findById(id)
@@ -285,7 +360,25 @@ app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
 });
 app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findByIdAndUpdate(id,{valide: true})
+    CibleDeRoutage.findByIdAndUpdate(id,{valide: true, refus: false})
+    //ajouter pour changement de statut
+    const cible = cibleCibleDeRoutage.findById(id)
+    const insdividus = cible.individus
+    individus.forEach(individu=> {
+        individu.statut = 'Prospect'
+        individu.dateProspect = Date.now
+    })
+        .then(result => {
+            res.json({ redirect: '/validationCiblederoutage' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    CibleDeRoutage.findByIdAndUpdate(id,{refus: true})
         .then(result => {
             res.json({ redirect: '/validationCiblederoutage' });
         })
@@ -343,12 +436,14 @@ function getAge(date) {
 // créer un nouvel article
 app.post('/referentiel/CreerArticle', checkAuthenticated, upload.single('image'), async (req, res) => {
     const fileName = req.file != null ? req.file.filename : null;
+    const num = generateRef();
     const article = new Article({
         designation: req.body.designation,
         prix: req.body.prix,
         nomImage: fileName,
         description: req.body.description
     })
+    article.reference = num;
     article.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -357,6 +452,13 @@ app.post('/referentiel/CreerArticle', checkAuthenticated, upload.single('image')
             console.log(err);
         });
 });
+
+function generateRef() { 
+    var num = Math.trunc(Math.random()*100000000);
+    while(num<10000000){
+        num=num*10;}
+    return num;
+}
 
 // affiche les informations d'un seul individu sélectionné
 // dans la liste de recherche
@@ -385,8 +487,8 @@ app.delete('/recherche/:id', checkAuthenticated, (req, res) => {
 });
 
 // affiche liste de tous les articles de la base
-// ordonnés avec celui ajouté le plus récemment en premier
-app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
+//ordonés avec celui ajouté le plus récemment en premier
+app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
     let searchOptions = {};
     if (/*req.query.reference != null &&*/req.query.designation != null) {
         //searchOptions.reference= new RegExp(req.query.reference, 'i');
@@ -407,7 +509,7 @@ app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
 
 // affiche les informations d'un seul article sélectionné
 // dans la liste de recherche
-app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
+app.get('/referentielArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findById(id)
         .then(result => {
@@ -418,7 +520,7 @@ app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-app.put('/referentiel/Article/:id', checkAuthenticated, async (req, res) => {
+app.put('/referentielArticle/:id', checkAuthenticated, async (req, res) => {
     let article
     try {
         article = await Article.findById(req.params.id)
@@ -433,7 +535,7 @@ app.put('/referentiel/Article/:id', checkAuthenticated, async (req, res) => {
 })
 
 // supprime l'article sélectionné
-app.delete('/referentiel/ModifArticle/:id', checkAuthenticated, (req, res) => {
+app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findByIdAndDelete(id)
         .then(result => {
@@ -446,7 +548,7 @@ app.delete('/referentiel/ModifArticle/:id', checkAuthenticated, (req, res) => {
 
 // affiche liste de tous les individu de la base
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
+app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
     let searchOptions = {};
     if (req.query.nom != null && req.query.prenom != null) {
         searchOptions.nom= new RegExp(req.query.nom, 'i');
@@ -467,7 +569,7 @@ app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
 
 // affiche les informations de l'individu sélectionné
 // dans la liste de recherche
-app.get('/referentiel/Individu/:id', checkAuthenticated, (req, res) => {
+app.get('/referentielIndividu/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findById(id)
         .then(result => {
@@ -478,7 +580,7 @@ app.get('/referentiel/Individu/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-app.put('/referentiel/Individu/:id', checkAuthenticated, async (req, res) =>{
+app.put('/referentielIndividu/:id', checkAuthenticated, async (req, res) =>{
     let individu
     try {
         individu = await Individu.findById(req.params.id)
@@ -501,7 +603,7 @@ app.put('/referentiel/Individu/:id', checkAuthenticated, async (req, res) =>{
 })
 
 // supprime l'individu sélectionné
-app.delete('/referentiel/ModifIndividu/:id', checkAuthenticated, (req, res) => {
+app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findByIdAndDelete(id)
         .then(result => {

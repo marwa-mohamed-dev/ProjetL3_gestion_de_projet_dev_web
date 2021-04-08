@@ -13,24 +13,16 @@
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
     </div>
     
-    <div class="page" >
-        <% if (cibleDeRoutages.length > 0) { %>
-            <% cibleDeRoutages.forEach(cible => { %>
-                <%if(!cible.valide) { %>
-                    <a class="single" href="./validationCiblederoutage/<%= cible._id %>">
-                        <h3 class="nom"><%= cible.titre %></h3>
-                        <p><%= cible.dateProspection.toDateString() %></p>
-                    </a>
-                    
-                <% } %>
-            <% }) %>
-        <% } else { %>
-            <p>Pas de publicité en attente de validation</p>
-        <% } %>
+    <!-- <div class="page" id='choix'> -->
+    <div>
+        <form action="">
+
+        </form>
     </div>
     <script>
-        let on_val = document.getElementById("val")
-        on_val.classList.add("on");
+        let on_modif = document.getElementById("Modif")
+        on_modif.classList.add("on");
+        //////////////////
         function creer(){
             location.replace("http://localhost:3000/creationCiblederoutage")
         }
