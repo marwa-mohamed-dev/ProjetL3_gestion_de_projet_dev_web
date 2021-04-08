@@ -34,7 +34,7 @@
 
                 const trashcan = document.querySelector('a.delete');
                 trashcan.addEventListener('click', (e) => {
-                  const endpoint = `/referentiel/ModifIndividu/${trashcan.dataset.doc}`;
+                  const endpoint = `/referentielModifIndividu/${trashcan.dataset.doc}`;
                   fetch(endpoint, {
                     method: 'DELETE',
                   })
@@ -48,7 +48,7 @@
                 }
 
                 function Marticle() {
-                    location.replace("http://localhost:3000/referentiel/ModifArticle")
+                    location.replace("http://localhost:3000/referentielModifArticle")
                 }
 
                 function Cindividu() {
@@ -56,7 +56,7 @@
                 }
 
                 function Mindividu() {
-                    location.replace("http://localhost:3000/referentiel/ModifIndividu")
+                    location.replace("http://localhost:3000/referentielModifIndividu")
                 }
             </script>
 

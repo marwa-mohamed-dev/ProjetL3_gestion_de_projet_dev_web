@@ -97,11 +97,11 @@ app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
 });
 
-app.get('/referentiel/Article', (req, res) => {
+app.get('/referentielArticle', (req, res) => {
     res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
 })
 
-app.get('/referentiel/Individu', (req, res) => {
+app.get('/referentielIndividu', (req, res) => {
     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
 })
 app.get('/commandes', checkAuthenticated, (req,res)=> {
@@ -455,7 +455,7 @@ app.delete('/recherche/:id', checkAuthenticated, (req, res) => {
 
 // affiche liste de tous les articles de la base
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
+app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
     let searchOptions = {};
     if (/*req.query.reference != null &&*/req.query.designation != null) {
         //searchOptions.reference= new RegExp(req.query.reference, 'i');
@@ -476,7 +476,7 @@ app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
 
 // affiche les informations d'un seul article sélectionné
 // dans la liste de recherche
-app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
+app.get('/referentielArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findById(id)
         .then(result => {
@@ -488,7 +488,7 @@ app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
 });
 
 // supprime l'article sélectionné
-app.delete('/referentiel/ModifArticle/:id', checkAuthenticated, (req, res) => {
+app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findByIdAndDelete(id)
         .then(result => {
@@ -501,7 +501,7 @@ app.delete('/referentiel/ModifArticle/:id', checkAuthenticated, (req, res) => {
 
 // affiche liste de tous les individu de la base
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
+app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
     let searchOptions = {};
     if (req.query.nom != null && req.query.prenom != null) {
         searchOptions.nom= new RegExp(req.query.nom, 'i');
@@ -522,7 +522,7 @@ app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
 
 // affiche les informations de l'individu sélectionné
 // dans la liste de recherche
-app.get('/referentiel/Individu/:id', checkAuthenticated, (req, res) => {
+app.get('/referentielIndividu/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findById(id)
         .then(result => {
@@ -534,7 +534,7 @@ app.get('/referentiel/Individu/:id', checkAuthenticated, (req, res) => {
 });
 
 // supprime l'individu sélectionné
-app.delete('/referentiel/ModifIndividu/:id', checkAuthenticated, (req, res) => {
+app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findByIdAndDelete(id)
         .then(result => {
