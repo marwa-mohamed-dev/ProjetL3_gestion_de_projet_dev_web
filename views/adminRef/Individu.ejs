@@ -24,7 +24,7 @@
                         <p><%= individu.adresseCode %><%= individu.adresseVille %></p>
                         <p>tel:<%= individu.numeroTel %> mail:<%= individu.Mail %></p>
                     </div> -->
-                    <form class='NewI' action='/referentiel/Individu/<%= individu.id %>?_method=PUT' method='POST'>
+                    <form class='NewI' action='/referentielIndividu/<%= individu.id %>?_method=PUT' method='POST'>
                         <label class='Col1'>Nom*</label>
                         <input class='Col1' type='text' name='nom' value='<%= individu.nom %>' required>
                         <label class='Col2'>Prénom*</label>
@@ -47,7 +47,7 @@
                         <label>Caractéristique commerciale*</label>
                         <SELECT name='statut' size='1' required>
                             <OPTION selected><%= individu.statut %><OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT>
-                        <a href="/referentiel/ModifIndividu">Annuler</a>
+                        <a href="/referentielModifIndividu">Annuler</a>
                         <input type='submit' value='Modifier Individu'>
                     </form>
                     <a class="delete" data-doc="<%= individu._id %>">delete</a>

@@ -528,7 +528,7 @@ app.put('/referentielArticle/:id', checkAuthenticated, async (req, res) => {
         article.prix = req.body.prix
         article.description = req.body.description
         await article.save()
-        res.redirect('/referentiel/ModifArticle')
+        res.redirect('/referentielModifArticle')
     } catch {
         res.redirect('/referentiel')
     }
@@ -539,7 +539,7 @@ app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/referentiel/ModifArticle' });
+            res.json({ redirect: '/referentielModifArticle' });
         })
         .catch((err) => {
             console.log(err);
@@ -596,7 +596,7 @@ app.put('/referentielIndividu/:id', checkAuthenticated, async (req, res) =>{
         individu.adresseMail = req.body.adresseMail
         individu.numeroTel = req.body.numeroTel
         await individu.save()
-        res.redirect('/referentiel/ModifIndividu')
+        res.redirect('/referentielModifIndividu')
     } catch {
         res.redirect('/referentiel')
     }
@@ -607,7 +607,7 @@ app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/referentiel/ModifIndividu' });
+            res.json({ redirect: '/referentielModifIndividu' });
         })
         .catch((err) => {
             console.log(err);
