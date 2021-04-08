@@ -24,7 +24,6 @@ const upload = multer({
     // }
 })
 
-
 // //////////////////////////////////////////
 const flash = require('express-flash');
 const session = require('express-session');
@@ -485,8 +484,8 @@ app.put('/referentiel/Individu/:id', checkAuthenticated, async (req, res) =>{
         individu = await Individu.findById(req.params.id)
         individu.nom = req.body.nom
         individu.prenom = req.body.prenom
-        //individu.dateNaissance = req.body.dateNaissance
-        // individu.categoriePro = req.body.categoriePro
+        individu.dateNaissance = req.body.dateNaissance
+        individu.categoriePro = req.body.categoriePro
         individu.adresseNum = req.body.adresseNum
         individu.adresseType = req.body.adresseType
         individu.adresseCode = req.body.adresseCode
