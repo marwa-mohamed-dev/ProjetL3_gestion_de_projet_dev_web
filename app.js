@@ -108,6 +108,10 @@ app.get('/commandes', checkAuthenticated, (req,res)=> {
     res.render('./saisieCom/AcceuilCom', {title:'Commandes',style:"Commande"})
 })
 
+app.get('/ajoutInd', checkAuthenticated, (req,res)=> {
+    res.render('./saisieCom/AjoutInd', {title:'Commandes',style:"Commande"})
+})
+
 app.get('/creerCom', checkAuthenticated, async (req,res)=> {
     const articles = await Article.find({})
     const individus = await Individu.find({})
@@ -122,6 +126,8 @@ app.post('/creerCom', checkAuthenticated, (req, res) => {
     // console.log(iden);
     // console.log(ind.nom);
     commande.numCommande=num.toString();
+    const etat=testAnomalie(commande);
+    commande.etat=etat;
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
@@ -137,6 +143,26 @@ function generateNumCom() {
         num=num*10;}
     return num;
 }
+
+function testAnomalie(com){
+    let etat="Valide";
+    if(com.pCheque==null && com.pCarte==null){
+        etat="anoPaiement"
+    }
+    return etat;
+}
+//créer un nouvel individu depuis l'espace saisie de commande
+app.post('/ajoutInd', checkAuthenticated, (req, res) => {
+    const individu = new Individu(req.body);
+    individu.age = getAge(individu.dateNaissance)
+    individu.save()
+        .then((result) => {
+            res.redirect('/creerCom');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 // affiche liste de toutes les commandes de la base
 //ordonés avec celle ajoutée le plus récemment en premier
@@ -161,8 +187,12 @@ app.get('/modifCom', checkAuthenticated, (req, res) => {
 // dans la liste de recherche
 app.get('/commande/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
+    //const com=Commande.findById(id)
+    //const individu = Individu.findById(com.client);
     Commande.findById(id)
         .then(result => {
+            console.log(result.client)
+            const indiv=Article.findById(result.client)
             res.render('./saisieCom/Commande', { commande: result, title: "Commande", style: "commande" });
         })
         .catch((err) => {

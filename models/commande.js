@@ -42,6 +42,11 @@ const commandeSchema = new Schema({
     banque: {
         type: String,
     },
+
+    etat: {
+        type: String,
+        required: true
+    }
     // date: {
     //     type: String,
     // },
