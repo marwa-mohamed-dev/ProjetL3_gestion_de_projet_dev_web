@@ -118,7 +118,7 @@ app.get('/creerCom', checkAuthenticated, async (req,res)=> {
     res.render('./saisieCom/CreerCom', {articles:articles, individus:individus, title:'Commandes',style:"Commande"})
 })
 
-app.post('/creerCom', checkAuthenticated, (req, res) => {
+app.post('/creerCom', checkAuthenticated, async (req, res) => {
     const num=generateNumCom();
     const commande = new Commande(req.body);
     // const iden=req.params.id;
@@ -128,6 +128,7 @@ app.post('/creerCom', checkAuthenticated, (req, res) => {
     commande.numCommande=num.toString();
     const etat=testAnomalie(commande);
     commande.etat=etat;
+    commande.prix=calculPrix(commande);
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
@@ -151,6 +152,24 @@ function testAnomalie(com){
     }
     return etat;
 }
+
+function calculPrix(com){
+    let prix=0;
+    let articles=com.articles;
+    let quantites=com.quantite;
+    //console.log(quantites);
+    articles.forEach(article =>{
+        //console.log(article);
+        //console.log(article[3]); renvoie du vide
+        //console.log(article.valueOf()); renvoie même chose que article simple
+        //console.log(article.prix); renvoie undefined
+        //console.log(Object.getOwnPropertyNames(article)); renvoie quelque chose de moche
+        //console.log(article.getAttribute("prix"));
+        //console.log(article[prix]);
+     })
+    return prix;
+}
+
 //créer un nouvel individu depuis l'espace saisie de commande
 app.post('/ajoutInd', checkAuthenticated, (req, res) => {
     const individu = new Individu(req.body);
@@ -191,8 +210,9 @@ app.get('/commande/:id', checkAuthenticated, (req, res) => {
     //const individu = Individu.findById(com.client);
     Commande.findById(id)
         .then(result => {
-            console.log(result.client)
-            const indiv=Article.findById(result.client)
+            //console.log(result.client)
+            //const indiv=Article.findById(result.client)
+            //console.log(indiv);
             res.render('./saisieCom/Commande', { commande: result, title: "Commande", style: "commande" });
         })
         .catch((err) => {

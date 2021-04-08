@@ -9,7 +9,7 @@ const commandeSchema = new Schema({
 
     client: {
         // à mettre type object Individu
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Array,
         ref:"Individu",
         required: true
     },
@@ -46,6 +46,16 @@ const commandeSchema = new Schema({
     etat: {
         type: String,
         required: true
+    },
+    //valeur du moyen de paiement
+    valeur: {
+        type: Number
+        //required: True
+    },
+
+    //prix de l'ensemble des articles de la commande
+    prix:{
+        type: Number
     }
     // date: {
     //     type: String,
