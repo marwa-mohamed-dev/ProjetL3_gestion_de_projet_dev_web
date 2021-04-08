@@ -334,14 +334,18 @@ app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
 });
 app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findByIdAndUpdate(id,{valide: true, refus: false})
-    //ajouter pour changement de statut
-    const cible = cibleCibleDeRoutage.findById(id)
-    const insdividus = cible.individus
-    individus.forEach(individu=> {
-        individu.statut = 'Prospect'
-        individu.dateProspect = Date.now
-    })
+    CibleDeRoutage.findByIdAndUpdate(id,{valide: true, dateValide: new Date(), refus: false, individus: individus.forEach(individu=> {individu.statut = 'Prospect',individu.dateProspect =new Date()})})
+    //changement de statut
+    //CibleDeRoutage.findById(id)
+    // const cible = CibleDeRoutage.findById(id)
+    // const individus = cible.individus
+    // console.log(individus)
+    // console.log(cible.individus)
+    // console.log(cible.titre)
+    // individus.forEach(individu=> {
+    //     individu.statut = 'Prospect'
+    //     individu.dateProspect = Date.now
+    // })
         .then(result => {
             res.json({ redirect: '/validationCiblederoutage' });
         })

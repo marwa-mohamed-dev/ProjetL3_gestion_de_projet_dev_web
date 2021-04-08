@@ -20,6 +20,10 @@
                     <a class="single" href="./prospection/<%= cible._id %>">
                     <h3 class="nom"><%= cible.titre %></h3>
                     <p><%= cible.dateProspection.toDateString() %></p>
+                    <p>date de validation :</p> <p><%= cible.dateValide.toDateString() %></p>
+                    <% if(Date.now - cible.dateValide.getTime() >  864000) { %> 
+                        <p>Expiré, les individus ne font plus partie de la cible de routage</p>    
+                    <% } %> 
                 </a>
                 
                 <%} %>

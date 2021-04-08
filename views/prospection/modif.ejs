@@ -13,10 +13,14 @@
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
     </div>
     
-    <!-- <div class="page" id='choix'> -->
-    <div>
-        <form action="">
-
+    <div class="page" >
+        <p><% cible.titre%></p>
+        <form action="" method="POST">
+            <label><% cible.titre%></label>
+            
+            <% console.log( cible.titre) %> 
+            <input type="text" value="<% cible.titre%>">
+            <input type="submit">
         </form>
     </div>
     <script>

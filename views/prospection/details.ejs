@@ -20,7 +20,7 @@
         Cible de routage : 
         <p><%cible.listeIndividus%></p>
         <h3> Conditions de cible de routage choisis </h3>
-        <%if(cible.ageMin !=-1 && cible.ageMax != -1) { %>
+        <%if(cible.ageMin !=null && cible.ageMax != null) { %>
             <p>de <%cible.ageMin%> à <%cible.ageMax%></p>
             <%console.log(cible.ageMin)%>
         <%}%>

@@ -7,6 +7,9 @@ const CibleDeRoutageSchema = new Schema({
         type: Boolean,
         default: false
     },
+    dateValide: {
+        type: Date,
+    },
     refus:{
         type: Boolean,
         default: false
