@@ -16,7 +16,7 @@
             </div>
 
             <div class="page" id='choix'>
-                <form action='/referentiel/ModifIndividu' method='GET' class='ReshearchArt'>
+                <form action='/referentielModifIndividu' method='GET' class='ReshearchArt'>
                     <label>Nom</label>
                     <input type="text" name="nom" value="<%= searchOptions.nom %>">
                     <label>Prénom</label>
@@ -36,7 +36,11 @@
                     <% if (individus.length > 0) { %>
                         <% individus.forEach(individu => { %>
                             <%if(!individu.valide) { %>
+<<<<<<< HEAD
                                 <div class="single" >
+=======
+                                <a class="single" href="/referentielIndividu/<%= individu._id %>">
+>>>>>>> 686f70631a151aa6c9bbc37ef434fb14b71a3754
                                     <h3 class="nom"><%= individu.nom %> <%= individu.prenom %></h3>
                                     <p class="dateNaissance"><%= individu.dateNaissance.toDateString()%></p>
                                     <p class="statut"><%= individu.statut%></p>
@@ -59,7 +63,7 @@
                 }
 
                 function Marticle() {
-                    location.replace("http://localhost:3000/referentiel/ModifArticle")
+                    location.replace("http://localhost:3000/referentielModifArticle")
                 }
 
                 function Cindividu() {
