@@ -15,7 +15,7 @@
                 <!--<a href="/referentiel/newIndividu"></a>-->
             </div>
             <div class="page" id='choix'>
-                <form action='/referentiel/ModifArticle' method='GET' class='ReshearchArt'>
+                <form action='/referentielModifArticle' method='GET' class='ReshearchArt'>
                     <label>Désignation</label>
                     <input type="text" name="designation" value="<%= searchOptions.designation %>">
                     <input type='submit' value='Rechercher'>
@@ -23,12 +23,13 @@
                 <div class=liste>
                     <% if (articles.length > 0) { %>
                         <% articles.forEach(article => { %>
-                            <a class="single" href="/referentiel/Article/<%= article._id %>">
+                            <a class="single" href="/referentielArticle/<%= article._id %>">
+                                <img height="50" width="50" src="<%= article.imagePath %>">
                                 <h3 class="designation"><%= article.designation %></h3>
                             </a>
                         <% }) %>
                     <% } else { %>
-                        <p>Aricle n'est enregistré dans la base de données</p>
+                        <p>L'article n'est pas enregistré dans la base de données</p>
                     <% } %>
                 </div>
             </div>
@@ -52,7 +53,7 @@
                 }
 
                 function Mindividu() {
-                    location.replace("http://localhost:3000/referentiel/ModifIndividu")
+                    location.replace("http://localhost:3000/referentielModifIndividu")
                 }
 
                 // function Recherche_Article() {

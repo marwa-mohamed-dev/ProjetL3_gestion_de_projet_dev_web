@@ -16,14 +16,40 @@
             
             <div class="page" id='choix'>
                 <div class="details content">
-                    <h2><%= individu.nom %> <%= individu.prenom %></h2>
+                    <!-- <h2><%= individu.nom %> <%= individu.prenom %></h2>
                     <div class="content">
                         <input type='text' name='dateNaissance' placeholder=<%= individu.dateNaissance %> required>
                         <p><%= individu.categoriePro %></p>
                         <p><%= individu.adresseNum %><%= individu.adresseType %></p>
                         <p><%= individu.adresseCode %><%= individu.adresseVille %></p>
                         <p>tel:<%= individu.numeroTel %> mail:<%= individu.Mail %></p>
-                    </div>
+                    </div> -->
+                    <form class='NewI' action='/referentielIndividu/<%= individu.id %>?_method=PUT' method='POST'>
+                        <label class='Col1'>Nom*</label>
+                        <input class='Col1' type='text' name='nom' value='<%= individu.nom %>' required>
+                        <label class='Col2'>Prénom*</label>
+                        <input class='Col2' type='text' name='prenom' value='<%= individu.prenom %>' required>
+                        <!-- <label>Date de Naissance*</label>
+                        <input type='date' name='dateNaissance' value='<%= individu.dateNaissance %>' required> -->
+                        <label>Catégorie socio-professionnelle*</label>
+                        <SELECT name='categoriePro' size='1' required>
+                            <OPTION selected><%= individu.categoriePro %><OPTION>Agriculteurs exploitants <OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Étudiants<OPTION>Autres</SELECT>
+                        <label>Adresse*</label>
+                        <input class='Col1' type='text' name='adresseNum' pattern='[0-9]+' value='<%= individu.adresseNum %>' required>
+                        <input class='Col2' type='text' name='adresseType' value='<%= individu.adresseType %>' required>
+                        <input class='Col1' type='text' pattern='[0-9]{5}' name='adresseCode' value='<%= individu.adresseCode %>' required>
+                        <input class='Col2' type='text' name='adresseVille' value='<%= individu.adresseVille %>' required>
+                        <input type='text' placeholder='Complément d`adresse' name='adresseInfos' value='<%= individu.adresseInfos %>'>
+                        <label class='Col1'>Numéro de téléphone*</label>
+                        <input class='Col1' type='tel' name='numeroTel' placeholder='0XXXXXXXXX' pattern='[0]{1}[0-9]{9}' value="<%= individu.numeroTel %>" required>
+                        <label class='Col2'>Adresse mail</label>
+                        <input class='Col2' type='email' name='adresseMail' placeholder='exemple@gmail.com' value="<%= individu.adresseMail %>">
+                        <label>Caractéristique commerciale*</label>
+                        <SELECT name='statut' size='1' required>
+                            <OPTION selected><%= individu.statut %><OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT>
+                        <a href="/referentielModifIndividu">Annuler</a>
+                        <input type='submit' value='Modifier Individu'>
+                    </form>
                     <a class="delete" data-doc="<%= individu._id %>">delete</a>
                 </div>
             </div>
@@ -34,7 +60,7 @@
 
                 const trashcan = document.querySelector('a.delete');
                 trashcan.addEventListener('click', (e) => {
-                  const endpoint = `/referentiel/ModifIndividu/${trashcan.dataset.doc}`;
+                  const endpoint = `/referentielModifIndividu/${trashcan.dataset.doc}`;
                   fetch(endpoint, {
                     method: 'DELETE',
                   })
@@ -48,7 +74,7 @@
                 }
 
                 function Marticle() {
-                    location.replace("http://localhost:3000/referentiel/ModifArticle")
+                    location.replace("http://localhost:3000/referentielModifArticle")
                 }
 
                 function Cindividu() {
@@ -56,7 +82,7 @@
                 }
 
                 function Mindividu() {
-                    location.replace("http://localhost:3000/referentiel/ModifIndividu")
+                    location.replace("http://localhost:3000/referentielModifIndividu")
                 }
             </script>
 
