@@ -26,14 +26,22 @@
                     <input type='submit' value='Rechercher'>
                 </form>
                 
+                <div class="titretab">
+                    <p class="name">NOM/Prénom</p>
+                    <p class="date">Date de Naissance</p>
+                    <p class="state">Statut</p>
+                    <p class="modif">Modifier</p>
+                </div>
                 <div class="liste">
                     <% if (individus.length > 0) { %>
                         <% individus.forEach(individu => { %>
                             <%if(!individu.valide) { %>
-                                <a class="single" href="/referentiel/Individu/<%= individu._id %>">
+                                <div class="single" >
                                     <h3 class="nom"><%= individu.nom %> <%= individu.prenom %></h3>
                                     <p class="dateNaissance"><%= individu.dateNaissance.toDateString()%></p>
-                                </a>   
+                                    <p class="statut"><%= individu.statut%></p>
+                                    <a class="affiche" href="/referentiel/Individu/<%= individu._id %>" ><img src="../edit.png" alt="edit"></a>
+                                </div>   
                             <% } %>
                         <% }) %>
                     <% } else { %>

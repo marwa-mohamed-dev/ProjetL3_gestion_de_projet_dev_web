@@ -188,19 +188,49 @@ form>input[type="submit"] {
 }
 .liste{
     display: grid;
-    grid-template-columns: repeat(4,25%);
-    grid-template-rows: auto;
-    justify-items: center;
+    grid-template-columns: 100px 1fr 100px;
+    grid-template-rows: min-content;
+    grid-row-gap:10px;
 }
 .single{
+    display:grid;
+    grid-column-start: 2;
+    grid-template-columns: repeat(3,1fr) 100px;
     text-decoration: none;
     color: #222;
+    background-color: rgba(140, 224, 140, 0.774);
+    justify-items: center;
 }
 
-.dateNaissance{
-    display:none;
-    opacity:1;}
-    
-.single:hover .dateNaissance{
-    display:block;
+.titretab{
+    display: grid;
+    grid-template-columns: 100px 1fr 3fr 2fr 1fr 100px;
+    grid-template-rows: min-content;    
+    background-color: rgb(77, 155, 57);
+    border: 1px solid black;
+}
+.name{
+    grid-column-start: 2;
+    margin-left: 70px;
+}
+.date{
+    margin-left: 145px;
+}
+
+.state{
+    margin-left: 95px;
+}
+
+.modif{
+    margin-left: 30px;
+}
+.affiche img{
+    align-self: center;
+    justify-self: center;
+    width: 25px;
+    height: 25px;
+}
+.single>p,h3{
+    margin-top:5px;
+    margin-bottom:5px;
 }
