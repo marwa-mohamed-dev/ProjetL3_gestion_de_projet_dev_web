@@ -16,6 +16,7 @@
             
             <div class="page" id='choix'>
                 <form action="/referentielArticle/<%= article._id %>?_method=PUT" method='POST'>
+                    <label>Référence: <%= article.reference %></label>
                     <label>Désignation*</label>
                     <input type='text' name='designation' value="<%= article.designation %>" required>
                     <label>Prix de vente (€)*</label>

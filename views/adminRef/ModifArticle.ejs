@@ -20,13 +20,23 @@
                     <input type="text" name="designation" value="<%= searchOptions.designation %>">
                     <input type='submit' value='Rechercher'>
                 </form>
+                <div class="place">
+                    <div class="titretab">
+                        <p>Image</p>
+                        <p>Référence</p>
+                        <p>Désignation</p>
+                        <p>Modifier</p>
+                    </div>
+                </div>
                 <div class=liste>
                     <% if (articles.length > 0) { %>
                         <% articles.forEach(article => { %>
-                            <a class="single" href="/referentielArticle/<%= article._id %>">
+                            <div class="single" >
                                 <img height="50" width="50" src="<%= article.imagePath %>">
+                                <p class="reference"><%= article.reference%></p>
                                 <h3 class="designation"><%= article.designation %></h3>
-                            </a>
+                                <a class="affiche" href="/referentielArticle/<%= article._id %>" ><img src="../edit.png" alt="edit"></a>
+                            </div>
                         <% }) %>
                     <% } else { %>
                         <p>L'article n'est pas enregistré dans la base de données</p>
