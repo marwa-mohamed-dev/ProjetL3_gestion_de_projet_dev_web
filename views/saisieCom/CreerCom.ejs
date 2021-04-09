@@ -18,19 +18,19 @@
                 <option value="" disabled selected>choisir 1 individu</option>
                 <% individus.forEach(individu =>{ %>
                     <%if(individu.statut!="Client interdit") { %>
-                        <option label="<%= individu.nom %> <%= individu.prenom %>" value=<%= individu %>></option>
+                        <option label="<%= individu.nom %> <%= individu.prenom %>" value=<%=individu%>></option>
                     <% } %>
                 <% }) %>
             </select>  </label> 
             <input class="NewI" id='buttonIndiv' type='button' value="Nouvel individu" onclick="nouvelIndiv()">
-            <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'> </label>
+            <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'></label>
             <div id='articles'>
                 <input class='numberArt' type='button' value=1 >
                 <label class='ref'>Désignation
                 <select name="articles" id="">
                     <option value="" disabled selected>choisir 1 article</option>
                     <% articles.forEach(article =>{ %>
-                        <option label="<%= article.designation %>" value="<%= article %>"></option>
+                        <option label="<%= article.designation %>" value="<%= article%>"></option>
                     <% }) %>
                 </select></label>
                 <label>Quantité <input type='number' min='1' max='999' name='quantite' required></label>
@@ -70,7 +70,7 @@
         function Ajout_Article(){
             const nbArt = document.getElementsByClassName("numberArt").length+1;
             const articles = document.getElementById('articles');
-            articles.insertAdjacentHTML('beforeend',"<input class='numberArt' type='button' value="+nbArt+"><label class='ref'>Désignation <select name='articles' id=''> <option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article.id %>'> </option><% }) %>+</select> </label> <label>Quantité <input type='number' min='1' max='999'name='quantite' required></label>")
+            articles.insertAdjacentHTML('beforeend',"<input class='numberArt' type='button' value="+nbArt+"><label class='ref'>Désignation <select name='articles' id=''> <option value='' disabled selected>choisir 1 article</option>+<% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%=article%>'> </option><% }) %>+</select> </label> <label>Quantité <input type='number' min='1' max='999'name='quantite' required></label>")
         }
         
         function paiementCarte(){

@@ -159,7 +159,16 @@ function calculPrix(com){
     let quantites=com.quantite;
     //console.log(quantites);
     articles.forEach(article =>{
+        //let a= Article.findById(article);
+        //console.log(typeof(article)); article est en fait un String !!!! et nin un object
         //console.log(article);
+        //console.log(a);
+        
+        //bloque pour le 2èe article car le string ne s'insère pas dans la fonction insertAdjacentHTML
+        console.log(article);
+        let cout=article.split(",")[2];
+        console.log(cout.substr(10,11));
+        
         //console.log(article[3]); renvoie du vide
         //console.log(article.valueOf()); renvoie même chose que article simple
         //console.log(article.prix); renvoie undefined
