@@ -194,12 +194,19 @@ form>input[type="submit"] {
 }
 
 /* Partie CSS pour la liste des individus*/
+.place{
+    display:grid;
+    grid-template-columns: 100px 1fr 100px;
+    grid-template-rows:min-content;
+}
 .titretab{
+    grid-column-start: 2;
     display: grid;
-    grid-template-columns: 100px 1fr 3fr 2fr 1fr 100px;
+    grid-template-columns: 1fr 1fr 1fr 100px;
     grid-template-rows: min-content;    
     background-color: rgb(77, 155, 57);
     border: 1px solid black;
+    justify-items: center;
 }
 .name{
     grid-column-start: 2;
@@ -238,7 +245,8 @@ form>input[type="submit"] {
     width: 25px;
     height: 25px;
 }
-.single>p,h3{
+.single>p,h3,a{
+    align-self: center;
     margin-top:5px;
     margin-bottom:5px;
 }
