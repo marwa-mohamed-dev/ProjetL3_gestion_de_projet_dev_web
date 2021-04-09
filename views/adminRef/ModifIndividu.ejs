@@ -36,7 +36,7 @@
                     <% if (individus.length > 0) { %>
                         <% individus.forEach(individu => { %>
                             <%if(!individu.valide) { %>
-                                <a class="single" >
+                                <div class="single" >
                                     <h3 class="nom"><%= individu.nom %> <%= individu.prenom %></h3>
                                     <p class="dateNaissance"><%= individu.dateNaissance.toDateString()%></p>
                                     <p class="statut"><%= individu.statut%></p>
