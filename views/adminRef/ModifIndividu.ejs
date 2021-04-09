@@ -36,15 +36,11 @@
                     <% if (individus.length > 0) { %>
                         <% individus.forEach(individu => { %>
                             <%if(!individu.valide) { %>
-<<<<<<< HEAD
-                                <div class="single" >
-=======
-                                <a class="single" href="/referentielIndividu/<%= individu._id %>">
->>>>>>> 686f70631a151aa6c9bbc37ef434fb14b71a3754
+                                <a class="single" >
                                     <h3 class="nom"><%= individu.nom %> <%= individu.prenom %></h3>
                                     <p class="dateNaissance"><%= individu.dateNaissance.toDateString()%></p>
                                     <p class="statut"><%= individu.statut%></p>
-                                    <a class="affiche" href="/referentiel/Individu/<%= individu._id %>" ><img src="../edit.png" alt="edit"></a>
+                                    <a class="affiche" href="/referentielIndividu/<%= individu._id %>" ><img src="../edit.png" alt="edit"></a>
                                 </div>   
                             <% } %>
                         <% }) %>

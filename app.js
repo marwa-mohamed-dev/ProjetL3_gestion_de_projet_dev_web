@@ -539,7 +539,7 @@ app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/referentielModifArticle' });
+            res.json({ redirect: '/referentiel/ModifArticle' });
         })
         .catch((err) => {
             console.log(err);
