@@ -17,9 +17,9 @@
 
             <div class="page" id='choix'>
                 <form class='NewI' action='/referentiel/CreerIndividu' method='POST'>
-                    <label class='Col1'>Nom*</label><input class='Col1' type='text' name='nom' required>
+                    <label class='Col1'>Nom*</label><input class='Col1' type='text' name='nom' placeholder='NOM*' pattern='[A-Z]{1,}' required>
                     <label class='Col2'>Prénom*</label>
-                    <input class='Col2' type='text' name='prenom' required>
+                    <input class='Col2' type='text' name='prenom' placeholder='Prénom*' pattern='[A-Z]{1}[a-z]{1,}' required>
                     <label>Date de Naissance*</label>
                     <input type='date' name='dateNaissance' placeholder='01/01/1950' required>
                     <label>Catégorie socio-professionnelle*</label>
