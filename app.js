@@ -224,11 +224,11 @@ app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
     individus.forEach(individu=> {
         if(cibleDeRoutage.client==='Non'){
             if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Enregistré')){
-                liste.push(individu)
+                liste.push(individu._id)
             }
         } else {
             if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Client')){
-                liste.push(individu)
+                liste.push(individu._id)
             }
         }
        
@@ -238,7 +238,6 @@ app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
     //CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {listeIndividus: liste}})
         .then((result) => {
             res.redirect('/creationCiblederoutage');
-            console.log(liste)
         })
         .catch((err) => {
             console.log(err);
@@ -301,15 +300,15 @@ app.get('/ciblederoutageRefuses', checkAuthenticated, async (req, res) => {
     }
 })
 
-app.get('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    const cible = CibleDeRoutage.findById(id)
-        .then(result => {
-            res.render('./prospection/modif', { cible: cible, title: 'cible de routage', style: "prospection" });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+app.get('/ciblederoutageRefuses/:id', checkAuthenticated, async(req, res) => {
+    try {
+        const id = req.params.id;
+        const cible = await CibleDeRoutage.findById(id)
+        const articles = await Article.find({})
+        res.render('./prospection/modif', { cible: cible, articles : articles, title: 'cible de routage', style: "prospection" });
+    } catch (error) {
+        console.log(err);
+    }
 });
 
 app.delete('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
@@ -323,15 +322,17 @@ app.delete('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-app.get('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    CibleDeRoutage.findById(id)
-        .then(result => {
-            res.render('./prospection/details', { cible: result, title: 'cible de routage', style: "prospection" });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+app.get('/validationCiblederoutage/:id', checkAuthenticated, async (req, res) => {
+    
+    try {
+        const id = req.params.id;
+        const cible = await CibleDeRoutage.findById(id)
+        const articles = await Article.find({})
+        res.render('./prospection/details', { cible: cible, articles : articles, title: 'cible de routage', style: "prospection" });
+    } catch (error) {
+        console.log(err);
+    }
+    
 });
 app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
@@ -344,28 +345,27 @@ app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
+app.put('/validationCiblederoutage/:id', checkAuthenticated, async (req, res) => {
     
-    CibleDeRoutage.findByIdAndUpdate(id,{valide: true, dateValide: new Date(), refus: false})
-    //changement de statut
-    CibleDeRoutage.findById(id)
-    const cible = CibleDeRoutage.findById(id)
-    const individus = cible.listeIndividus
-    // console.log(individus)
-    // console.log(cible.titre)
-        .then(result => {
-            // console.log(individus)
-    // console.log(cible.titre)
-            individus.forEach(individu=> {
-            individu.statut = 'Prospect'
-            individu.dateProspect = Date.now
-            })
-            res.json({ redirect: '/validationCiblederoutage' });
+    try {
+        const id = req.params.id;
+        const cible = await CibleDeRoutage.findById(id)
+        const individus = await Individu.find({_id:{$in:cible.listeIndividus}})
+        
+        individus.forEach(individu=> {
+                    individu.statut = 'Prospect'
+                    individu.save()
         })
-        .catch((err) => {
-            console.log(err);
-        });
+        // await individus.save()
+        cible.valide = true 
+        cible.dateValide = new Date()
+        cible.refus = false
+        cible.save()
+        //await CibleDeRoutage.findByIdAndUpdate(id,{valide: true, dateValide: new Date(), refus: false })
+        res.redirect('/validationCiblederoutage');
+    } catch (error) {
+        console.log(err);
+    }
 });
 
 app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {

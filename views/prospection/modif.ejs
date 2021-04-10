@@ -13,15 +13,36 @@
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
     </div>
     
-    <div class="page" >
+    <div  >
         <p><% cible.titre%></p>
-        <form action="" method="POST">
-            <label><% cible.titre%></label>
-            
-            <% console.log( cible.titre) %> 
-            <input type="text" value="<% cible.titre%>">
-            <input type="submit">
-        </form>
+        <h2><%= cible.titre %></h2>
+        <p><%=cible.description%></p>
+        <h2>Articles de la publicité : </h2>
+        <%articles.forEach( article => {%>
+            <%cible.articles.forEach(art =>{ %>
+                <%if(article._id == art){%>
+                    <p><%=article.designation%></p>
+               <% } %>
+           <% }) %>
+        <%})%>
+        <h2>Cible de routage : </h2>
+        <% cible.listeIndividus.forEach( individu => { %>
+            <p><%=individu.nom.toUpperCase()%> <%=individu.prenom%></p>
+
+       <% }); %> 
+        <h3> Conditions de cible de routage choisis </h3>
+        <%if(cible.ageMin !=null && cible.ageMax != null) { %>
+            <p>Age compris entre <%=cible.ageMin%> et <%=cible.ageMax%> ans</p>
+        <%}%>
+        <% if (cible.categoriePro != ''){ %>
+            <p> Catégorie socio-professionnelle : <%=cible.categoriePro%> </p>
+        <% } %>
+        <% if (cible.departementResidence != null){ %>
+            <p>Départeement de résidence : <%=cible.departementResidence%> </p>
+        <% } %>
+        <% if (cible.client != ''){ %>
+            <p>Sélection parmi les clients : <%=cible.client%> </p>
+        <% } %>
         <a class="delete" data-doc="<%= cible._id %>">delete</a>
     </div>
     <script>

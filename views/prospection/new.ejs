@@ -52,7 +52,7 @@
                 <select name="articles" class="numberArt">
                     <option value="" disabled selected>choisir 1 article</option>
                     <% articles.forEach(article =>{ %>
-                        <option label="<%= article.designation %>" value=<%= article %>></option>
+                        <option class="1" label="<%= article.designation %>" value=<%=article._id%>></option>
                     <% }) %>
                 </select>
             </div> 
@@ -109,7 +109,7 @@
         ////////////////////////////////
         function Ajout_Article(){
             const nbArt = document.getElementsByClassName("numberArt").length+1;
-            articles.insertAdjacentHTML('beforeend',"<select name='articles' class='numberArt'><option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article.id %>'></option><% }) %></select>")
+            articles.insertAdjacentHTML('beforeend',"<select name='articles' class='numberArt'><option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article._id %>'></option><% }) %></select>")
             if(nbArt>1){
                 suppr.classList.remove('hidden')
             }

@@ -17,23 +17,41 @@
     <div>
         <h2><%= cible.titre %></h2>
         <p><%=cible.description%></p>
+        <h2>Articles de la publicité : </h2>
+        <%articles.forEach( article => {%>
+            <%cible.articles.forEach(art =>{ %>
+                <%if(article._id == art){%>
+                    <p><%=article.designation%></p>
+               <% } %>
+           <% }) %>
+        <%})%>
         <h2>Cible de routage : </h2>
-        <% cible.listeIndividus.forEach(individu => { %>
-            <p><%=individu.nom%></p>
-        }); %> 
-        <p><%=cible.listeIndividus%></p>
+        <% cible.listeIndividus.forEach( individu => { %>
+            <p><%=individu%></p>
+
+       <% }); %> 
         <h3> Conditions de cible de routage choisis </h3>
         <%if(cible.ageMin !=null && cible.ageMax != null) { %>
-            <p>de <%=cible.ageMin%> à <%=cible.ageMax%></p>
-            <%console.log(cible.ageMin)%>
+            <p>Age compris entre <%=cible.ageMin%> et <%=cible.ageMax%> ans</p>
         <%}%>
         <% if (cible.categoriePro != ''){ %>
-            <p><%=cible.catgoriePro%> </p>
+            <p> Catégorie socio-professionnelle : <%=cible.categoriePro%> </p>
         <% } %>
-
+        <% if (cible.departementResidence != null){ %>
+            <p>Départeement de résidence : <%=cible.departementResidence%> </p>
+        <% } %>
+        <% if (cible.client != ''){ %>
+            <p>Sélection parmi les clients : <%=cible.client%> </p>
+        <% } %>
+        <label>Remarque si refus :</label>
+        <input type="text">
+        
+        
+        
         <a class="delete" data-doc="<%= cible._id %>">delete</a>
         <a class="validate" data-doc="<%= cible._id %>" >Valider</a>
         <a class="refuse" data-doc="<%= cible._id %>">Refuser</a>
+        <input type="button" value='retour'  onclick=valider()>
     </div>
     <script>
         let on_val = document.getElementById("val")
