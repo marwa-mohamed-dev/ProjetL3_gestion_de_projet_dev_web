@@ -18,13 +18,14 @@
                 <form action="/referentielArticle/<%= article._id %>?_method=PUT" method='POST'>
                     <label>Référence: <%= article.reference %></label>
                     <label>Désignation*</label>
-                    <input type='text' name='designation' value="<%= article.designation %>" required>
+                    <input type='text' name='designation' value="<%= article.designation %>" pattern='[A-Z]{1}[a-z]{1,}' required>
                     <label>Prix de vente (€)*</label>
                     <input type='number' name='prix' min='0.00' step='0.01' value="<%= article.prix %>" required>
                     <label>Description</label>
                     <input type='text' name='description' value="<%= article.description %>" required>
                     <input type="submit" value="Annuler" onclick="Marticle()">
                     <input type='submit' value='Modifier'>
+                    <input type='submit' class="delete" data-doc="<%= article._id %>" value='Supprimer'>
                 </form>
             </div>
 
@@ -32,7 +33,7 @@
                 let on_Modif_Article = document.getElementById("Modif_Art");
                 on_Modif_Article.classList.add("on");
 
-                const trashcan = document.querySelector('a.delete');
+                const trashcan = document.querySelector('input.delete');
                 trashcan.addEventListener('click', (e) => {
                     const endpoint = `/referentielModifArticle/${trashcan.dataset.doc}`;
                     fetch(endpoint, {

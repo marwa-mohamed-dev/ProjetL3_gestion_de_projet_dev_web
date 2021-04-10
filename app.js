@@ -167,7 +167,7 @@ app.post('/creerCom', checkAuthenticated, async (req, res) => {
     commande.prix=calculPrix(lprix,commande.quantite);
     commande.numCommande=generateNumCom().toString();
     commande.etat=testAnomalie(commande);
-    console.log(commande);
+    //console.log(commande);
 
     commande.save()
         .then((result) => {
@@ -588,7 +588,7 @@ app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
         searchOptions.reference= new RegExp(req.query.reference);
         searchOptions.designation = new RegExp(req.query.designation, 'i');
     }
-    console.log(searchOptions);
+    //console.log(searchOptions);
     Article.find(searchOptions).sort({ createdAt: -1 })
         .then((result) => {
             res.render('./adminRef/ModifArticle', {
@@ -635,7 +635,7 @@ app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/referentiel/ModifArticle' });
+            res.json({ redirect: '/referentielModifArticle' });
         })
         .catch((err) => {
             console.log(err);
@@ -685,7 +685,7 @@ app.put('/referentielIndividu/:id', checkAuthenticated, async(req, res) => {
         individu = await Individu.findById(req.params.id)
         individu.nom = req.body.nom
         individu.prenom = req.body.prenom
-        individu.dateNaissance = req.body.dateNaissance
+        //individu.dateNaissance = req.body.dateNaissance
         individu.categoriePro = req.body.categoriePro
         individu.adresseNum = req.body.adresseNum
         individu.adresseType = req.body.adresseType

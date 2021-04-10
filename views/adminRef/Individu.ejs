@@ -16,21 +16,21 @@
 
             <div class="page" id='choix'>
                 <div class="details content">
-                    <!-- <h2><%= individu.nom %> <%= individu.prenom %></h2>
+                    <!-- <h2>%= individu.nom %> %= individu.prenom %></h2>
                     <div class="content">
-                        <input type='text' name='dateNaissance' placeholder=<%= individu.dateNaissance %> required>
-                        <p><%= individu.categoriePro %></p>
-                        <p><%= individu.adresseNum %><%= individu.adresseType %></p>
-                        <p><%= individu.adresseCode %><%= individu.adresseVille %></p>
-                        <p>tel:<%= individu.numeroTel %> mail:<%= individu.Mail %></p>
+                        <input type='text' name='dateNaissance' placeholder=%= individu.dateNaissance %> required>
+                        <p>%= individu.categoriePro %></p>
+                        <p>%= individu.adresseNum %>%= individu.adresseType %></p>
+                        <p>%= individu.adresseCode %>%= individu.adresseVille %></p>
+                        <p>tel:%= individu.numeroTel %> mail:%= individu.Mail %></p>
                     </div> -->
                     <form class='NewI' action='/referentielIndividu/<%= individu.id %>?_method=PUT' method='POST'>
                         <label class='Col1'>Nom*</label>
-                        <input class='Col1' type='text' name='nom' value='<%= individu.nom %>' required>
+                        <input class='Col1' type='text' name='nom' value='<%= individu.nom %>' pattern='[A-Z]{1,}' required>
                         <label class='Col2'>Prénom*</label>
-                        <input class='Col2' type='text' name='prenom' value='<%= individu.prenom %>' required>
+                        <input class='Col2' type='text' name='prenom' value='<%= individu.prenom %>' pattern='[A-Z]{1}[a-z]{1,}' required>
                         <!-- <label>Date de Naissance*</label>
-                        <input type='date' name='dateNaissance' value='<%= individu.dateNaissance %>' required> -->
+                        <input type='date' name='dateNaissance' value='%= individu.dateNaissance %>' required> -->
                         <label>Catégorie socio-professionnelle*</label>
                         <SELECT name='categoriePro' size='1' required>
                             <OPTION selected><%= individu.categoriePro %><OPTION>Agriculteurs exploitants <OPTION>Artisans. commerçants. chefs entreprise<OPTION>Cadres et professions intellectuelles supérieures<OPTION>Professions intermédiaires<OPTION>Employés<OPTION>Ouvriers<OPTION>Retraités<OPTION>Étudiants<OPTION>Autres</SELECT>
@@ -48,9 +48,9 @@
                         <SELECT name='statut' size='1' required>
                             <OPTION selected><%= individu.statut %><OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT>
                         <input type="submit" value="Annuler" onclick="Mindividu()">
-                        <input type='submit' value='Modifier' onclick="Mindividu()">
+                        <input type='submit' value='Modifier'>
+                        <input type='submit' class="delete" data-doc="<%= individu._id %>" value='Supprimer'>
                     </form>
-                    <a class="delete" data-doc="<%= individu._id %>">delete</a>
                 </div>
             </div>
 
@@ -58,7 +58,7 @@
                 let on_Modif_Individu = document.getElementById("Modif_Ind");
                 on_Modif_Individu.classList.add("on");
 
-                const trashcan = document.querySelector('a.delete');
+                const trashcan = document.querySelector('input.delete');
                 trashcan.addEventListener('click', (e) => {
                     const endpoint = `/referentielModifIndividu/${trashcan.dataset.doc}`;
                     fetch(endpoint, {
