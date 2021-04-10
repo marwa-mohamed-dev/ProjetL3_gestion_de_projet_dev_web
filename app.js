@@ -298,25 +298,6 @@ app.get('/prospection', checkAuthenticated, (req, res) => {
     res.render('./prospection/page', { title: 'Prospection', style: "prospection" })
 })
 
-//////////////////////////// Test 
-app.get('/test', checkAuthenticated, (req,res)=> {
-    res.render('test', {title:'Test',style:"anomalie"})
-})
-
-app.post('/test', checkAuthenticated, (req, res) => {
-    const anomalie = new Anomalie(req.body);
-    anomalie.save()
-        .then((result) => {
-            console.log("Créer")
-            res.redirect('/test');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-/////////////////////////////////////
-
-
 //creer une cible de routage
 app.post('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
     const individus = await Individu.find({})
@@ -583,7 +564,6 @@ app.delete('/recherche/:id', checkAuthenticated, (req, res) => {
 //ordonés avec celui ajouté le plus récemment en premier
 app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
     let searchOptions = {};
-    console.log(req.query.reference);
     if ( req.query.reference !=null && req.query.designation != null) {
         searchOptions.reference= new RegExp(req.query.reference);
         searchOptions.designation = new RegExp(req.query.designation, 'i');
@@ -650,7 +630,6 @@ app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
         searchOptions.nom = new RegExp(req.query.nom, 'i');
         searchOptions.prenom = new RegExp(req.query.prenom, 'i');
         searchOptions.dateNaissance = req.query.dateNaissance;
-        //console.log(searchOptions.dateNaissance);
     }
     Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
         .then((result) => {
