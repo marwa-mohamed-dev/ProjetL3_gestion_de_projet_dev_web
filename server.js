@@ -83,8 +83,7 @@ serv.use(methodOverride('_method'))
 // routing
 
 serv.get('/', checkNotAuthenticated, (req, res) => {
-    console.log("Coucou");
-    //res.render('Connexion', {title: 'Connexion' });
+    res.render('Connexion', {title: 'Connexion' });
 });
 
 serv.get('/acceuil', checkAuthenticated, (req, res) => {
