@@ -49,8 +49,9 @@
                             <OPTION selected><%= individu.statut %><OPTION>Enregistré<OPTION>Prospect<OPTION>Client<OPTION>Client interdit</SELECT>
                         <input type="submit" value="Annuler" onclick="Mindividu()">
                         <input type='submit' value='Modifier' onclick="Mindividu()">
+                        <input type="submit" class="delete" data-doc="<%= individu._id %>" value="Supprimer">
                     </form>
-                    <a class="delete" data-doc="<%= individu._id %>">supprimer</a>
+                    <!-- <a class="delete" data-doc="<%= individu._id %>">supprimer</a> -->
                 </div>
             </div>
 
@@ -58,7 +59,7 @@
                 let on_Modif_Individu = document.getElementById("Modif_Ind");
                 on_Modif_Individu.classList.add("on");
 
-                const trashcan = document.querySelector('a.delete');
+                const trashcan = document.querySelector('input.delete');
                 trashcan.addEventListener('click', (e) => {
                     const endpoint = `/referentielModifIndividu/${trashcan.dataset.doc}`;
                     fetch(endpoint, {
@@ -68,6 +69,7 @@
                         .then((data) => window.location.href = data.redirect)
                         .catch(err => console.log(err));
                 });
+
 
                 function Carticle() {
                     location.replace("http://localhost:3000/referentiel/CreerArticle")

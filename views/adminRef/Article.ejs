@@ -25,15 +25,15 @@
                     <input type='text' name='description' value="<%= article.description %>" required>
                     <input type="submit" value="Annuler" onclick="Marticle()">
                     <input type='submit' value='Modifier'>
+                    <input type="submit" class="delete" data-doc="<%= article._id %>" value="Supprimer">
                 </form>
-                <a class="delete" data-doc="<%= article._id %>">supprimer</a>
             </div>
 
             <script>
                 let on_Modif_Article = document.getElementById("Modif_Art");
                 on_Modif_Article.classList.add("on");
 
-                const trashcan = document.querySelector('a.delete');
+                const trashcan = document.querySelector('input.delete');
                 trashcan.addEventListener('click', (e) => {
                     const endpoint = `/referentielModifArticle/${trashcan.dataset.doc}`;
                     fetch(endpoint, {
