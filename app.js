@@ -9,6 +9,7 @@ const Individu = require('./models/individu');
 const Article = require('./models/article');
 const Employee = require('./models/employee');
 const Commande = require('./models/commande');
+const Anomalie = require('./models/anomalie');
 const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
@@ -19,6 +20,8 @@ const session = require('express-session');
 const passport = require('passport');
 const methodOverride = require('method-override');
 const initializePassport = require('./passport-config');
+const { result } = require('lodash');
+const { db } = require('./models/individu');
 initializePassport(
     passport,
     identifiant => users.find(user => user.identifiant === identifiant),
@@ -31,6 +34,8 @@ const users = [ {id: '1', identifiant: "winkler", mdp: "astrid"},
 {id: '4', identifiant: "gomes", mdp: "lucie"}, 
 {id: '5', identifiant: "mohamed", mdp: "marwa"}
 ]
+
+
 ///////////////////////////////////////////////
 
 
@@ -118,17 +123,25 @@ app.get('/creerCom', checkAuthenticated, async (req,res)=> {
     res.render('./saisieCom/CreerCom', {articles:articles, individus:individus, title:'Commandes',style:"Commande"})
 })
 
+//créer un nouvel object commande selon la requête et l'ajoute à notre base de donnée
 app.post('/creerCom', checkAuthenticated, async (req, res) => {
-    const num=generateNumCom();
     const commande = new Commande(req.body);
-    // const iden=req.params.id;
-    // const ind= Individu.findById(iden);
-    // console.log(iden);
-    // console.log(ind.nom);
-    commande.numCommande=num.toString();
-    const etat=testAnomalie(commande);
-    commande.etat=etat;
-    commande.prix=calculPrix(commande);
+    //pour récupérer la liste des prix des articles de notre commande
+    const ids=commande.articles;
+    const articles = await Article.find({ _id:{ $in: ids}});
+    const lprix=[];
+    ids.forEach(id=>{
+        articles.forEach(article=>{
+            if(article.id==id){
+                lprix.push(article.prix);
+            }
+        });
+    });
+
+    commande.prix=calculPrix(lprix,commande.quantite);
+    commande.numCommande=generateNumCom().toString();
+    commande.etat=testAnomalie(commande);
+    console.log(commande);
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
@@ -138,6 +151,14 @@ app.post('/creerCom', checkAuthenticated, async (req, res) => {
         });
 });
 
+function calculPrix(lprix,lquant){
+    let prix=0;
+    for(let i=0;i<lprix.length;i++){
+        prix=prix+lprix[i]*lquant[i];
+    }
+    return prix;
+}  
+
 function generateNumCom() { 
     var num = Math.trunc(Math.random()*100000000);
     while(num<10000000){
@@ -146,37 +167,40 @@ function generateNumCom() {
 }
 
 function testAnomalie(com){
-    let etat="Valide";
-    if(com.pCheque==null && com.pCarte==null){
-        etat="anoPaiement"
+    let etat=[];
+    if(com.valeur==null){
+        etat.push("anoMontant");
     }
-    return etat;
-}
+    else if(com.valeur!=com.prix){
+        etat.push("anoMontant");
+    }
 
-function calculPrix(com){
-    let prix=0;
-    let articles=com.articles;
-    let quantites=com.quantite;
-    //console.log(quantites);
-    articles.forEach(article =>{
-        //let a= Article.findById(article);
-        //console.log(typeof(article)); article est en fait un String !!!! et nin un object
-        //console.log(article);
-        //console.log(a);
-        
-        //bloque pour le 2èe article car le string ne s'insère pas dans la fonction insertAdjacentHTML
-        console.log(article);
-        let cout=article.split(",")[2];
-        console.log(cout.substr(10,11));
-        
-        //console.log(article[3]); renvoie du vide
-        //console.log(article.valueOf()); renvoie même chose que article simple
-        //console.log(article.prix); renvoie undefined
-        //console.log(Object.getOwnPropertyNames(article)); renvoie quelque chose de moche
-        //console.log(article.getAttribute("prix"));
-        //console.log(article[prix]);
-     })
-    return prix;
+    if(com.pCheque==null && com.pCarte==null){
+        etat.push("anoPaiement");
+    }
+    else if(com.pCheque=='on'){
+        if(com.numeroCheque==''){
+            etat.push("anoPaiement");
+        }
+        else if(com.banque==''){
+            etat.push("anoPaiement");
+        }
+        // else if(signature!="on"){
+        //     etat.push("anoPaiement");
+        // }
+    }
+    // else if(com.pCarte=='on'){
+    //     if(numeroCarte==null){
+    //         etat.push("anoPaiement");
+    //     }
+    //     else if(dateExpiration==null){
+    //         etat.push("anoPaiement");
+    //     }
+    //     else if(dateExpiration!=null){
+    //         let today=new Date().getTime();
+    //     }
+    // }
+    return etat;
 }
 
 //créer un nouvel individu depuis l'espace saisie de commande
@@ -245,34 +269,23 @@ app.get('/prospection', checkAuthenticated, (req,res)=> {
     res.render('./prospection/page', {title:'Prospection',style:"prospection"})
 })
 
-// affiche liste de tous cibles de routage
-//ordonés avec celui ajouté le plus récemment en premier
-// app.get('/prospection', checkAuthenticated, (req, res) => {
-//     CibleDeRoutage.find().sort({ createdAt: -1 })
-//         .then((result) => {
-//             res.render('prospection', { title: 'Cibles de routage', cibles: result, style: "prospection" });
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// });
+//////////////////////////// Test 
+app.get('/test', checkAuthenticated, (req,res)=> {
+    res.render('test', {title:'Test',style:"anomalie"})
+})
 
-//app.use('/prospection',CibleDeRoutage)
-
-// affiche liste de tous les individus de la base
-//ordonés avec celui ajouté le plus récemment en premier
-// app.get('/prospection', checkAuthenticated, (req, res) => {
-
-//     Article.find().sort({ createdAt: -1 })
-//         .then((result) => {
-//             res.render('prospection', {
-//                 articles: result,
-//                 style: "prospection"});
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// });
+app.post('/test', checkAuthenticated, (req, res) => {
+    const anomalie = new Anomalie(req.body);
+    anomalie.save()
+        .then((result) => {
+            console.log("Créer")
+            res.redirect('/test');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+/////////////////////////////////////
 
 
 //creer une cible de routage
@@ -421,9 +434,30 @@ app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
 });
 
 
-app.get('/anomalies', checkAuthenticated, (req,res)=> {
-    res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})
-})
+// app.get('/anomalies', checkAuthenticated, (req,res)=> {
+//     res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})
+// })
+
+// affiche liste de tous les articles de la base
+//ordonés avec celui ajouté le plus récemment en premier
+app.get('/anomalies', checkAuthenticated, (req, res) => {
+    let searchOptions = {};
+    if (/*req.query.reference != null &&*/req.query.numeroCom != null) {
+        //searchOptions.reference= new RegExp(req.query.reference, 'i');
+        searchOptions.numeroCom = new RegExp(req.query.numeroCom, 'i');
+    }
+    Anomalie.find(searchOptions).sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('anomalie', {
+                title: 'Gestion des Anomalies',
+                anomalies: result,
+                style: "anomalie",
+                searchOptions: req.query});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 // affiche liste de tous les individus de la base
 //ordonés avec celui ajouté le plus récemment en premier

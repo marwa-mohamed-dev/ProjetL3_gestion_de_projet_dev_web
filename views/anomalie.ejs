@@ -11,24 +11,33 @@
 
                 <form action="" method='GET' id="R_An">
                     <label>Numéro Commande</label>
-                    <input type="text" id="Cnum" name="Cnum">
+                    <input type="text" id="Cnum" name="Cnum" value="<%=searchOptions.numerocom%>">
                     <label>Nom Individu</label>
-                    <input type="text" id="nom" name="nom">
-                    <label>Prénom Individu</label>
-                    <input type="text" id="prenom" name="prenom">
+                    <input type="text" id="nom" name="nom" value="<%=searchOptions.client%>">
+                    <!-- <label>Prénom Individu</label>
+                    <input type="text" id="prenom" name="prenom" value="%=anomalie.client%>"> -->
                     <label>Date d'anomalie</label>
-                    <input type='date'>
+                    <input type='date' value="<%=searchOptions.date%>">
                     <input type='submit' value='Rechercher'>
                 </form>
+
+                <div class="liste">
+                    <% if (anomalies.length > 0) { %>
+                        <% anomalies.forEach(anomalie => { %>
+                            <%if(!anomalie.valide) { %>
+                                <a class="single" href="/commande/<%= anomalie._id %>">
+                                    <h3 class="numéro"><%= anomalie.numeroCom %></h3>
+                                </a>   
+                            <% } %>
+                        <% }) %>
+                    <% } else { %>
+                        <p>Aucune anomalie n'est enregistré dans la base de données</p>
+                    <% } %>
+                </div>
+
             </div>
             <script>
                 let on_R_An = document.getElementById("R_An")
-                    /*
-                                    function Recherche_Anomalie() {
-                                        on_R_An.classList.add("on");
-                                        choix.innerHTML = "";
-                                        choix.insertAdjacentHTML('afterbegin', "<form action='' method='GET'><label>Numéro Commande</label><input type='text'><label>Nom Individu</label><input type='text'></input><label>Date d'anomalie</label> <input type='date'><input type='submit' value='Rechercher'></form>")
-                                    }*/
             </script>
 
             <%- include('./partials/footer.ejs') %>

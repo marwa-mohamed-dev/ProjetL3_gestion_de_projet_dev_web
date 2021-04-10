@@ -8,14 +8,13 @@ const commandeSchema = new Schema({
      },
 
     client: {
-        // à mettre type object Individu
-        type: mongoose.Schema.Types.Array,
-        ref:"Individu",
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Individu',
         required: true
     },
     articles: {
-        type: mongoose.Schema.Types.Array,
-        ref:"Article",
+        type:mongoose.Schema.Types.Array,
+        ref: 'Article',
         required: true
     },
     quantite: {
@@ -42,9 +41,11 @@ const commandeSchema = new Schema({
     banque: {
         type: String,
     },
-
+    signature:{
+        type:String,
+    },
     etat: {
-        type: String,
+        type: Array,
         required: true
     },
     //valeur du moyen de paiement
@@ -52,7 +53,6 @@ const commandeSchema = new Schema({
         type: Number
         //required: True
     },
-
     //prix de l'ensemble des articles de la commande
     prix:{
         type: Number

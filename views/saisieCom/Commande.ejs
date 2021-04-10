@@ -16,8 +16,10 @@
             <div class="details content">
                     <h2><%= commande.numCommande %></h2>
                     <div class="content">
-                        <!--<input type='text' name='dateNaissance' placeholder=%= individu.dateNaissance %> required>
-                        <p>%= individu.nom%></p>-->
+                        <p><%=commande.client%></p>
+                        <% commande.nomArticles.forEach(article =>{ %>
+                            <p> <%=article%> </p>
+                        <% }) %>
                     </div>
                     <a class="delete" data-doc="<%= commande._id %>">delete</a>
                 </div>
