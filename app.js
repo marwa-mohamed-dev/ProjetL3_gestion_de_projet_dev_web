@@ -13,6 +13,17 @@ const Anomalie = require('./models/anomalie');
 const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
+//////////////////////////////////////////////
+const multer = require('multer');
+const path = require('path');
+const uploadPath = path.join('public', Article.imageBasePath)
+const imageMimeTypes = ['images/jpeg', 'images/jpg', 'images/png', 'images/gif']
+const upload = multer({
+    dest: uploadPath
+        // fileFilter: (req, file, callback) => {
+        //     callback(null, imageMimeTypes.includes(file.mimetype))
+        // }
+})
 
 // //////////////////////////////////////////
 const flash = require('express-flash');
@@ -22,20 +33,21 @@ const methodOverride = require('method-override');
 const initializePassport = require('./passport-config');
 const { result } = require('lodash');
 const { db } = require('./models/individu');
+const { authorize } = require('passport');
 initializePassport(
     passport,
     identifiant => users.find(user => user.identifiant === identifiant),
     id => users.find(user => user.id === id)
 );
 
-const users = [ {id: '1', identifiant: "winkler", mdp: "astrid"},
-{id: '2', identifiant: "lee", mdp: "jiou"}, 
-{id: '3', identifiant: "weber", mdp: "louise"}, 
-{id: '4', identifiant: "gomes", mdp: "lucie"}, 
-{id: '5', identifiant: "mohamed", mdp: "marwa"}
-]
+///////////////////////////////////////////////
 
-
+const users = [{ id: '1', identifiant: "winkler", mdp: "astrid" },
+        { id: '2', identifiant: "lee", mdp: "jiou" },
+        { id: '3', identifiant: "weber", mdp: "louise" },
+        { id: '4', identifiant: "gomes", mdp: "lucie" },
+        { id: '5', identifiant: "mohamed", mdp: "marwa" }
+    ]
 ///////////////////////////////////////////////
 
 
@@ -64,8 +76,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(flash())
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    resave : false,
-    saveUninitialized : false
+    resave: false,
+    saveUninitialized: false
 }))
 
 app.use(passport.initialize())
@@ -76,11 +88,11 @@ app.use(methodOverride('_method'))
 // routing
 
 app.get('/', checkNotAuthenticated, (req, res) => {
-    res.render('Connexion', {title: 'Connexion' });
+    res.render('Connexion', { title: 'Connexion' });
 });
 
 app.get('/acceuil', checkAuthenticated, (req, res) => {
-    res.render('acceuil', {title: 'Accueil', style: 'acceuil'});
+    res.render('acceuil', { title: 'Accueil', style: 'acceuil' });
 });
 
 // Que fait l'appli en fonction de si authentification réussie ou pas
@@ -89,28 +101,42 @@ app.post('/', checkNotAuthenticated, passport.authenticate('local', {
     failureRedirect: '/',
     failureFlash: true
 }))
-  
+
 app.get('/referentiel', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/Referentiel', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('./adminRef/Referentiel', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
 app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/CreerArticle', {title: 'Administration du référentiel', style: 'Referentiel'});
+    try {
+        const article = new Article();
+        res.render('./adminRef/CreerArticle', {
+            title: 'Administration du référentiel',
+            style: 'Referentiel',
+            article: article
+        })
+    } catch (err) {
+        console.log(err);
+    }
 });
 
 app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/CreerIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
+    res.render('./adminRef/CreerIndividu', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
-app.get('/referentiel/Article', (req, res) => {
-    res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
-})
+/*app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
+    res.render('./adminRef/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
+});*/
 
-app.get('/referentiel/Individu', (req, res) => {
-    res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
-})
-app.get('/commandes', checkAuthenticated, (req,res)=> {
-    res.render('./saisieCom/AcceuilCom', {title:'Commandes',style:"Commande"})
+// app.get('/referentielArticle', (req, res) => {
+//     res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
+// })
+
+// app.get('/referentielIndividu', (req, res) => {
+//     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
+// })
+
+app.get('/commandes', checkAuthenticated, (req, res) => {
+    res.render('./saisieCom/AcceuilCom', { title: 'Commandes', style: "Commande" })
 })
 
 app.get('/ajoutInd', checkAuthenticated, (req,res)=> {
@@ -120,7 +146,7 @@ app.get('/ajoutInd', checkAuthenticated, (req,res)=> {
 app.get('/creerCom', checkAuthenticated, async (req,res)=> {
     const articles = await Article.find({})
     const individus = await Individu.find({})
-    res.render('./saisieCom/CreerCom', {articles:articles, individus:individus, title:'Commandes',style:"Commande"})
+    res.render('./saisieCom/CreerCom', { articles: articles, individus: individus, title: 'Commandes', style: "Commande" })
 })
 
 //créer un nouvel object commande selon la requête et l'ajoute à notre base de donnée
@@ -142,6 +168,7 @@ app.post('/creerCom', checkAuthenticated, async (req, res) => {
     commande.numCommande=generateNumCom().toString();
     commande.etat=testAnomalie(commande);
     console.log(commande);
+
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
@@ -162,7 +189,8 @@ function calculPrix(lprix,lquant){
 function generateNumCom() { 
     var num = Math.trunc(Math.random()*100000000);
     while(num<10000000){
-        num=num*10;}
+        num=num*10;
+    }
     return num;
 }
 
@@ -229,7 +257,8 @@ app.get('/modifCom', checkAuthenticated, (req, res) => {
                 title: 'Commandes',
                 commandes: result,
                 style: "Commande",
-                searchOptions: req.query});
+                searchOptions: req.query
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -265,8 +294,8 @@ app.delete('/commande/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-app.get('/prospection', checkAuthenticated, (req,res)=> {
-    res.render('./prospection/page', {title:'Prospection',style:"prospection"})
+app.get('/prospection', checkAuthenticated, (req, res) => {
+    res.render('./prospection/page', { title: 'Prospection', style: "prospection" })
 })
 
 //////////////////////////// Test 
@@ -289,69 +318,56 @@ app.post('/test', checkAuthenticated, (req, res) => {
 
 
 //creer une cible de routage
-app.post('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
+app.post('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
     const individus = await Individu.find({})
     const cibleDeRoutage = new CibleDeRoutage(req.body);
     const liste = new Array();
-    individus.forEach(individu=> {
-        if(cibleDeRoutage.client==='Non'){
-            if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Enregistré')){
+    individus.forEach(individu => {
+        if (cibleDeRoutage.client === 'Non') {
+            if ((individu.age <= cibleDeRoutage.ageMax) && (individu.age >= cibleDeRoutage.ageMin) && (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode / 1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Enregistré')) {
                 liste.push(individu)
             }
         } else {
-            if((individu.age<=cibleDeRoutage.ageMax)&&(individu.age>=cibleDeRoutage.ageMin)&& (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode/1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Client')){
+            if ((individu.age <= cibleDeRoutage.ageMax) && (individu.age >= cibleDeRoutage.ageMin) && (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode / 1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Client')) {
                 liste.push(individu)
             }
         }
-       
+
     })
     cibleDeRoutage.listeIndividus = liste
     cibleDeRoutage.save()
-    //CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {listeIndividus: liste}})
+        //CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {listeIndividus: liste}})
         .then((result) => {
             res.redirect('/creationCiblederoutage');
-            console.log(liste)
+            //console.log(liste)
         })
         .catch((err) => {
             console.log(err);
         });
 });
 //recuperation liste articles pour creation cible de routage
-app.get('/creationCiblederoutage', checkAuthenticated, async (req, res) => {
+app.get('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
     try {
         const articles = await Article.find({})
-        //const individus = await Individu.find({})
-        //const cibleDeRoutage = new cibleDeRoutage()
-        res.render('./prospection/new',{
-            articles : articles,
+            //const individus = await Individu.find({})
+            //const cibleDeRoutage = new cibleDeRoutage()
+        res.render('./prospection/new', {
+            articles: articles,
             // individus : individus,
-            //cibleDeRoutage: cibleDeRoutage
-            title: 'Cibles de routage', 
+            // cibleDeRoutage: cibleDeRoutage
+            title: 'Cibles de routage',
             style: "prospection"
         })
     } catch (err) {
         console.log(err);
     }
 })
-app.get('/validationCibleDeRoutage', checkAuthenticated, async (req, res) => {
+app.get('/validationCibleDeRoutage', checkAuthenticated, async(req, res) => {
     try {
         const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
-        res.render('./prospection/validate',{
-            cibleDeRoutages : cibleDeRoutages,
-            title: 'Cibles de routage', 
-            style: "prospection"
-        })
-    } catch (err) {
-        console.log(err);
-    }
-})
-
-app.get('/envoyerPublicite', checkAuthenticated, async (req, res) => {
-    try {
-        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
-        res.render('./prospection/recuperer',{
-            cibleDeRoutages : cibleDeRoutages,
-            title: 'Cibles de routage', 
+        res.render('./prospection/validate', {
+            cibleDeRoutages: cibleDeRoutages,
+            title: 'Cibles de routage',
             style: "prospection"
         })
     } catch (err) {
@@ -359,13 +375,26 @@ app.get('/envoyerPublicite', checkAuthenticated, async (req, res) => {
     }
 })
 
-
-app.get('/ciblederoutageRefuses', checkAuthenticated, async (req, res) => {
+app.get('/envoyerPublicite', checkAuthenticated, async(req, res) => {
     try {
         const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
-        res.render('./prospection/visualiserRefuses',{
-            cibleDeRoutages : cibleDeRoutages,
-            title: 'Cibles de routage', 
+        res.render('./prospection/recuperer', {
+            cibleDeRoutages: cibleDeRoutages,
+            title: 'Cibles de routage',
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+
+app.get('/ciblederoutageRefuses', checkAuthenticated, async(req, res) => {
+    try {
+        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        res.render('./prospection/visualiserRefuses', {
+            cibleDeRoutages: cibleDeRoutages,
+            title: 'Cibles de routage',
             style: "prospection"
         })
     } catch (err) {
@@ -406,14 +435,14 @@ app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
 });
 app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findByIdAndUpdate(id,{valide: true, refus: false})
-    //ajouter pour changement de statut
+    CibleDeRoutage.findByIdAndUpdate(id, { valide: true, refus: false })
+        //ajouter pour changement de statut
     const cible = cibleCibleDeRoutage.findById(id)
     const insdividus = cible.individus
-    individus.forEach(individu=> {
-        individu.statut = 'Prospect'
-        individu.dateProspect = Date.now
-    })
+    individus.forEach(individu => {
+            individu.statut = 'Prospect'
+            individu.dateProspect = Date.now
+        })
         .then(result => {
             res.json({ redirect: '/validationCiblederoutage' });
         })
@@ -424,7 +453,7 @@ app.put('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
 
 app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findByIdAndUpdate(id,{refus: true})
+    CibleDeRoutage.findByIdAndUpdate(id, { refus: true })
         .then(result => {
             res.json({ redirect: '/validationCiblederoutage' });
         })
@@ -432,11 +461,6 @@ app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
-
-
-// app.get('/anomalies', checkAuthenticated, (req,res)=> {
-//     res.render('anomalie', {title:'Gestion des Anomalies',style:"anomalie"})
-// })
 
 // affiche liste de tous les articles de la base
 //ordonés avec celui ajouté le plus récemment en premier
@@ -473,7 +497,8 @@ app.get('/recherche', checkAuthenticated, (req, res) => {
                 title: 'Liste individus',
                 individus: result,
                 style: "recherche",
-                searchOptions: req.query});
+                searchOptions: req.query
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -494,16 +519,23 @@ app.post('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
-function getAge(date) { 
+
+function getAge(date) {
     var diff = Date.now() - date.getTime();
-    var age = new Date(diff); 
+    var age = new Date(diff);
     return Math.abs(age.getUTCFullYear() - 1970);
 }
+
 // créer un nouvel article
-app.post('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
-    const num=generateRef();
-    const article = new Article(req.body);
-    article.reference=num;
+app.post('/referentiel/CreerArticle', checkAuthenticated, upload.single('image'), async(req, res) => {
+    const fileName = req.file != null ? req.file.filename : null;
+    const article = new Article({
+        designation: req.body.designation,
+        prix: req.body.prix,
+        nomImage: fileName,
+        description: req.body.description
+    })
+    article.reference = generateRef();
     article.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -513,10 +545,11 @@ app.post('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
         });
 });
 
-function generateRef() { 
-    var num = Math.trunc(Math.random()*100000000);
-    while(num<10000000){
-        num=num*10;}
+function generateRef() {
+    var num = Math.trunc(Math.random() * 100000000);
+    while (num < 10000000) {
+        num = num * 10;
+    }
     return num;
 }
 
@@ -526,7 +559,7 @@ app.get('/recherche/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findById(id)
         .then(result => {
-            res.render('details', { individu: result, title: "Détails individu", style: "styles" });
+            res.render('details', { individu: result, title: "Détails individu", style: "recherche" });
         })
         .catch((err) => {
             console.log(err);
@@ -548,19 +581,22 @@ app.delete('/recherche/:id', checkAuthenticated, (req, res) => {
 
 // affiche liste de tous les articles de la base
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
+app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
     let searchOptions = {};
-    if (/*req.query.reference != null &&*/req.query.designation != null) {
-        //searchOptions.reference= new RegExp(req.query.reference, 'i');
+    console.log(req.query.reference);
+    if ( req.query.reference !=null && req.query.designation != null) {
+        searchOptions.reference= new RegExp(req.query.reference);
         searchOptions.designation = new RegExp(req.query.designation, 'i');
     }
+    console.log(searchOptions);
     Article.find(searchOptions).sort({ createdAt: -1 })
         .then((result) => {
             res.render('./adminRef/ModifArticle', {
                 title: 'Administration du référentiel',
                 articles: result,
                 style: "Referentiel",
-                searchOptions: req.query});
+                searchOptions: req.query
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -569,7 +605,7 @@ app.get('/referentiel/ModifArticle', checkAuthenticated, (req, res) => {
 
 // affiche les informations d'un seul article sélectionné
 // dans la liste de recherche
-app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
+app.get('/referentielArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findById(id)
         .then(result => {
@@ -580,8 +616,22 @@ app.get('/referentiel/Article/:id', checkAuthenticated, (req, res) => {
         });
 });
 
+app.put('/referentielArticle/:id', checkAuthenticated, async(req, res) => {
+    let article
+    try {
+        article = await Article.findById(req.params.id)
+        article.designation = req.body.designation
+        article.prix = req.body.prix
+        article.description = req.body.description
+        await article.save()
+        res.redirect('/referentielModifArticle')
+    } catch {
+        res.redirect('/referentiel')
+    }
+})
+
 // supprime l'article sélectionné
-app.delete('/referentiel/ModifArticle/:id', checkAuthenticated, (req, res) => {
+app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findByIdAndDelete(id)
         .then(result => {
@@ -594,19 +644,22 @@ app.delete('/referentiel/ModifArticle/:id', checkAuthenticated, (req, res) => {
 
 // affiche liste de tous les individu de la base
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
+app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
     let searchOptions = {};
-    if (req.query.nom != null && req.query.prenom != null) {
-        searchOptions.nom= new RegExp(req.query.nom, 'i');
+    if (req.query.nom != null || req.query.prenom != null || req.query.dateNaissance != null ) {
+        searchOptions.nom = new RegExp(req.query.nom, 'i');
         searchOptions.prenom = new RegExp(req.query.prenom, 'i');
+        searchOptions.dateNaissance = req.query.dateNaissance;
+        //console.log(searchOptions.dateNaissance);
     }
-    Individu.find(searchOptions).sort({ createdAt: -1 })
+    Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
         .then((result) => {
             res.render('./adminRef/ModifIndividu', {
                 title: 'Administration du référentiel',
                 individus: result,
                 style: "Referentiel",
-                searchOptions: req.query});
+                searchOptions: req.query
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -615,7 +668,7 @@ app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
 
 // affiche les informations de l'individu sélectionné
 // dans la liste de recherche
-app.get('/referentiel/Individu/:id', checkAuthenticated, (req, res) => {
+app.get('/referentielIndividu/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findById(id)
         .then(result => {
@@ -626,12 +679,34 @@ app.get('/referentiel/Individu/:id', checkAuthenticated, (req, res) => {
         });
 });
 
+app.put('/referentielIndividu/:id', checkAuthenticated, async(req, res) => {
+    let individu
+    try {
+        individu = await Individu.findById(req.params.id)
+        individu.nom = req.body.nom
+        individu.prenom = req.body.prenom
+        individu.dateNaissance = req.body.dateNaissance
+        individu.categoriePro = req.body.categoriePro
+        individu.adresseNum = req.body.adresseNum
+        individu.adresseType = req.body.adresseType
+        individu.adresseCode = req.body.adresseCode
+        individu.adresseVille = req.body.adresseVille
+        individu.adresseInfos = req.body.adresseInfos
+        individu.adresseMail = req.body.adresseMail
+        individu.numeroTel = req.body.numeroTel
+        await individu.save()
+        res.redirect('/referentielModifIndividu')
+    } catch {
+        res.redirect('/referentiel')
+    }
+})
+
 // supprime l'individu sélectionné
-app.delete('/referentiel/ModifIndividu/:id', checkAuthenticated, (req, res) => {
+app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/referentiel/ModifIndividu' });
+            res.json({ redirect: '/referentielModifIndividu' });
         })
         .catch((err) => {
             console.log(err);
@@ -646,13 +721,13 @@ app.delete('/logout', checkAuthenticated, (req, res) => {
 
 // permet l'accès à certaines pages en fonction de statut authentification
 function checkAuthenticated(req, res, next) {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         return next()
     }
     res.redirect('/')
 }
 
-function checkNotAuthenticated(req, res, next){
+function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return res.redirect('/acceuil')
     }

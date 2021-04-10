@@ -10,18 +10,22 @@
             <div class="barre">
                 <input class="Nouvel_Individu" type="submit" id="new_Ind" value="Créer un nouvel individu" onclick="Cindividu()">
                 <input class="Modif_Individu" type="submit" id="Modif_Ind" value="Modifier les informations d'un individu" onclick="Mindividu()">
-                <input class="Nouvel_Article"  type="submit" id="New_Art" value="Créer un nouvel article" onclick="Carticle()">
-                <input class="Modif_Article"  type="submit" id="Modif_Art" value="Modifier un article" onclick="Marticle()">
+                <input class="Nouvel_Article" type="submit" id="New_Art" value="Créer un nouvel article" onclick="Carticle()">
+                <input class="Modif_Article" type="submit" id="Modif_Art" value="Modifier un article" onclick="Marticle()">
             </div>
-            
+
             <div class="page" id='choix'>
-                <div class="details content">
-                    <h2><%= article.designation %>
-                    <div class="content">
-                        <p><%= article.prix %></p>
-                    </div>
-                    <a class="delete" data-doc="<%= article._id %>">delete</a>
-                </div>
+                <form action="/referentielArticle/<%= article._id %>?_method=PUT" method='POST'>
+                    <label>Référence: <%= article.reference %></label>
+                    <label>Désignation*</label>
+                    <input type='text' name='designation' value="<%= article.designation %>" required>
+                    <label>Prix de vente (€)*</label>
+                    <input type='number' name='prix' min='0.00' step='0.01' value="<%= article.prix %>" required>
+                    <label>Description</label>
+                    <input type='text' name='description' value="<%= article.description %>" required>
+                    <input type="submit" value="Annuler" onclick="Marticle()">
+                    <input type='submit' value='Modifier'>
+                </form>
             </div>
 
             <script>
@@ -30,13 +34,13 @@
 
                 const trashcan = document.querySelector('a.delete');
                 trashcan.addEventListener('click', (e) => {
-                  const endpoint = `/referentiel/ModifArticle/${trashcan.dataset.doc}`;
-                  fetch(endpoint, {
-                    method: 'DELETE',
-                  })
-                    .then(response => response.json())
-                    .then((data) => window.location.href = data.redirect)
-                    .catch(err => console.log(err));
+                    const endpoint = `/referentielModifArticle/${trashcan.dataset.doc}`;
+                    fetch(endpoint, {
+                            method: 'DELETE',
+                        })
+                        .then(response => response.json())
+                        .then((data) => window.location.href = data.redirect)
+                        .catch(err => console.log(err));
                 });
 
                 function Carticle() {
@@ -44,7 +48,7 @@
                 }
 
                 function Marticle() {
-                    location.replace("http://localhost:3000/referentiel/ModifArticle")
+                    location.replace("http://localhost:3000/referentielModifArticle")
                 }
 
                 function Cindividu() {
@@ -52,7 +56,7 @@
                 }
 
                 function Mindividu() {
-                    location.replace("http://localhost:3000/referentiel/ModifIndividu")
+                    location.replace("http://localhost:3000/referentielModifIndividu")
                 }
             </script>
 
