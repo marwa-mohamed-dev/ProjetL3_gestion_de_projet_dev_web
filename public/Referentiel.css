@@ -250,5 +250,7 @@ form>input[type="submit"] {
     margin-top:5px;
     margin-bottom:5px;
 }
-
-/*Partie CSS pour la modif d'articles*/
+.noelmt{
+    grid-column: 2;
+    justify-self: center;
+}

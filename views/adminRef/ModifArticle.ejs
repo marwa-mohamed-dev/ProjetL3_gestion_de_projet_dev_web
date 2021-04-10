@@ -16,6 +16,8 @@
             </div>
             <div class="page" id='choix'>
                 <form action='/referentielModifArticle' method='GET' class='ReshearchArt'>
+                    <label>Référence</label>
+                    <input type="text" name="reference" value="<%= searchOptions.reference %>">
                     <label>Désignation</label>
                     <input type="text" name="designation" value="<%= searchOptions.designation %>">
                     <input type='submit' value='Rechercher'>
@@ -39,7 +41,7 @@
                             </div>
                         <% }) %>
                     <% } else { %>
-                        <p>L'article n'est pas enregistré dans la base de données</p>
+                        <p class='noelmt'>Aucun article ne correpond à votre recherche.</p>
                     <% } %>
                 </div>
             </div>

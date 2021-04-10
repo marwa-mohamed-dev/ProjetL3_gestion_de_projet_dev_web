@@ -266,7 +266,7 @@ app.post('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
         //CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {listeIndividus: liste}})
         .then((result) => {
             res.redirect('/creationCiblederoutage');
-            console.log(liste)
+            //console.log(liste)
         })
         .catch((err) => {
             console.log(err);
@@ -440,14 +440,13 @@ function getAge(date) {
 // créer un nouvel article
 app.post('/referentiel/CreerArticle', checkAuthenticated, upload.single('image'), async(req, res) => {
     const fileName = req.file != null ? req.file.filename : null;
-    const num = generateRef();
     const article = new Article({
         designation: req.body.designation,
         prix: req.body.prix,
         nomImage: fileName,
         description: req.body.description
     })
-    article.reference = num;
+    article.reference = generateRef();
     article.save()
         .then((result) => {
             res.redirect('/referentiel');
@@ -495,10 +494,12 @@ app.delete('/recherche/:id', checkAuthenticated, (req, res) => {
 //ordonés avec celui ajouté le plus récemment en premier
 app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
     let searchOptions = {};
-    if ( /*req.query.reference != null &&*/ req.query.designation != null) {
-        //searchOptions.reference= new RegExp(req.query.reference, 'i');
+    console.log(req.query.reference);
+    if ( req.query.reference !=null && req.query.designation != null) {
+        searchOptions.reference= new RegExp(req.query.reference);
         searchOptions.designation = new RegExp(req.query.designation, 'i');
     }
+    console.log(searchOptions);
     Article.find(searchOptions).sort({ createdAt: -1 })
         .then((result) => {
             res.render('./adminRef/ModifArticle', {
@@ -556,9 +557,11 @@ app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
 //ordonés avec celui ajouté le plus récemment en premier
 app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
     let searchOptions = {};
-    if (req.query.nom != null && req.query.prenom != null) {
+    if (req.query.nom != null || req.query.prenom != null || req.query.dateNaissance != null ) {
         searchOptions.nom = new RegExp(req.query.nom, 'i');
         searchOptions.prenom = new RegExp(req.query.prenom, 'i');
+        searchOptions.dateNaissance = req.query.dateNaissance;
+        //console.log(searchOptions.dateNaissance);
     }
     Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
         .then((result) => {

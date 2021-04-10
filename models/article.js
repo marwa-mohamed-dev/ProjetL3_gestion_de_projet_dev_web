@@ -5,8 +5,9 @@ const Schema = mongoose.Schema;
 const imageBasePath = 'uploads'
 
 const articleSchema = new Schema({
-    reference: Number,
-
+    reference: {
+        type: String,
+    },
     designation: {
         type: String,
         required: true

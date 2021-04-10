@@ -21,8 +21,8 @@
                     <input type="text" name="nom" value="<%= searchOptions.nom %>">
                     <label>Prénom</label>
                     <input type="text" name="prenom" value="<%= searchOptions.prenom %>">
-                    <!--<label>Date de Naissance</label>
-                    <input type="text" name="dateNaissance" value="%= searchOptions.dateNaissance %>">-->
+                    <label>Date de Naissance</label>
+                    <input type="date" name="dateNaissance" value="<%= searchOptions.dateNaissance %>">
                     <input type='submit' value='Rechercher'>
                 </form>
                 <div class="place">
@@ -46,7 +46,7 @@
                             <% } %>
                         <% }) %>
                     <% } else { %>
-                        <p>Personne n'est enregistré dans la base de données</p>
+                        <p class='noelmt'>Aucune personne ne correspond à votre recherche.</p>
                     <% } %>
                 </div>
             </div>
