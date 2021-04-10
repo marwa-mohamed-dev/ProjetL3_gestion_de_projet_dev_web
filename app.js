@@ -9,6 +9,7 @@ const Individu = require('./models/individu');
 const Article = require('./models/article');
 const Employee = require('./models/employee');
 const Commande = require('./models/commande');
+const Anomalie = require('./models/anomalie');
 const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
@@ -30,6 +31,8 @@ const session = require('express-session');
 const passport = require('passport');
 const methodOverride = require('method-override');
 const initializePassport = require('./passport-config');
+const { result } = require('lodash');
+const { db } = require('./models/individu');
 const { authorize } = require('passport');
 initializePassport(
     passport,
@@ -37,13 +40,15 @@ initializePassport(
     id => users.find(user => user.id === id)
 );
 
+///////////////////////////////////////////////
+
 const users = [{ id: '1', identifiant: "winkler", mdp: "astrid" },
         { id: '2', identifiant: "lee", mdp: "jiou" },
         { id: '3', identifiant: "weber", mdp: "louise" },
         { id: '4', identifiant: "gomes", mdp: "lucie" },
         { id: '5', identifiant: "mohamed", mdp: "marwa" }
     ]
-    ///////////////////////////////////////////////
+///////////////////////////////////////////////
 
 
 // on créé une instance d'une application express
@@ -134,20 +139,36 @@ app.get('/commandes', checkAuthenticated, (req, res) => {
     res.render('./saisieCom/AcceuilCom', { title: 'Commandes', style: "Commande" })
 })
 
-app.get('/creerCom', checkAuthenticated, async(req, res) => {
+app.get('/ajoutInd', checkAuthenticated, (req,res)=> {
+    res.render('./saisieCom/AjoutInd', {title:'Commandes',style:"Commande"})
+})
+
+app.get('/creerCom', checkAuthenticated, async (req,res)=> {
     const articles = await Article.find({})
     const individus = await Individu.find({})
     res.render('./saisieCom/CreerCom', { articles: articles, individus: individus, title: 'Commandes', style: "Commande" })
 })
 
-app.post('/creerCom', checkAuthenticated, (req, res) => {
-    const num = generateNumCom();
+//créer un nouvel object commande selon la requête et l'ajoute à notre base de donnée
+app.post('/creerCom', checkAuthenticated, async (req, res) => {
     const commande = new Commande(req.body);
-    // const iden=req.params.id;
-    // const ind= Individu.findById(iden);
-    // console.log(iden);
-    // console.log(ind.nom);
-    commande.numCommande = num.toString();
+    //pour récupérer la liste des prix des articles de notre commande
+    const ids=commande.articles;
+    const articles = await Article.find({ _id:{ $in: ids}});
+    const lprix=[];
+    ids.forEach(id=>{
+        articles.forEach(article=>{
+            if(article.id==id){
+                lprix.push(article.prix);
+            }
+        });
+    });
+
+    commande.prix=calculPrix(lprix,commande.quantite);
+    commande.numCommande=generateNumCom().toString();
+    commande.etat=testAnomalie(commande);
+    console.log(commande);
+
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
@@ -157,13 +178,71 @@ app.post('/creerCom', checkAuthenticated, (req, res) => {
         });
 });
 
-function generateNumCom() {
-    var num = Math.trunc(Math.random() * 100000000);
-    while (num < 10000000) {
-        num = num * 10;
+function calculPrix(lprix,lquant){
+    let prix=0;
+    for(let i=0;i<lprix.length;i++){
+        prix=prix+lprix[i]*lquant[i];
+    }
+    return prix;
+}  
+
+function generateNumCom() { 
+    var num = Math.trunc(Math.random()*100000000);
+    while(num<10000000){
+        num=num*10;
     }
     return num;
 }
+
+function testAnomalie(com){
+    let etat=[];
+    if(com.valeur==null){
+        etat.push("anoMontant");
+    }
+    else if(com.valeur!=com.prix){
+        etat.push("anoMontant");
+    }
+
+    if(com.pCheque==null && com.pCarte==null){
+        etat.push("anoPaiement");
+    }
+    else if(com.pCheque=='on'){
+        if(com.numeroCheque==''){
+            etat.push("anoPaiement");
+        }
+        else if(com.banque==''){
+            etat.push("anoPaiement");
+        }
+        // else if(signature!="on"){
+        //     etat.push("anoPaiement");
+        // }
+    }
+    // else if(com.pCarte=='on'){
+    //     if(numeroCarte==null){
+    //         etat.push("anoPaiement");
+    //     }
+    //     else if(dateExpiration==null){
+    //         etat.push("anoPaiement");
+    //     }
+    //     else if(dateExpiration!=null){
+    //         let today=new Date().getTime();
+    //     }
+    // }
+    return etat;
+}
+
+//créer un nouvel individu depuis l'espace saisie de commande
+app.post('/ajoutInd', checkAuthenticated, (req, res) => {
+    const individu = new Individu(req.body);
+    individu.age = getAge(individu.dateNaissance)
+    individu.save()
+        .then((result) => {
+            res.redirect('/creerCom');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 // affiche liste de toutes les commandes de la base
 //ordonés avec celle ajoutée le plus récemment en premier
@@ -189,8 +268,13 @@ app.get('/modifCom', checkAuthenticated, (req, res) => {
 // dans la liste de recherche
 app.get('/commande/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
+    //const com=Commande.findById(id)
+    //const individu = Individu.findById(com.client);
     Commande.findById(id)
         .then(result => {
+            //console.log(result.client)
+            //const indiv=Article.findById(result.client)
+            //console.log(indiv);
             res.render('./saisieCom/Commande', { commande: result, title: "Commande", style: "commande" });
         })
         .catch((err) => {
@@ -214,34 +298,23 @@ app.get('/prospection', checkAuthenticated, (req, res) => {
     res.render('./prospection/page', { title: 'Prospection', style: "prospection" })
 })
 
-// affiche liste de tous cibles de routage
-//ordonés avec celui ajouté le plus récemment en premier
-// app.get('/prospection', checkAuthenticated, (req, res) => {
-//     CibleDeRoutage.find().sort({ createdAt: -1 })
-//         .then((result) => {
-//             res.render('prospection', { title: 'Cibles de routage', cibles: result, style: "prospection" });
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// });
+//////////////////////////// Test 
+app.get('/test', checkAuthenticated, (req,res)=> {
+    res.render('test', {title:'Test',style:"anomalie"})
+})
 
-//app.use('/prospection',CibleDeRoutage)
-
-// affiche liste de tous les individus de la base
-//ordonés avec celui ajouté le plus récemment en premier
-// app.get('/prospection', checkAuthenticated, (req, res) => {
-
-//     Article.find().sort({ createdAt: -1 })
-//         .then((result) => {
-//             res.render('prospection', {
-//                 articles: result,
-//                 style: "prospection"});
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// });
+app.post('/test', checkAuthenticated, (req, res) => {
+    const anomalie = new Anomalie(req.body);
+    anomalie.save()
+        .then((result) => {
+            console.log("Créer")
+            res.redirect('/test');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+/////////////////////////////////////
 
 
 //creer une cible de routage
@@ -389,10 +462,26 @@ app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-
+// affiche liste de tous les articles de la base
+//ordonés avec celui ajouté le plus récemment en premier
 app.get('/anomalies', checkAuthenticated, (req, res) => {
-    res.render('anomalie', { title: 'Gestion des Anomalies', style: "anomalie" })
-})
+    let searchOptions = {};
+    if (/*req.query.reference != null &&*/req.query.numeroCom != null) {
+        //searchOptions.reference= new RegExp(req.query.reference, 'i');
+        searchOptions.numeroCom = new RegExp(req.query.numeroCom, 'i');
+    }
+    Anomalie.find(searchOptions).sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('anomalie', {
+                title: 'Gestion des Anomalies',
+                anomalies: result,
+                style: "anomalie",
+                searchOptions: req.query});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
 // affiche liste de tous les individus de la base
 //ordonés avec celui ajouté le plus récemment en premier
