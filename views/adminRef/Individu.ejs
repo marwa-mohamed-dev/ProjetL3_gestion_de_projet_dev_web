@@ -16,14 +16,6 @@
 
             <div class="page" id='choix'>
                 <div class="details content">
-                    <!-- <h2>%= individu.nom %> %= individu.prenom %></h2>
-                    <div class="content">
-                        <input type='text' name='dateNaissance' placeholder=%= individu.dateNaissance %> required>
-                        <p>%= individu.categoriePro %></p>
-                        <p>%= individu.adresseNum %>%= individu.adresseType %></p>
-                        <p>%= individu.adresseCode %>%= individu.adresseVille %></p>
-                        <p>tel:%= individu.numeroTel %> mail:%= individu.Mail %></p>
-                    </div> -->
                     <form class='NewI' action='/referentielIndividu/<%= individu.id %>?_method=PUT' method='POST'>
                         <label class='Col1'>Nom*</label>
                         <input class='Col1' type='text' name='nom' value='<%= individu.nom %>' pattern='[A-Z]{1,}' required>

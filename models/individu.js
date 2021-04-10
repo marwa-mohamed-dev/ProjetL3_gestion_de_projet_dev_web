@@ -41,7 +41,7 @@ const individuSchema = new Schema({
     adresseInfos : String,
     adresseMail : String,
     numeroTel :  {
-        type : Number,
+        type : String,
         required: true
     },
     statut : {

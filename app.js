@@ -671,6 +671,7 @@ app.put('/referentielIndividu/:id', checkAuthenticated, async(req, res) => {
         individu.adresseInfos = req.body.adresseInfos
         individu.adresseMail = req.body.adresseMail
         individu.numeroTel = req.body.numeroTel
+        individu.statut = req.body.statut
         await individu.save()
         res.redirect('/referentielModifIndividu')
     } catch {
