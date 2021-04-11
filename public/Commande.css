@@ -143,17 +143,6 @@ footer{
   grid-column: 2;
 }
 
-/*
-input[value="+"]{
-  width: 20px;
-  height: 20px;
-  text-align: center;
-}
-
-#cheque{
-  grid-column-start:1;
-}*/
-
 #choix>label.modePaie{
   grid-column-start: 2;
   justify-self: center;
@@ -184,6 +173,11 @@ label>input[type='text']{
   grid-template-columns: auto !important;
   grid-template-rows: repeat(3,max-content) !important;
   grid-gap: 7px;
+}
+
+/*boutons ajour et suppr pour creation commande*/
+.hidden{
+  visibility: hidden;
 }
 
 

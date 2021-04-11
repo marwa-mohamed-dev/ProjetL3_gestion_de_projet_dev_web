@@ -23,7 +23,7 @@
                 <% }) %>
             </select>  </label> 
             <input class="NewI" id='buttonIndiv' type='button' value="Nouvel individu" onclick="nouvelIndiv()">
-            <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'></label>
+            <label class='titre'>Article(s): <input id='ajout' type='button' value='+' placeholder='+' onclick='ajout_Article()'><input id='suppr' class='hidden' type='button' value='-' placeholder='-' onclick='enlever_Article()'></label>
             <div id='articles'>
                 <input class='numberArt' type='button' value=1 >
                 <label class='ref'>Désignation
@@ -33,7 +33,7 @@
                         <option label="<%= article.designation %>" value="<%=article.id%>"></option>
                     <% }) %>
                 </select></label>
-                <label>Quantité <input type='number' min='1' max='999' name='quantite' required></label>
+                <label class='quant'>Quantité <input type='number' min='1' max='999' name='quantite' required></label>
             </div>
             <label class='titre'>Réglement:</label>
             <label class='modePaie'><input id='cheque' type='checkbox' onclick='paiementCheque()' name='pCheque'>Chèque</label>
@@ -43,9 +43,13 @@
         </form>
         
     </div>
+
     <script>
         let on_New_Comm = document.getElementById("New_Comm")
         on_New_Comm.classList.add("on")
+        const suppr = document.getElementById('suppr');
+        const ajout = document.getElementById('ajout');
+        const articles = document.getElementById('articles');
 
         //fonction redirection des bouttons
         function Mcommande() {
@@ -54,23 +58,25 @@
         function nouvelIndiv(){
             location.replace("http://localhost:3000/ajoutInd")
         }
-        
-        // function Nouvel_Commande(){
-        //     on_New_Comm.classList.add("on")
-        //     on_R_Comm.classList.remove("on")
-        //     grid_form.classList.remove("NewGrid");
-        //     // const articles = document.getElementById('articles');
-        //     const choix = document.getElementById('choix');
-        //     choix.innerHTML= "<div id='articles'><input class='numberArt' type='button' value=1 ><label class='ref'>Référence <input type='text' name='articles' required></label> <label>Quantité <input type='number' min='1' max='999' name='quantite' required></label> </div>";
-        //     choix.insertAdjacentHTML('afterbegin',"<label class='titre'>Individu <input type='text' size='10' name='client' required> </label> <label class='titre'>Article(s): <input type='button' value='+' placeholder='+' onclick='Ajout_Article()'> </label>")
-        //     // articles.insertAdjacentHTML('afterbegin',"<input class:'numberArt' type='button' value='1'><label>Reference</label><input type='text'> <label>Quantité</label> <input type='number'>")
-        //     choix.insertAdjacentHTML('beforeend',"<label class='titre'>Réglement:</label> <label class='modePaie'><input id='cheque' type='checkbox' onclick='paiementCheque()' name='pCheque'>Chèque</label> <label><input id='carte' type='checkbox' onclick='paiementCarte()' name='pCarte'>Carte Bancaire</label> <div id='paiementElements'></div> <input type='submit' value='Créer la commande'>")
-        // }
 
-        function Ajout_Article(){
+        ///fonctions onclick:
+        function ajout_Article(){
+            console.log("j'ajoute");
             const nbArt = document.getElementsByClassName("numberArt").length+1;
-            const articles = document.getElementById('articles');
+            if(nbArt>1){
+                suppr.classList.remove('hidden')
+            }
             articles.insertAdjacentHTML('beforeend',"<input class='numberArt' type='button' value="+nbArt+"><label class='ref'>Désignation <select name='articles' id='' required> <option value='' disabled selected>choisir 1 article</option>+<% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%=article.id%>'> </option><% }) %>+</select> </label> <label>Quantité <input type='number' min='1' max='999'name='quantite' required></label>")
+        }
+        
+        function enlever_Article(){
+            const nbArt = document.getElementsByClassName("numberArt").length;
+            for(let i=0;i<3;i++){
+                articles.removeChild(articles.lastElementChild);
+            }
+            if(nbArt==2){
+                suppr.classList.add('hidden')
+            }
         }
         
         function paiementCarte(){
@@ -98,8 +104,8 @@
                 paiementElements.innerHTML="";
             }
         }
-
     </script>
+    
     <%- include('../partials/footer.ejs') %>
 
 </body>
