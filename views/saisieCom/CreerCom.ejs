@@ -22,7 +22,7 @@
                     <% } %>
                 <% }) %>
             </select>  </label> 
-            <input class="NewI" id='buttonIndiv' type='button' value="Nouvel individu" onclick="nouvelIndiv()">
+            <input class="buttNewI" id='buttonIndiv' type='button' value="Nouvel individu" onclick="nouvelIndiv()">
             <label class='titre'>Article(s): <input id='ajout' type='button' value='+' placeholder='+' onclick='ajout_Article()'><input id='suppr' class='hidden' type='button' value='-' placeholder='-' onclick='enlever_Article()'></label>
             <div id='articles'>
                 <input class='numberArt' type='button' value=1 >
@@ -36,8 +36,8 @@
                 <label class='quant'>Quantité <input type='number' min='1' max='999' name='quantite' required></label>
             </div>
             <label class='titre'>Réglement:</label>
-            <label class='modePaie'><input id='cheque' type='checkbox' onclick='paiementCheque()' name='pCheque'>Chèque</label>
-            <label><input id='carte' type='checkbox' onclick='paiementCarte()' name='pCarte'>Carte Bancaire</label>
+            <label class='modeChq'><input id='cheque'  type='checkbox' onclick='paiementCheque()' name='pCheque'>Chèque</label>
+            <label class='modeCarte'><input id='carte' type='checkbox' onclick='paiementCarte()' name='pCarte'>Carte Bancaire</label>
             <div id='paiementElements'></div> 
             <input type='submit' value='Créer la commande'>
         </form>
@@ -105,7 +105,7 @@
             }
         }
     </script>
-    
+
     <%- include('../partials/footer.ejs') %>
 
 </body>
