@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
+const path = require('path')
 const Schema = mongoose.Schema;
 
-const articleSchema = new Schema({
-    reference: Number,
+const imageBasePath = 'uploads'
 
+const articleSchema = new Schema({
+    reference: {
+        type: String,
+    },
     designation: {
         type: String,
         required: true
@@ -16,13 +20,22 @@ const articleSchema = new Schema({
         type: Number,
         required: true
     },
-
-     enVente: {
-         type: Boolean,
-     }
+    nomImage: {
+        type: String,
+        required: true
+    },
+    enVente: {
+        type: Boolean,
+    }
 
 }, { timestamps: true })
 
-const Article = mongoose.model('Article', articleSchema);
+articleSchema.virtual('imagePath').get(function() {
+    if(this.nomImage != null) {
+        return path.join('/', imageBasePath, this.nomImage)
+    }
+})
 
+const Article = mongoose.model('Article', articleSchema);
 module.exports = Article;
+module.exports.imageBasePath = imageBasePath;
