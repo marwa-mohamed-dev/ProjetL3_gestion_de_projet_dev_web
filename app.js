@@ -13,6 +13,7 @@ const Anomalie = require('./models/anomalie');
 const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
+
 //////////////////////////////////////////////
 const multer = require('multer');
 const path = require('path');
@@ -61,6 +62,15 @@ var server = app.listen(process.env.PORT || 3000, function () {
     console.log('App listening at http://%s:%s', host, port)
 })
 
+
+// Download a file
+// Todo : Get data coming from Mongo
+const data = { "foo": "bar" }; // JSON
+app.get('/download-file', checkNotAuthenticated, (req, res) => {
+    res.set("Content-Disposition", "attachment;filename=file.json");
+    res.type("application/json");
+    res.json(data);
+});
 
 //connect to database mongodb
 const dbURI = 'mongodb+srv://mimirdev:mimir1234@fenouil.t2pik.mongodb.net/fenouil_app?retryWrites=true&w=majority';
