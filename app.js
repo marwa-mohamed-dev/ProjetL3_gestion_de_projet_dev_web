@@ -123,7 +123,7 @@ app.get('/referentiel', checkAuthenticated, (req, res) => {
     res.render('./adminRef/Referentiel', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
-app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
+app.get('/referentielCreerArticle', checkAuthenticated, (req, res) => {
     try {
         const article = new Article();
         res.render('./adminRef/CreerArticle', {
@@ -136,7 +136,7 @@ app.get('/referentiel/CreerArticle', checkAuthenticated, (req, res) => {
     }
 });
 
-app.get('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
+app.get('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/CreerIndividu', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
@@ -534,7 +534,7 @@ app.get('/recherche', checkAuthenticated, (req, res) => {
 // ajoute un individu à la base de données
 // fait marcher le bouton submit en soi
 // puis redirige vers la page administrateur
-app.post('/referentiel/CreerIndividu', checkAuthenticated, (req, res) => {
+app.post('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
     const individu = new Individu(req.body);
     individu.age = getAge(individu.dateNaissance)
     individu.save()
@@ -553,7 +553,7 @@ function getAge(date) {
 }
 
 // créer un nouvel article
-app.post('/referentiel/CreerArticle', checkAuthenticated, upload.single('image'), async(req, res) => {
+app.post('/referentielCreerArticle', checkAuthenticated, upload.single('image'), async(req, res) => {
     const fileName = req.file != null ? req.file.filename : null;
     const article = new Article({
         designation: req.body.designation,

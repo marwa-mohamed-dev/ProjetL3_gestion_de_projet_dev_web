@@ -6,10 +6,8 @@
 <body>
  
     <%- include('../partials/nav.ejs') %>
-    <div class="barre">
-        <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" onclick="Ccommande()" >
-        <input class="Recherche_Commande" id="R_Comm" type="submit" value="Compléter une Commande" onclick="Mcommande() ">
-    </div>
+
+    <%- include('../partials/barreSaisieCom.ejs') %>
 
     <div class="page">
         <form class='NewI' action='/ajoutInd' method='POST'>
@@ -42,15 +40,6 @@
     <script>
         let on_New_Comm = document.getElementById("New_Comm");
         on_New_Comm.classList.add("on");
-
-        function Mcommande() {
-            location.replace("http://localhost:3000/modifCom")
-        }
-        
-        function Ccommande() {
-            location.replace("http://localhost:3000/creerCom")
-        }
-
     </script>
 
     <%- include('../partials/footer.ejs') %>

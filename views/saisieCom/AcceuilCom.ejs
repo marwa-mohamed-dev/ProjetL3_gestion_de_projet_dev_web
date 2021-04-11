@@ -6,21 +6,10 @@
 <body>
  
     <%- include('../partials/nav.ejs') %>
-    <div class="barre">
-        <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" onclick="location.href='/creerCom';">
-        <input class="Recherche_Commande" id="R_Comm" type="submit" value="Compléter une Commande" onclick="Mcommande()">
-    </div>
+
+    <%- include('../partials/barreSaisieCom.ejs') %>
 
     <%- include('../partials/footer.ejs') %>
 
-    <script>
-        function Ccommande() {
-            location.replace("http://localhost:3000/creerCom")
-        }
-
-        function Mcommande() {
-            location.replace("http://localhost:3000/modifCom")
-        }
-    </script>
 </body>
 </html>

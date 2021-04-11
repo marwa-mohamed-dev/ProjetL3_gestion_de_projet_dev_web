@@ -6,13 +6,7 @@
     <body>
 
         <%- include('../partials/nav.ejs') %>
-
-            <div class="barre">
-                <input class="Nouvel_Individu" type="submit" id="new_Ind" value="Créer un nouvel individu" onclick="Cindividu()">
-                <input class="Modif_Individu" type="submit" id="Modif_Ind" value="Modifier les informations d'un individu" onclick="Mindividu()">
-                <input class="Nouvel_Article" type="submit" id="New_Art" value="Créer un nouvel article" onclick="Carticle()">
-                <input class="Modif_Article" type="submit" id="Modif_Art" value="Modifier un article" onclick="Marticle()">
-            </div>
+        <%- include('../partials/barreAdminRef.ejs') %>
 
             <div class="page" id='choix'>
                 <div class="details content">
@@ -61,21 +55,6 @@
                         .catch(err => console.log(err));
                 });
 
-                function Carticle() {
-                    location.replace("http://localhost:3000/referentiel/CreerArticle")
-                }
-
-                function Marticle() {
-                    location.replace("http://localhost:3000/referentielModifArticle")
-                }
-
-                function Cindividu() {
-                    location.replace("http://localhost:3000/referentiel/CreerIndividu")
-                }
-
-                function Mindividu() {
-                    location.replace("http://localhost:3000/referentielModifIndividu")
-                }
             </script>
 
             <%- include('../partials/footer.ejs') %>

@@ -6,10 +6,8 @@
 <body>
  
     <%- include('../partials/nav.ejs') %>
-    <div class="barre">
-        <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" >
-        <input class="Recherche_Commande" id="R_Comm" type="submit" value="Compléter une Commande" onclick="Mcommande() ">
-    </div>
+
+    <%- include('../partials/barreSaisieCom.ejs') %>
 
     <div class="page"  >
         <form action="/creerCom" method="POST" id='choix'>
@@ -50,14 +48,6 @@
         const suppr = document.getElementById('suppr');
         const ajout = document.getElementById('ajout');
         const articles = document.getElementById('articles');
-
-        //fonction redirection des bouttons
-        function Mcommande() {
-            location.replace("http://localhost:3000/modifCom")
-        }
-        function nouvelIndiv(){
-            location.replace("http://localhost:3000/ajoutInd")
-        }
 
         ///fonctions onclick:
         function ajout_Article(){

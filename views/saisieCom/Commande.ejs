@@ -6,10 +6,7 @@
 <body>
     <%- include('../partials/nav.ejs') %>
 
-    <div class="barre">
-        <input class="Nouvel_Commande" id="New_Comm" type="submit" value="Créer une nouvelle Commande" onclick="Ccommande() ">
-        <input class="Recherche_Commande" id="R_Comm" type="submit" value="Compléter une Commande" onclick="Mcommande() ">
-    </div>
+    <%- include('../partials/barreSaisieCom.ejs') %>
             
     <div class="page" id='choix'>
         <div class="details content">
@@ -40,13 +37,6 @@
             .catch(err => console.log(err));
             });
 
-        function Ccommande() {
-          location.replace("http://localhost:3000/creerCom")
-        }
-
-        function Mcommande() {
-          location.replace("http://localhost:3000/modifCom")
-        }
     </script>
 
     <%- include('../partials/footer.ejs') %>
