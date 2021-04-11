@@ -276,6 +276,16 @@ app.get('/validationCibleDeRoutage', checkAuthenticated, async (req, res) => {
 app.get('/envoyerPublicite', checkAuthenticated, async (req, res) => {
     try {
         const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        const individus = await Individu.find({_id:{$in:cibleDeRoutages.listeIndividus}})
+        cibleDeRoutages.forEach(cible =>{ 
+            if(Math.abs(new Date() - cible.dateValide.getTime()) >  864000000 ) {
+                individus.forEach(individu => {
+                    individu.statut = 'Client'
+                    individu.save()
+                })
+            }
+        })
+        
         res.render('./prospection/recuperer',{
             cibleDeRoutages : cibleDeRoutages,
             title: 'Cibles de routage', 
@@ -304,8 +314,9 @@ app.get('/ciblederoutageRefuses/:id', checkAuthenticated, async(req, res) => {
     try {
         const id = req.params.id;
         const cible = await CibleDeRoutage.findById(id)
-        const articles = await Article.find({})
-        res.render('./prospection/modif', { cible: cible, articles : articles, title: 'cible de routage', style: "prospection" });
+        const articles = await Article.find({_id:{$in:cible.articles}})
+        const individus = await Individu.find({_id:{$in:cible.listeIndividus}})
+        res.render('./prospection/modif', { cible: cible, articles : articles, individus:individus, title: 'cible de routage', style: "prospection" });
     } catch (error) {
         console.log(err);
     }
@@ -327,8 +338,9 @@ app.get('/validationCiblederoutage/:id', checkAuthenticated, async (req, res) =>
     try {
         const id = req.params.id;
         const cible = await CibleDeRoutage.findById(id)
-        const articles = await Article.find({})
-        res.render('./prospection/details', { cible: cible, articles : articles, title: 'cible de routage', style: "prospection" });
+        const articles = await Article.find({_id:{$in:cible.articles}})
+        const individus = await Individu.find({_id:{$in:cible.listeIndividus}})
+        res.render('./prospection/details', { cible: cible, articles : articles,individus:individus, title: 'cible de routage', style: "prospection" });
     } catch (error) {
         console.log(err);
     }
@@ -370,9 +382,11 @@ app.put('/validationCiblederoutage/:id', checkAuthenticated, async (req, res) =>
 
 app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findByIdAndUpdate(id,{refus: true})
+    const remarque = req.remarque
+    console.log(remarque)
+    CibleDeRoutage.findByIdAndUpdate(id,{refus: true, remarque : remarque})
         .then(result => {
-            res.json({ redirect: '/validationCiblederoutage' });
+            res.redirect('/validationCiblederoutage' );
         })
         .catch((err) => {
             console.log(err);

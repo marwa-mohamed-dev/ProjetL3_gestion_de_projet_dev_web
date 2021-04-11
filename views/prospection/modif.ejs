@@ -19,17 +19,16 @@
         <p><%=cible.description%></p>
         <h2>Articles de la publicité : </h2>
         <%articles.forEach( article => {%>
-            <%cible.articles.forEach(art =>{ %>
-                <%if(article._id == art){%>
-                    <p><%=article.designation%></p>
-               <% } %>
-           <% }) %>
+            <p><%=article.designation%></p>
         <%})%>
         <h2>Cible de routage : </h2>
-        <% cible.listeIndividus.forEach( individu => { %>
-            <p><%=individu.nom.toUpperCase()%> <%=individu.prenom%></p>
-
-       <% }); %> 
+        <% if(individus.length>0) { %> 
+            <% individus.forEach( individu => { %>
+                <p><%=individu.nom.toUpperCase()%><%=individu.Prenom%></p>
+            <% }); %> 
+        <% }else{ %> 
+            <p> Aucun individu ne correspond aux condtions émises </p> 
+        <% } %>
         <h3> Conditions de cible de routage choisis </h3>
         <%if(cible.ageMin !=null && cible.ageMax != null) { %>
             <p>Age compris entre <%=cible.ageMin%> et <%=cible.ageMax%> ans</p>
@@ -43,6 +42,7 @@
         <% if (cible.client != ''){ %>
             <p>Sélection parmi les clients : <%=cible.client%> </p>
         <% } %>
+        <p>remarque :<%=cible.remarque %> </p>
         <a class="delete" data-doc="<%= cible._id %>">delete</a>
     </div>
     <script>
