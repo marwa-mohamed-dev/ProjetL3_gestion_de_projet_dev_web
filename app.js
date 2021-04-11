@@ -140,18 +140,6 @@ app.get('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/CreerIndividu', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
-/*app.get('/referentiel/ModifIndividu', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/ModifIndividu', {title: 'Administration du référentiel', style: 'Referentiel'});
-});*/
-
-// app.get('/referentielArticle', (req, res) => {
-//     res.render('./adminRef/Article', {title: 'Article', style: 'Referentiel'});
-// })
-
-// app.get('/referentielIndividu', (req, res) => {
-//     res.render('./adminRef/Individu', {title: 'Individu', style: 'Referentiel'});
-// })
-
 app.get('/commandes', checkAuthenticated, (req, res) => {
     res.render('./saisieCom/AcceuilCom', { title: 'Commandes', style: "Commande" })
 })
@@ -286,7 +274,7 @@ app.get('/commande/:id', checkAuthenticated, async(req, res) => {
         const com = await Commande.findById(id);
         let client = await Individu.findOne(com.client);
         let articles = await Article.find({ _id: { $in: com.articles } });
-        res.render('./saisieCom/Commande', { commande: com, cl: client, larticles: articles, title: "Commande", style: "commande" });
+        res.render('./saisieCom/Commande', { commande: com, cl: client, larticles: articles, title: "Commande", style: "Commande" });
     } catch (err) {
         console.log(err);
     };
@@ -633,7 +621,7 @@ app.get('/referentielArticle/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Article.findById(id)
         .then(result => {
-            res.render('./adminRef/Article', { article: result, title: "Administration du référentiel", style: "referentiel" });
+            res.render('./adminRef/Article', { article: result, title: "Administration du référentiel", style: "Referentiel" });
         })
         .catch((err) => {
             console.log(err);
@@ -699,7 +687,7 @@ app.get('/referentielIndividu/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     Individu.findById(id)
         .then(result => {
-            res.render('./adminRef/Individu', { individu: result, title: "Administration du référentiel", style: "referentiel" });
+            res.render('./adminRef/Individu', { individu: result, title: "Administration du référentiel", style: "Referentiel" });
         })
         .catch((err) => {
             console.log(err);
