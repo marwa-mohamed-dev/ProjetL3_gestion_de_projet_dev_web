@@ -41,13 +41,17 @@ const individuSchema = new Schema({
     adresseInfos : String,
     adresseMail : String,
     numeroTel :  {
-        type : Number,
+        type : String,
         required: true
     },
     statut : {
         type : String,
         required: true
     },
+    // commandes : {
+    //     type: mongoose.Schema.Types.Array,
+    //     ref: 'Commandes'
+    // },
     dateProspect :Date,
     cbNum : Number,
     cbDate : String,
