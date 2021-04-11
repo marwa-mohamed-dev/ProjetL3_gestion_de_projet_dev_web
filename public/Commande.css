@@ -140,12 +140,23 @@ footer{
   justify-items: center;
 }
 
+
+.titre{
+  grid-column: 2;
+}
+
+#choix>label.modePaie{
+  grid-column-start: 2;
+  justify-self: center;
+}
+
 .modeChq{
   grid-column: 2/3 !important;
 }
 
 .modeCarte{
   grid-column: 3/4 !important;
+
 }
 
 #paiementElements{
@@ -160,6 +171,25 @@ input[value="Créer la commande"]{
   grid-column:2/4;
   justify-self: center;
   margin: auto;
+}
+
+label>input[type='text']{
+  width: 150px;
+}
+.SearchCom{
+  text-align: center;
+  justify-self: center;
+}
+
+.NewGrid{
+  grid-template-columns: auto !important;
+  grid-template-rows: repeat(3,max-content) !important;
+  grid-gap: 7px;
+}
+
+/*boutons ajour et suppr pour creation commande*/
+.hidden{
+  visibility: hidden;
 }
 
 /*pour cacher la création d'un nouvel individu*/
