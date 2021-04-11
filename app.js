@@ -266,15 +266,16 @@ app.get('/modifCom', checkAuthenticated, (req, res) => {
 });
 // affiche les informations de l'individu sélectionné
 // dans la liste de recherche
-app.get('/commande/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Commande.findById(id)
-        .then(result => {
-            res.render('./saisieCom/Commande', { commande: result, title: "Commande", style: "commande" });
-        })
-        .catch((err) => {
+app.get('/commande/:id', checkAuthenticated, async (req, res) => {
+    try{
+        const id = req.params.id;
+        const com= await Commande.findById(id);
+        let client= await Individu.findOne(com.client);
+        let articles= await Article.find({_id:{$in:com.articles}});
+        res.render('./saisieCom/Commande', { commande: com, cl: client, larticles:articles, title: "Commande", style: "commande" });
+    }catch(err){
             console.log(err);
-        });
+    };
 });
 
 // supprime l'individu sélectionné
