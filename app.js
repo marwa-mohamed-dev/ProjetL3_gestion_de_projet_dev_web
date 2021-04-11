@@ -55,10 +55,17 @@ const users = [{ id: '1', identifiant: "winkler", mdp: "astrid" },
 // permet de faciliter le routing
 const app = express();
 
+var server = app.listen(process.env.PORT || 3000, function () {
+    var host = server.address().address
+    var port = server.address().port
+    console.log('App listening at http://%s:%s', host, port)
+})
+
+
 //connect to database mongodb
 const dbURI = 'mongodb+srv://mimirdev:mimir1234@fenouil.t2pik.mongodb.net/fenouil_app?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((result) => app.listen(3000))
+    .then((result) => console.log('Mongoose connected'))
     .catch((err) => console.log(err));
 
 // register view engine
