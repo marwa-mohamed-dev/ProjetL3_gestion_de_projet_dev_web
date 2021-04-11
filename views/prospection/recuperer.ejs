@@ -8,19 +8,25 @@
     <%- include('../partials/nav.ejs') %>
     <div class="barre">
         <input class="creerPub" id="creer" type="submit" value="Créer une nouvelle cible de routage" onclick="creer()">
-        <input class="ModifPub" id="Modif" type="submit" value="Modifier les cibles de routages refusés" onclick="Modifier()">
+        <input class="ModifPub" id="Modif" type="submit" value="Visualiser les cibles de routages refusés" onclick="Modifier()">
         <input class="valPub" id="val" type="submit" value="Valider une cible de routage" onclick="valider()">    
         <input class="recupPub" id="recup" type="submit" value="Envoyer une publicité" onclick="recuperer()">
     </div>
     
-    <div class="page" >
+    <div  >
+
         <% if (cibleDeRoutages.length > 0) { %>
             <% cibleDeRoutages.forEach(cible => { %>
                 <%if(cible.valide) { %>
-                    <a class="single" href="./prospection/<%= cible._id %>">
                     <h3 class="nom"><%= cible.titre %></h3>
-                    <p><%= cible.dateProspection.toDateString() %></p>
-                </a>
+                    <p> Date de création : <%= cible.dateProspection.toDateString() %></p>
+                    <p>Date de validation <%= cible.dateValide.toDateString() %></p> 
+                    
+                    <% if(Math.abs(new Date() - cible.dateValide.getTime()) >  864000000 ) { %> 
+                        <p>Expiré, les individus ne font plus partie de la cible de routage</p>   
+                        <% cible.listeIndividus.forEach(individu => individu.statut = 'Client') %>  
+                    <% } %> 
+                
                 
                 <%} %>
             <% }) %>

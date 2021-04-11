@@ -52,7 +52,7 @@
                 <select name="articles" class="numberArt">
                     <option value="" disabled selected>choisir 1 article</option>
                     <% articles.forEach(article =>{ %>
-                        <option label="<%= article.designation %>" value="<%= article.id %>"></option>
+                        <option class="1" label="<%= article.designation %>" value=<%=article._id%>></option>
                     <% }) %>
                 </select>
             </div> 
@@ -85,25 +85,6 @@
         const suppr = document.getElementById('suppr');
         const ajout = document.getElementById('ajout');
         //////////////////////////////
-        function Ajout_Article(){
-            const nbArt = document.getElementsByClassName("numberArt").length+1;
-            articles.insertAdjacentHTML('beforeend',"<select name='articles' class='numberArt'><option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article.id %>'></option><% }) %></select>")
-            if(nbArt>1){
-                suppr.classList.remove('hidden')
-            }
-            if(nbArt>=5){
-                ajout.classList.add('hidden')
-            } 
-        }
-        function Supprimer_Article(){
-            const nbArt = document.getElementsByClassName("numberArt").length;
-            articles.removeChild(articles.lastChild)
-            ajout.classList.remove('hidden')
-            if(nbArt==2){
-                suppr.classList.add('hidden')
-            }       
-        }
-        //////////////////////////////////////
         function Internet(){
             let papierElements = document.getElementById('Catalogue')
             if(internet.checked){
@@ -125,6 +106,27 @@
                 papierElements.innerHTML="";
             }
         }
+        ////////////////////////////////
+        function Ajout_Article(){
+            const nbArt = document.getElementsByClassName("numberArt").length+1;
+            articles.insertAdjacentHTML('beforeend',"<select name='articles' class='numberArt'><option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article._id %>'></option><% }) %></select>")
+            if(nbArt>1){
+                suppr.classList.remove('hidden')
+            }
+            if(nbArt>=5){
+                ajout.classList.add('hidden')
+            } 
+        }
+        function Supprimer_Article(){
+            const nbArt = document.getElementsByClassName("numberArt").length;
+            articles.removeChild(articles.lastChild)
+            ajout.classList.remove('hidden')
+            if(nbArt==2){
+                suppr.classList.add('hidden')
+            }       
+        }
+        //////////////////////////////////////
+        
         // let on_val = document.getElementById("val")
         // let on_recup = document.getElementById("recup")
         // function Creer(){

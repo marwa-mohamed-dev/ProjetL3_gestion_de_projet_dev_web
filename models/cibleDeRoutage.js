@@ -7,6 +7,9 @@ const CibleDeRoutageSchema = new Schema({
         type: Boolean,
         default: false
     },
+    dateValide: {
+        type: Date,
+    },
     refus:{
         type: Boolean,
         default: false
@@ -60,6 +63,9 @@ const CibleDeRoutageSchema = new Schema({
         required: true,
         ref: 'Article'
     },
+    Remarque : {
+        type:String,
+    }
     // article1 : {
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: 'Article'

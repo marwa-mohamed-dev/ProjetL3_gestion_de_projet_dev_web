@@ -16,7 +16,7 @@
     <div class="page" >
         <% if (cibleDeRoutages.length > 0) { %>
             <% cibleDeRoutages.forEach(cible => { %>
-                <%if(!cible.valide) { %>
+                <%if(!cible.valide && !cible.refus) { %>
                     <a class="single" href="./validationCiblederoutage/<%= cible._id %>">
                         <h3 class="nom"><%= cible.titre %></h3>
                         <p><%= cible.dateProspection.toDateString() %></p>
