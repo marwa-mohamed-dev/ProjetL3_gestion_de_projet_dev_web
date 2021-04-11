@@ -128,30 +128,6 @@ app.get('/referentielCreerArticle', checkAuthenticated, (req, res) => {
     }
 });
 
-app.get('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/CreerIndividu', { title: 'Administration du référentiel', style: 'Referentiel' });
-});
-// ajoute un individu à la base de données
-// fait marcher le bouton submit en soi
-// puis redirige vers la page administrateur
-app.post('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
-    const individu = new Individu(req.body);
-    individu.age = getAge(individu.dateNaissance)
-    individu.save()
-        .then((result) => {
-            res.redirect('/referentiel');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-function getAge(date) {
-    var diff = Date.now() - date.getTime();
-    var age = new Date(diff);
-    return Math.abs(age.getUTCFullYear() - 1970);
-}
-
 // créer un nouvel article
 app.post('/referentielCreerArticle', checkAuthenticated, upload.single('image'), async(req, res) => {
     const fileName = req.file != null ? req.file.filename : null;
@@ -178,6 +154,7 @@ function generateRef() {
     }
     return num;
 }
+
 // affiche liste de tous les articles de la base
 //ordonés avec celui ajouté le plus récemment en premier
 app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
@@ -194,6 +171,18 @@ app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
                 style: "Referentiel",
                 searchOptions: req.query
             });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+// supprime l'article sélectionné
+app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Article.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/referentielModifArticle' });
         })
         .catch((err) => {
             console.log(err);
@@ -227,17 +216,30 @@ app.put('/referentielArticle/:id', checkAuthenticated, async(req, res) => {
     }
 })
 
-// supprime l'article sélectionné
-app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Article.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/referentielModifArticle' });
+// Créer nouvel individu
+app.get('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
+    res.render('./adminRef/CreerIndividu', { title: 'Administration du référentiel', style: 'Referentiel' });
+});
+// ajoute un individu à la base de données
+// fait marcher le bouton submit en soi
+// puis redirige vers la page administrateur
+app.post('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
+    const individu = new Individu(req.body);
+    individu.age = getAge(individu.dateNaissance)
+    individu.save()
+        .then((result) => {
+            res.redirect('/referentiel');
         })
         .catch((err) => {
             console.log(err);
         });
 });
+
+function getAge(date) {
+    var diff = Date.now() - date.getTime();
+    var age = new Date(diff);
+    return Math.abs(age.getUTCFullYear() - 1970);
+}
 
 // affiche liste de tous les individu de la base
 //ordonés avec celui ajouté le plus récemment en premier
@@ -260,6 +262,18 @@ app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
                 style: "Referentiel",
                 searchOptions: req.query
             });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+// supprime l'individu sélectionné
+app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Individu.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/referentielModifIndividu' });
         })
         .catch((err) => {
             console.log(err);
@@ -302,26 +316,10 @@ app.put('/referentielIndividu/:id', checkAuthenticated, async(req, res) => {
     }
 })
 
-// supprime l'individu sélectionné
-app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Individu.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/referentielModifIndividu' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
 /////////////////////////////////////////////////
 // Saisie de Commandes
 app.get('/commandes', checkAuthenticated, (req, res) => {
     res.render('./saisieCom/AcceuilCom', { title: 'Commandes', style: "Commande" })
-})
-
-app.get('/ajoutInd', checkAuthenticated, (req, res) => {
-    res.render('./saisieCom/AjoutInd', { title: 'Commandes', style: "Commande" })
 })
 
 app.get('/creerCom', checkAuthenticated, async(req, res) => {
@@ -409,19 +407,6 @@ function testAnomalie(com) {
     return etat;
 }
 
-//créer un nouvel individu depuis l'espace saisie de commande
-app.post('/ajoutInd', checkAuthenticated, (req, res) => {
-    const individu = new Individu(req.body);
-    individu.age = getAge(individu.dateNaissance)
-    individu.save()
-        .then((result) => {
-            res.redirect('/creerCom');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
 // affiche liste de toutes les commandes de la base
 //ordonés avec celle ajoutée le plus récemment en premier
 app.get('/modifCom', checkAuthenticated, (req, res) => {
@@ -442,6 +427,7 @@ app.get('/modifCom', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
+
 // affiche les informations de l'individu sélectionné
 // dans la liste de recherche
 app.get('/commande/:id', checkAuthenticated, async(req, res) => {
@@ -468,12 +454,48 @@ app.delete('/commande/:id', checkAuthenticated, (req, res) => {
         });
 });
 
+app.get('/ajoutInd', checkAuthenticated, (req, res) => {
+    res.render('./saisieCom/AjoutInd', { title: 'Commandes', style: "Commande" })
+})
+
+//créer un nouvel individu depuis l'espace saisie de commande
+app.post('/ajoutInd', checkAuthenticated, (req, res) => {
+    const individu = new Individu(req.body);
+    individu.age = getAge(individu.dateNaissance)
+    individu.save()
+        .then((result) => {
+            res.redirect('/creerCom');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 /////////////////////////////////////////////////
 // Prospection
 app.get('/prospection', checkAuthenticated, (req, res) => {
         res.render('./prospection/page', { title: 'Prospection', style: "prospection" })
     })
-    //creer une cible de routage
+
+//recuperation liste articles pour creation cible de routage
+app.get('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
+    try {
+        const articles = await Article.find({})
+            //const individus = await Individu.find({})
+            //const cibleDeRoutage = new cibleDeRoutage()
+        res.render('./prospection/new', {
+            articles: articles,
+            // individus : individus,
+            //cibleDeRoutage: cibleDeRoutage
+            title: 'Cibles de routage',
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+//creer une cible de routage
 app.post('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
     const individus = await Individu.find({})
     const cibleDeRoutage = new CibleDeRoutage(req.body);
@@ -500,35 +522,6 @@ app.post('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
             console.log(err);
         });
 });
-//recuperation liste articles pour creation cible de routage
-app.get('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
-    try {
-        const articles = await Article.find({})
-            //const individus = await Individu.find({})
-            //const cibleDeRoutage = new cibleDeRoutage()
-        res.render('./prospection/new', {
-            articles: articles,
-            // individus : individus,
-            //cibleDeRoutage: cibleDeRoutage
-            title: 'Cibles de routage',
-            style: "prospection"
-        })
-    } catch (err) {
-        console.log(err);
-    }
-})
-app.get('/validationCibleDeRoutage', checkAuthenticated, async(req, res) => {
-    try {
-        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
-        res.render('./prospection/validate', {
-            cibleDeRoutages: cibleDeRoutages,
-            title: 'Cibles de routage',
-            style: "prospection"
-        })
-    } catch (err) {
-        console.log(err);
-    }
-})
 
 app.get('/envoyerPublicite', checkAuthenticated, async(req, res) => {
     try {
@@ -542,7 +535,6 @@ app.get('/envoyerPublicite', checkAuthenticated, async(req, res) => {
                 })
             }
         })
-
         res.render('./prospection/recuperer', {
             cibleDeRoutages: cibleDeRoutages,
             title: 'Cibles de routage',
@@ -590,8 +582,20 @@ app.delete('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-app.get('/validationCiblederoutage/:id', checkAuthenticated, async(req, res) => {
+app.get('/validationCibleDeRoutage', checkAuthenticated, async(req, res) => {
+    try {
+        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
+        res.render('./prospection/validate', {
+            cibleDeRoutages: cibleDeRoutages,
+            title: 'Cibles de routage',
+            style: "prospection"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+})
 
+app.get('/validationCiblederoutage/:id', checkAuthenticated, async(req, res) => {
     try {
         const id = req.params.id;
         const cible = await CibleDeRoutage.findById(id)
@@ -603,11 +607,14 @@ app.get('/validationCiblederoutage/:id', checkAuthenticated, async(req, res) => 
     }
 
 });
-app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+
+app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    CibleDeRoutage.findByIdAndDelete(id)
+    const remarque = req.remarque
+    //console.log(remarque)
+    CibleDeRoutage.findByIdAndUpdate(id, { refus: true, remarque: remarque })
         .then(result => {
-            res.json({ redirect: '/validationCiblederoutage' });
+            res.redirect('/validationCiblederoutage');
         })
         .catch((err) => {
             console.log(err);
@@ -615,7 +622,6 @@ app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
 });
 
 app.put('/validationCiblederoutage/:id', checkAuthenticated, async(req, res) => {
-
     try {
         const id = req.params.id;
         const cible = await CibleDeRoutage.findById(id)
@@ -637,13 +643,11 @@ app.put('/validationCiblederoutage/:id', checkAuthenticated, async(req, res) => 
     }
 });
 
-app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
+app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
-    const remarque = req.remarque
-    //console.log(remarque)
-    CibleDeRoutage.findByIdAndUpdate(id, { refus: true, remarque: remarque })
+    CibleDeRoutage.findByIdAndDelete(id)
         .then(result => {
-            res.redirect('/validationCiblederoutage');
+            res.json({ redirect: '/validationCiblederoutage' });
         })
         .catch((err) => {
             console.log(err);
@@ -674,8 +678,6 @@ app.get('/anomalies', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
-
-
 
 /////////////////////////////////////////////////
 // Bouton Recherche
