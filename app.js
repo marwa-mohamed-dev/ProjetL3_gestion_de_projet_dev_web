@@ -49,7 +49,7 @@ const users = [{ id: '1', identifiant: "winkler", mdp: "astrid" },
         { id: '4', identifiant: "gomes", mdp: "lucie" },
         { id: '5', identifiant: "mohamed", mdp: "marwa" }
     ]
-    ///////////////////////////////////////////////
+///////////////////////////////////////////////
 
 
 // on créé une instance d'une application express
@@ -61,16 +61,6 @@ var server = app.listen(process.env.PORT || 3000, function () {
     var port = server.address().port
     console.log('App listening at http://%s:%s', host, port)
 })
-
-
-// Download a file
-// Todo : Get data coming from Mongo
-const data = { "foo": "bar" }; // JSON
-app.get('/download-file', checkNotAuthenticated, (req, res) => {
-    res.set("Content-Disposition", "attachment;filename=file.json");
-    res.type("application/json");
-    res.json(data);
-});
 
 //connect to database mongodb
 const dbURI = 'mongodb+srv://mimirdev:mimir1234@fenouil.t2pik.mongodb.net/fenouil_app?retryWrites=true&w=majority';
@@ -119,6 +109,8 @@ app.post('/', checkNotAuthenticated, passport.authenticate('local', {
     failureFlash: true
 }))
 
+/////////////////////////////////////////////////
+// Administration du référentiel
 app.get('/referentiel', checkAuthenticated, (req, res) => {
     res.render('./adminRef/Referentiel', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
@@ -139,7 +131,191 @@ app.get('/referentielCreerArticle', checkAuthenticated, (req, res) => {
 app.get('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
     res.render('./adminRef/CreerIndividu', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
+// ajoute un individu à la base de données
+// fait marcher le bouton submit en soi
+// puis redirige vers la page administrateur
+app.post('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
+    const individu = new Individu(req.body);
+    individu.age = getAge(individu.dateNaissance)
+    individu.save()
+        .then((result) => {
+            res.redirect('/referentiel');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
 
+function getAge(date) {
+    var diff = Date.now() - date.getTime();
+    var age = new Date(diff);
+    return Math.abs(age.getUTCFullYear() - 1970);
+}
+
+// créer un nouvel article
+app.post('/referentielCreerArticle', checkAuthenticated, upload.single('image'), async(req, res) => {
+    const fileName = req.file != null ? req.file.filename : null;
+    const article = new Article({
+        designation: req.body.designation,
+        prix: req.body.prix,
+        nomImage: fileName,
+        description: req.body.description
+    })
+    article.reference = generateRef();
+    article.save()
+        .then((result) => {
+            res.redirect('/referentiel');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+function generateRef() {
+    var num = Math.trunc(Math.random() * 100000000);
+    while (num < 10000000) {
+        num = num * 10;
+    }
+    return num;
+}
+// affiche liste de tous les articles de la base
+//ordonés avec celui ajouté le plus récemment en premier
+app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
+    let searchOptions = {};
+    if (req.query.reference != null && req.query.designation != null) {
+        searchOptions.reference = new RegExp(req.query.reference);
+        searchOptions.designation = new RegExp(req.query.designation, 'i');
+    }
+    Article.find(searchOptions).sort({ createdAt: -1 })
+        .then((result) => {
+            res.render('./adminRef/ModifArticle', {
+                title: 'Administration du référentiel',
+                articles: result,
+                style: "Referentiel",
+                searchOptions: req.query
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+// affiche les informations d'un seul article sélectionné
+// dans la liste de recherche
+app.get('/referentielArticle/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Article.findById(id)
+        .then(result => {
+            res.render('./adminRef/Article', { article: result, title: "Administration du référentiel", style: "Referentiel" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.put('/referentielArticle/:id', checkAuthenticated, async(req, res) => {
+    let article
+    try {
+        article = await Article.findById(req.params.id)
+        article.designation = req.body.designation
+        article.prix = req.body.prix
+        article.description = req.body.description
+        await article.save()
+        res.redirect('/referentielModifArticle')
+    } catch {
+        res.redirect('/referentiel')
+    }
+})
+
+// supprime l'article sélectionné
+app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Article.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/referentielModifArticle' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+// affiche liste de tous les individu de la base
+//ordonés avec celui ajouté le plus récemment en premier
+app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
+    let searchOptions = {};
+    console.log(req.query);
+    if (req.query.nom != null && req.query.prenom != null && req.query.dateNaissance != null) {
+        if (req.query.dateNaissance != '') {
+            searchOptions.dateNaissance = req.query.dateNaissance;
+        }
+        searchOptions.nom = new RegExp(req.query.nom, 'i');
+        searchOptions.prenom = new RegExp(req.query.prenom, 'i');
+    }
+    console.log(searchOptions);
+    Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
+        .then((result) => {
+            res.render('./adminRef/ModifIndividu', {
+                title: 'Administration du référentiel',
+                individus: result,
+                style: "Referentiel",
+                searchOptions: req.query
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+// affiche les informations de l'individu sélectionné
+// dans la liste de recherche
+app.get('/referentielIndividu/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Individu.findById(id)
+        .then(result => {
+            res.render('./adminRef/Individu', { individu: result, title: "Administration du référentiel", style: "Referentiel" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.put('/referentielIndividu/:id', checkAuthenticated, async(req, res) => {
+    let individu
+    try {
+        individu = await Individu.findById(req.params.id)
+        individu.nom = req.body.nom
+        individu.prenom = req.body.prenom
+        //individu.dateNaissance = req.body.dateNaissance
+        individu.categoriePro = req.body.categoriePro
+        individu.adresseNum = req.body.adresseNum
+        individu.adresseType = req.body.adresseType
+        individu.adresseCode = req.body.adresseCode
+        individu.adresseVille = req.body.adresseVille
+        individu.adresseInfos = req.body.adresseInfos
+        individu.adresseMail = req.body.adresseMail
+        individu.numeroTel = req.body.numeroTel
+        individu.statut = req.body.statut
+        await individu.save()
+        res.redirect('/referentielModifIndividu')
+    } catch {
+        res.redirect('/referentiel')
+    }
+})
+
+// supprime l'individu sélectionné
+app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
+    const id = req.params.id;
+    Individu.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect: '/referentielModifIndividu' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+/////////////////////////////////////////////////
+// Saisie de Commandes
 app.get('/commandes', checkAuthenticated, (req, res) => {
     res.render('./saisieCom/AcceuilCom', { title: 'Commandes', style: "Commande" })
 })
@@ -292,7 +468,8 @@ app.delete('/commande/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-//////// Prospection ////////
+/////////////////////////////////////////////////
+// Prospection
 app.get('/prospection', checkAuthenticated, (req, res) => {
         res.render('./prospection/page', { title: 'Prospection', style: "prospection" })
     })
@@ -463,7 +640,7 @@ app.put('/validationCiblederoutage/:id', checkAuthenticated, async(req, res) => 
 app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
     const id = req.params.id;
     const remarque = req.remarque
-    console.log(remarque)
+    //console.log(remarque)
     CibleDeRoutage.findByIdAndUpdate(id, { refus: true, remarque: remarque })
         .then(result => {
             res.redirect('/validationCiblederoutage');
@@ -473,7 +650,8 @@ app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-//////// Administration du Référentiel ////////
+/////////////////////////////////////////////////
+// Anomalie
 
 // affiche liste de tous les articles de la base
 //ordonés avec celui ajouté le plus récemment en premier
@@ -497,6 +675,11 @@ app.get('/anomalies', checkAuthenticated, (req, res) => {
         });
 });
 
+
+
+/////////////////////////////////////////////////
+// Bouton Recherche
+
 // affiche liste de tous les individus de la base
 //ordonés avec celui ajouté le plus récemment en premier
 app.get('/recherche', checkAuthenticated, (req, res) => {
@@ -518,54 +701,6 @@ app.get('/recherche', checkAuthenticated, (req, res) => {
             console.log(err);
         });
 });
-
-// ajoute un individu à la base de données
-// fait marcher le bouton submit en soi
-// puis redirige vers la page administrateur
-app.post('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
-    const individu = new Individu(req.body);
-    individu.age = getAge(individu.dateNaissance)
-    individu.save()
-        .then((result) => {
-            res.redirect('/referentiel');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-function getAge(date) {
-    var diff = Date.now() - date.getTime();
-    var age = new Date(diff);
-    return Math.abs(age.getUTCFullYear() - 1970);
-}
-
-// créer un nouvel article
-app.post('/referentielCreerArticle', checkAuthenticated, upload.single('image'), async(req, res) => {
-    const fileName = req.file != null ? req.file.filename : null;
-    const article = new Article({
-        designation: req.body.designation,
-        prix: req.body.prix,
-        nomImage: fileName,
-        description: req.body.description
-    })
-    article.reference = generateRef();
-    article.save()
-        .then((result) => {
-            res.redirect('/referentiel');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-function generateRef() {
-    var num = Math.trunc(Math.random() * 100000000);
-    while (num < 10000000) {
-        num = num * 10;
-    }
-    return num;
-}
 
 // affiche les informations d'un seul individu sélectionné
 // dans la liste de recherche
@@ -593,141 +728,18 @@ app.delete('/recherche/:id', checkAuthenticated, (req, res) => {
         });
 });
 
-// affiche liste de tous les articles de la base
-//ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
-    let searchOptions = {};
-    if (req.query.reference != null && req.query.designation != null) {
-        searchOptions.reference = new RegExp(req.query.reference);
-        searchOptions.designation = new RegExp(req.query.designation, 'i');
-    }
-    Article.find(searchOptions).sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('./adminRef/ModifArticle', {
-                title: 'Administration du référentiel',
-                articles: result,
-                style: "Referentiel",
-                searchOptions: req.query
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+/////////////////////////////////////////
+// AUTRES FONCTIONS
+
+// Download a file
+// Todo : Get data coming from Mongo
+const data = { "foo": "bar" }; // JSON
+app.get('/download-file', checkNotAuthenticated, (req, res) => {
+    res.set("Content-Disposition", "attachment;filename=file.json");
+    res.type("application/json");
+    res.json(data);
 });
 
-// affiche les informations d'un seul article sélectionné
-// dans la liste de recherche
-app.get('/referentielArticle/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Article.findById(id)
-        .then(result => {
-            res.render('./adminRef/Article', { article: result, title: "Administration du référentiel", style: "Referentiel" });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.put('/referentielArticle/:id', checkAuthenticated, async(req, res) => {
-    let article
-    try {
-        article = await Article.findById(req.params.id)
-        article.designation = req.body.designation
-        article.prix = req.body.prix
-        article.description = req.body.description
-        await article.save()
-        res.redirect('/referentielModifArticle')
-    } catch {
-        res.redirect('/referentiel')
-    }
-})
-
-// supprime l'article sélectionné
-app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Article.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/referentielModifArticle' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-// affiche liste de tous les individu de la base
-//ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
-    let searchOptions = {};
-    console.log(req.query);
-    if (req.query.nom != null && req.query.prenom != null && req.query.dateNaissance != null) {
-        if (req.query.dateNaissance != '') {
-            searchOptions.dateNaissance = req.query.dateNaissance;
-        }
-        searchOptions.nom = new RegExp(req.query.nom, 'i');
-        searchOptions.prenom = new RegExp(req.query.prenom, 'i');
-    }
-    console.log(searchOptions);
-    Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
-        .then((result) => {
-            res.render('./adminRef/ModifIndividu', {
-                title: 'Administration du référentiel',
-                individus: result,
-                style: "Referentiel",
-                searchOptions: req.query
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-// affiche les informations de l'individu sélectionné
-// dans la liste de recherche
-app.get('/referentielIndividu/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Individu.findById(id)
-        .then(result => {
-            res.render('./adminRef/Individu', { individu: result, title: "Administration du référentiel", style: "Referentiel" });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.put('/referentielIndividu/:id', checkAuthenticated, async(req, res) => {
-    let individu
-    try {
-        individu = await Individu.findById(req.params.id)
-        individu.nom = req.body.nom
-        individu.prenom = req.body.prenom
-            //individu.dateNaissance = req.body.dateNaissance
-        individu.categoriePro = req.body.categoriePro
-        individu.adresseNum = req.body.adresseNum
-        individu.adresseType = req.body.adresseType
-        individu.adresseCode = req.body.adresseCode
-        individu.adresseVille = req.body.adresseVille
-        individu.adresseInfos = req.body.adresseInfos
-        individu.adresseMail = req.body.adresseMail
-        individu.numeroTel = req.body.numeroTel
-        individu.statut = req.body.statut
-        await individu.save()
-        res.redirect('/referentielModifIndividu')
-    } catch {
-        res.redirect('/referentiel')
-    }
-})
-
-// supprime l'individu sélectionné
-app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Individu.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/referentielModifIndividu' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
 
 // permet de se déconnecter (revient à page de connexion)
 app.delete('/logout', checkAuthenticated, (req, res) => {
