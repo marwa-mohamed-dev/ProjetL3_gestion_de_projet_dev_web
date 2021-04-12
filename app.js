@@ -302,7 +302,7 @@ app.get('/envoyerPublicite', checkAuthenticated, async(req, res) => {
         const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
         const individus = await Individu.find({ _id: { $in: cibleDeRoutages.listeIndividus } })
         cibleDeRoutages.forEach(cible => {
-            if (Math.abs(new Date() - cible.dateValide.getTime()) > 864000000) {
+            if (Math.abs(new Date() - cible.dateValide) > 864000000) {
                 individus.forEach(individu => {
                     individu.statut = 'Client'
                     individu.save()

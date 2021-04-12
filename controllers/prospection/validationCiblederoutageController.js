@@ -29,10 +29,11 @@ const cible_getOne = async (req, res) => {
 }
 
 const cible_refus = (req, res) => {
+    console.log('refus')
     const id = req.params.id;
-    const remarque = req.remarque
-    //console.log(remarque)
-    CibleDeRoutage.findByIdAndUpdate(id, { refus: true, remarque: remarque })
+    const remarque = req.body.remarque
+    console.log(remarque)
+    CibleDeRoutage.findByIdAndUpdate(id, { refus: true, valide: false , remarque: remarque })
         .then(result => {
             res.redirect('/validationCiblederoutage');
         })
@@ -55,6 +56,7 @@ const cible_valide_statutInd = async (req, res) => {
         cible.valide = true
         cible.dateValide = new Date()
         cible.refus = false
+        cible.remarque = req.body.remarque
         cible.save()
             //await CibleDeRoutage.findByIdAndUpdate(id,{valide: true, dateValide: new Date(), refus: false })
         res.redirect('/validationCiblederoutage');

@@ -19,6 +19,7 @@
                     <OPTION>Cadres et professions intellectuelles supérieures
                     <OPTION>Professions intermédiaires
                     <OPTION>Employés
+                    <OPTION>Etudiant
                     <OPTION>Ouvriers
                     <OPTION>Retraités
                     <OPTION>Autres    
@@ -44,6 +45,8 @@
                         <label>Titre* <input type='text' name='titre' required> </label>
                         <label>Description* <input type='text' name='description' required></label>
                         <div id="articles"><label>Choix des articles</label>
+                            <input type='button' id="ajout" value='+' placeholder='+' onclick='Ajout_Article()'>
+                            <input type='button' id="suppr" value="-" placeholder=' - ' class="hidden" onclick='Supprimer_Article()'>
                             <select name="articles" class="numberArt">
                     <option value="" disabled selected>choisir 1 article</option>
                     <% articles.forEach(article =>{ %>
@@ -51,8 +54,6 @@
                     <% }) %>
                 </select>
                         </div>
-                        <input type='button' id="ajout" value='+' placeholder='+' onclick='Ajout_Article()'>
-                        <input type='button' id="suppr" value="-" placeholder=' - ' class="hidden" onclick='Supprimer_Article()'>
                         <input type='submit' value='Soumettre'>
                     </form>
 
