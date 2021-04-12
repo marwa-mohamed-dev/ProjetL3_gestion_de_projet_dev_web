@@ -1,5 +1,5 @@
 const express = require('express')
-const ValidationCiblederoutageController = require('../../controllers/prospection/ValidationCiblederoutageController')
+const ValidationCiblederoutageController = require('../../controllers/prospection/validationCiblederoutageController')
 
 const router = express.Router();
 

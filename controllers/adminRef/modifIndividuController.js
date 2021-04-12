@@ -3,7 +3,6 @@ const Individu = require('../../models/individu');
 
 const modifIndividu_recherche = (req, res) => {
     let searchOptions = {};
-    console.log(req.query);
     if (req.query.nom != null && req.query.prenom != null && req.query.dateNaissance != null) {
         if (req.query.dateNaissance != '') {
             searchOptions.dateNaissance = req.query.dateNaissance;
@@ -11,7 +10,6 @@ const modifIndividu_recherche = (req, res) => {
         searchOptions.nom = new RegExp(req.query.nom, 'i');
         searchOptions.prenom = new RegExp(req.query.prenom, 'i');
     }
-    console.log(searchOptions);
     Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
         .then((result) => {
             res.render('./adminRef/ModifIndividu', {
