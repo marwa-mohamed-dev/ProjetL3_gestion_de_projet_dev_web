@@ -13,6 +13,29 @@ const Anomalie = require('./models/anomalie');
 const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
+///// ORGANISATION /////
+
+// adminRef
+const creerArticleRoutes = require('./routes/adminRef/creerArticleRoutes')
+const modifArticleRoutes = require('./routes/adminRef/modifArticleRoutes')
+const referentielArticleRoutes = require('./routes/adminRef/referentielArticleRoutes')
+const creerIndividuRoutes = require('./routes/adminRef/creerIndividuRoutes')
+const modifIndividuRoutes = require('./routes/adminRef/modifIndividuRoutes')
+const referentielIndividuRoutes = require('./routes/adminRef/referentielIndividuRoutes')
+
+// saisieCom
+const commandeRoutes = require('./routes/saisieCom/commandeRoutes')
+const ajoutIndRoutes = require('./routes/saisieCom/ajoutIndRoutes')
+
+// prospection
+const creationCiblederoutageRoutes = require('./routes/prospection/creationCiblederoutageRoutes')
+const ciblederoutageRefusesRoutes = require('./routes/prospection/ciblederoutageRefusesRoutes')
+const validationCibleDeRoutageRoutes = require('./routes/prospection/validationCibleDeRoutageRoutes')
+
+//recherche
+const rechercheRoutes = require('./routes/recherche/rechercheRoutes')
+
+
 
 //////////////////////////////////////////////
 const multer = require('multer');
@@ -91,8 +114,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
-// requête de type app.get
-// routing
+
+
+///////////////////////////////////////////////////////////////////
+/////////////////////      ROUTES      ////////////////////////////
+///////////////////////////////////////////////////////////////////
 
 app.get('/', checkNotAuthenticated, (req, res) => {
     res.render('Connexion', { title: 'Connexion' });
@@ -115,206 +141,29 @@ app.get('/referentiel', checkAuthenticated, (req, res) => {
     res.render('./adminRef/Referentiel', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
-app.get('/referentielCreerArticle', checkAuthenticated, (req, res) => {
-    try {
-        const article = new Article();
-        res.render('./adminRef/CreerArticle', {
-            title: 'Administration du référentiel',
-            style: 'Referentiel',
-            article: article
-        })
-    } catch (err) {
-        console.log(err);
-    }
-});
+// /referentielCreerArticle
+// get, post et generateRef()
+app.use('/referentielCreerArticle', checkAuthenticated, upload.single('image'), creerArticleRoutes)
 
-// créer un nouvel article
-app.post('/referentielCreerArticle', checkAuthenticated, upload.single('image'), async(req, res) => {
-    const fileName = req.file != null ? req.file.filename : null;
-    const article = new Article({
-        designation: req.body.designation,
-        prix: req.body.prix,
-        nomImage: fileName,
-        description: req.body.description
-    })
-    article.reference = generateRef();
-    article.save()
-        .then((result) => {
-            res.redirect('/referentiel');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// /referentielModifArticle et /referentielModifArticle/:id
+// get et delete
+app.use('/referentielModifArticle', checkAuthenticated, modifArticleRoutes);
 
-function generateRef() {
-    var num = Math.trunc(Math.random() * 100000000);
-    while (num < 10000000) {
-        num = num * 10;
-    }
-    return num;
-}
+// /referentielArticle/:id
+// get et put
+app.use('/referentielArticle', checkAuthenticated, referentielArticleRoutes)
 
-// affiche liste de tous les articles de la base
-//ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentielModifArticle', checkAuthenticated, (req, res) => {
-    let searchOptions = {};
-    if (req.query.reference != null && req.query.designation != null) {
-        searchOptions.reference = new RegExp(req.query.reference);
-        searchOptions.designation = new RegExp(req.query.designation, 'i');
-    }
-    Article.find(searchOptions).sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('./adminRef/ModifArticle', {
-                title: 'Administration du référentiel',
-                articles: result,
-                style: "Referentiel",
-                searchOptions: req.query
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// /referentielCreerIndividu
+// get, post et getAge()
+app.use('/referentielCreerIndividu', checkAuthenticated, creerIndividuRoutes)
 
-// supprime l'article sélectionné
-app.delete('/referentielModifArticle/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Article.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/referentielModifArticle' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// /referentielModifIndividu et /:id
+// get et delete
+app.use('/referentielModifIndividu', checkAuthenticated, modifIndividuRoutes)
 
-// affiche les informations d'un seul article sélectionné
-// dans la liste de recherche
-app.get('/referentielArticle/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Article.findById(id)
-        .then(result => {
-            res.render('./adminRef/Article', { article: result, title: "Administration du référentiel", style: "Referentiel" });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.put('/referentielArticle/:id', checkAuthenticated, async(req, res) => {
-    let article
-    try {
-        article = await Article.findById(req.params.id)
-        article.designation = req.body.designation
-        article.prix = req.body.prix
-        article.description = req.body.description
-        await article.save()
-        res.redirect('/referentielModifArticle')
-    } catch {
-        res.redirect('/referentiel')
-    }
-})
-
-// Créer nouvel individu
-app.get('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
-    res.render('./adminRef/CreerIndividu', { title: 'Administration du référentiel', style: 'Referentiel' });
-});
-// ajoute un individu à la base de données
-// fait marcher le bouton submit en soi
-// puis redirige vers la page administrateur
-app.post('/referentielCreerIndividu', checkAuthenticated, (req, res) => {
-    const individu = new Individu(req.body);
-    individu.age = getAge(individu.dateNaissance)
-    individu.save()
-        .then((result) => {
-            res.redirect('/referentiel');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-function getAge(date) {
-    var diff = Date.now() - date.getTime();
-    var age = new Date(diff);
-    return Math.abs(age.getUTCFullYear() - 1970);
-}
-
-// affiche liste de tous les individu de la base
-//ordonés avec celui ajouté le plus récemment en premier
-app.get('/referentielModifIndividu', checkAuthenticated, (req, res) => {
-    let searchOptions = {};
-    console.log(req.query);
-    if (req.query.nom != null && req.query.prenom != null && req.query.dateNaissance != null) {
-        if (req.query.dateNaissance != '') {
-            searchOptions.dateNaissance = req.query.dateNaissance;
-        }
-        searchOptions.nom = new RegExp(req.query.nom, 'i');
-        searchOptions.prenom = new RegExp(req.query.prenom, 'i');
-    }
-    console.log(searchOptions);
-    Individu.find(searchOptions).sort({ createdAt: -1 }).limit(10)
-        .then((result) => {
-            res.render('./adminRef/ModifIndividu', {
-                title: 'Administration du référentiel',
-                individus: result,
-                style: "Referentiel",
-                searchOptions: req.query
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-// supprime l'individu sélectionné
-app.delete('/referentielModifIndividu/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Individu.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/referentielModifIndividu' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-// affiche les informations de l'individu sélectionné
-// dans la liste de recherche
-app.get('/referentielIndividu/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Individu.findById(id)
-        .then(result => {
-            res.render('./adminRef/Individu', { individu: result, title: "Administration du référentiel", style: "Referentiel" });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.put('/referentielIndividu/:id', checkAuthenticated, async(req, res) => {
-    let individu
-    try {
-        individu = await Individu.findById(req.params.id)
-        individu.nom = req.body.nom
-        individu.prenom = req.body.prenom
-        //individu.dateNaissance = req.body.dateNaissance
-        individu.categoriePro = req.body.categoriePro
-        individu.adresseNum = req.body.adresseNum
-        individu.adresseType = req.body.adresseType
-        individu.adresseCode = req.body.adresseCode
-        individu.adresseVille = req.body.adresseVille
-        individu.adresseInfos = req.body.adresseInfos
-        individu.adresseMail = req.body.adresseMail
-        individu.numeroTel = req.body.numeroTel
-        individu.statut = req.body.statut
-        await individu.save()
-        res.redirect('/referentielModifIndividu')
-    } catch {
-        res.redirect('/referentiel')
-    }
-})
+// /referentielIndividu/:id
+// get et put
+app.use('/referentielIndividu', checkAuthenticated, referentielIndividuRoutes)
 
 /////////////////////////////////////////////////
 // Saisie de Commandes
@@ -428,101 +277,25 @@ app.get('/modifCom', checkAuthenticated, (req, res) => {
         });
 });
 
-// affiche les informations de l'individu sélectionné
-// dans la liste de recherche
-app.get('/commande/:id', checkAuthenticated, async(req, res) => {
-    try {
-        const id = req.params.id;
-        const com = await Commande.findById(id);
-        let client = await Individu.findOne(com.client);
-        let articles = await Article.find({ _id: { $in: com.articles } });
-        res.render('./saisieCom/Commande', { commande: com, cl: client, larticles: articles, title: "Commande", style: "Commande" });
-    } catch (err) {
-        console.log(err);
-    };
-});
+// /commande/:id
+// get et delete
+app.use('/commande/:id', checkAuthenticated, commandeRoutes)
 
-// supprime l'individu sélectionné
-app.delete('/commande/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Commande.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/modifCom' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.get('/ajoutInd', checkAuthenticated, (req, res) => {
-    res.render('./saisieCom/AjoutInd', { title: 'Commandes', style: "Commande" })
-})
-
-//créer un nouvel individu depuis l'espace saisie de commande
-app.post('/ajoutInd', checkAuthenticated, (req, res) => {
-    const individu = new Individu(req.body);
-    individu.age = getAge(individu.dateNaissance)
-    individu.save()
-        .then((result) => {
-            res.redirect('/creerCom');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// /ajoutInd
+// get et post
+app.use('/ajoutInd', checkAuthenticated, ajoutIndRoutes)
 
 /////////////////////////////////////////////////
 // Prospection
 app.get('/prospection', checkAuthenticated, (req, res) => {
-        res.render('./prospection/page', { title: 'Prospection', style: "prospection" })
-    })
-
-//recuperation liste articles pour creation cible de routage
-app.get('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
-    try {
-        const articles = await Article.find({})
-            //const individus = await Individu.find({})
-            //const cibleDeRoutage = new cibleDeRoutage()
-        res.render('./prospection/new', {
-            articles: articles,
-            // individus : individus,
-            //cibleDeRoutage: cibleDeRoutage
-            title: 'Cibles de routage',
-            style: "prospection"
-        })
-    } catch (err) {
-        console.log(err);
-    }
+    res.render('./prospection/page', { title: 'Prospection', style: "prospection" })
 })
 
-//creer une cible de routage
-app.post('/creationCiblederoutage', checkAuthenticated, async(req, res) => {
-    const individus = await Individu.find({})
-    const cibleDeRoutage = new CibleDeRoutage(req.body);
-    const liste = new Array();
-    individus.forEach(individu => {
-        if (cibleDeRoutage.client === 'Non') {
-            if ((individu.age <= cibleDeRoutage.ageMax) && (individu.age >= cibleDeRoutage.ageMin) && (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode / 1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Enregistré')) {
-                liste.push(individu._id)
-            }
-        } else {
-            if ((individu.age <= cibleDeRoutage.ageMax) && (individu.age >= cibleDeRoutage.ageMin) && (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode / 1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Client')) {
-                liste.push(individu._id)
-            }
-        }
+// /creationCiblederoutage
+//get et post
+app.use('/creationCiblederoutage', checkAuthenticated, creationCiblederoutageRoutes)
 
-    })
-    cibleDeRoutage.listeIndividus = liste
-    cibleDeRoutage.save()
-        //CibleDeRoutage.updateOne({_id: cibleDeRoutage._id}, {$set : {listeIndividus: liste}})
-        .then((result) => {
-            res.redirect('/creationCiblederoutage');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
+// Envoi publicité
 app.get('/envoyerPublicite', checkAuthenticated, async(req, res) => {
     try {
         const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
@@ -545,114 +318,13 @@ app.get('/envoyerPublicite', checkAuthenticated, async(req, res) => {
     }
 })
 
+// /ciblederoutageRefuses et 2 fois /:id
+// get, get et delete
+app.use('/ciblederoutageRefuses', checkAuthenticated, ciblederoutageRefusesRoutes)
 
-app.get('/ciblederoutageRefuses', checkAuthenticated, async(req, res) => {
-    try {
-        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
-        res.render('./prospection/visualiserRefuses', {
-            cibleDeRoutages: cibleDeRoutages,
-            title: 'Cibles de routage',
-            style: "prospection"
-        })
-    } catch (err) {
-        console.log(err);
-    }
-})
-
-app.get('/ciblederoutageRefuses/:id', checkAuthenticated, async(req, res) => {
-    try {
-        const id = req.params.id;
-        const cible = await CibleDeRoutage.findById(id)
-        const articles = await Article.find({ _id: { $in: cible.articles } })
-        const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
-        res.render('./prospection/modif', { cible: cible, articles: articles, individus: individus, title: 'cible de routage', style: "prospection" });
-    } catch (error) {
-        console.log(err);
-    }
-});
-
-app.delete('/ciblederoutageRefuses/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    CibleDeRoutage.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/ciblederoutageRefuses' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.get('/validationCibleDeRoutage', checkAuthenticated, async(req, res) => {
-    try {
-        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
-        res.render('./prospection/validate', {
-            cibleDeRoutages: cibleDeRoutages,
-            title: 'Cibles de routage',
-            style: "prospection"
-        })
-    } catch (err) {
-        console.log(err);
-    }
-})
-
-app.get('/validationCiblederoutage/:id', checkAuthenticated, async(req, res) => {
-    try {
-        const id = req.params.id;
-        const cible = await CibleDeRoutage.findById(id)
-        const articles = await Article.find({ _id: { $in: cible.articles } })
-        const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
-        res.render('./prospection/details', { cible: cible, articles: articles, individus: individus, title: 'cible de routage', style: "prospection" });
-    } catch (error) {
-        console.log(err);
-    }
-
-});
-
-app.post('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    const remarque = req.remarque
-    //console.log(remarque)
-    CibleDeRoutage.findByIdAndUpdate(id, { refus: true, remarque: remarque })
-        .then(result => {
-            res.redirect('/validationCiblederoutage');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.put('/validationCiblederoutage/:id', checkAuthenticated, async(req, res) => {
-    try {
-        const id = req.params.id;
-        const cible = await CibleDeRoutage.findById(id)
-        const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
-
-        individus.forEach(individu => {
-                individu.statut = 'Prospect'
-                individu.save()
-            })
-            // await individus.save()
-        cible.valide = true
-        cible.dateValide = new Date()
-        cible.refus = false
-        cible.save()
-            //await CibleDeRoutage.findByIdAndUpdate(id,{valide: true, dateValide: new Date(), refus: false })
-        res.redirect('/validationCiblederoutage');
-    } catch (error) {
-        console.log(err);
-    }
-});
-
-app.delete('/validationCiblederoutage/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    CibleDeRoutage.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/validationCiblederoutage' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// /validationCibleDeRoutage et 4 fois /:id
+// get et get, post, put, delete
+app.use('/validationCibleDeRoutage', checkAuthenticated, validationCibleDeRoutageRoutes)
 
 /////////////////////////////////////////////////
 // Anomalie
@@ -682,53 +354,9 @@ app.get('/anomalies', checkAuthenticated, (req, res) => {
 /////////////////////////////////////////////////
 // Bouton Recherche
 
-// affiche liste de tous les individus de la base
-//ordonés avec celui ajouté le plus récemment en premier
-app.get('/recherche', checkAuthenticated, (req, res) => {
-    let searchOptions = {}
-    if (req.query.nom != null && req.query.prenom != null) {
-        searchOptions.nom = new RegExp(req.query.nom, 'i');
-        searchOptions.prenom = new RegExp(req.query.prenom, 'i')
-    }
-    Individu.find(searchOptions).sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('recherche', {
-                title: 'Liste individus',
-                individus: result,
-                style: "recherche",
-                searchOptions: req.query
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-// affiche les informations d'un seul individu sélectionné
-// dans la liste de recherche
-app.get('/recherche/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Individu.findById(id)
-        .then(result => {
-            res.render('details', { individu: result, title: "Détails individu", style: "recherche" });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-
-// supprime un des individus sélectionné
-app.delete('/recherche/:id', checkAuthenticated, (req, res) => {
-    const id = req.params.id;
-    Individu.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/recherche' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// /recherche et 2 fois /:id
+// get, get et delete
+app.use('/recherche', checkAuthenticated, rechercheRoutes)
 
 /////////////////////////////////////////
 // AUTRES FONCTIONS
