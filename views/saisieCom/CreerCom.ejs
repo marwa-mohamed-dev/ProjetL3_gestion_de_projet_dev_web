@@ -20,7 +20,7 @@
                     <% } %>
                 <% }) %>
             </select>  </label> 
-            <input class="buttNewI" id='buttonIndiv' type='button' value="Nouvel individu" onclick="nouvelIndiv()">
+            <input class="buttNewI" id='buttonIndiv' type='button' value="Nouvel individu" onclick="location.href='/ajoutInd';">
             <label class='titre'>Article(s): <input id='ajout' type='button' value='+' placeholder='+' onclick='ajout_Article()'><input id='suppr' class='hidden' type='button' value='-' placeholder='-' onclick='enlever_Article()'></label>
             <div id='articles'>
                 <input class='numberArt' type='button' value=1 >
@@ -76,8 +76,7 @@
             if(carte.checked){
                 cheque.checked=false;
                 paiementElements.innerHTML="";
-                
-                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte <input type='text' name='numeroCarte' ></label><label>Date d'expiration <input type='text' name='dateExpiration' placeholder='mm/aa'></label> ")
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro carte <input type='text' name='numeroCarte' pattern='[0-9]{16}'></label><label>Titulaire <input type='text' name='titulaire' placeholder='NOM PRENOM' pattern='[A-Z ]*'></label><label>Date d'expiration <input type='text' name='dateExpiration' placeholder='mm/aa'></label> ")
             }
             if(!carte.checked){
                 paiementElements.innerHTML="";
@@ -88,8 +87,8 @@
             if(cheque.checked){
                 carte.checked=false;
                 paiementElements.innerHTML="";
-                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro chèque <input type='text' name='numeroCheque' ></label><label>Banque <input type='text' name='banque'></label> <label>Valeur <input type='Number' name='valeur' min='0.00' step='0.01'></label>")
-                }
+                paiementElements.insertAdjacentHTML('beforeend',"<label>Numéro chèque <input type='text' name='numeroCheque pattern='[0-9]{7}' ></label><label>Banque <input type='text' name='banque' pattern='[^0-9]*'></label> <label>Valeur <input type='Number' name='valeur' min='0.00' step='0.01'></label><label id='signature'>Signature <input type='checkbox' name='signature'></label>")
+            }
             if(!cheque.checked){
                 paiementElements.innerHTML="";
             }

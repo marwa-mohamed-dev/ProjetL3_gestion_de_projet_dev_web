@@ -30,13 +30,16 @@ const commandeSchema = new Schema({
         //required: true
     },
     numeroCarte: {
-        type: Number,
+        type: String,
+    },
+    titulaire:{
+        type:String,
     },
     dateExpiration: {
         type: String,
     },
     numeroCheque: {
-        type: Number,
+        type: String,
     },
     banque: {
         type: String,
@@ -48,6 +51,7 @@ const commandeSchema = new Schema({
         type: Array,
         required: true
     },
+
     //valeur du moyen de paiement
     valeur: {
         type: Number
@@ -57,9 +61,6 @@ const commandeSchema = new Schema({
     prix:{
         type: Number
     }
-    // date: {
-    //     type: String,
-    // },
     
 }, { timestamps: true })
 
