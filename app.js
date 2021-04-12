@@ -362,10 +362,11 @@ app.use('/recherche', checkAuthenticated, rechercheRoutes)
 /////////////////////////////////////////
 // AUTRES FONCTIONS
 
+// Envoyer une publicité
 // Download a file
 // Todo : Get data coming from Mongo
-const data = { "foo": "bar" }; // JSON
-app.get('/download-file', checkNotAuthenticated, (req, res) => {
+app.get('/download-file', checkAuthenticated, (req, res) => {
+    const data = { "foo": "bar" }; // JSON
     res.set("Content-Disposition", "attachment;filename=file.json");
     res.type("application/json");
     res.json(data);

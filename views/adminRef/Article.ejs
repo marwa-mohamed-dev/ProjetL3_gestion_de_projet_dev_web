@@ -20,8 +20,8 @@
                     <label>Description</label>
                     <input type='text' name='description' value="<%= article.description %>" required>
                     <input type='submit' value='Modifier'>
-                    <input type='submit' class="delete" data-doc="<%= article._id %>" value='Supprimer'>
-                    <input type="submit" value="Annuler" onclick="Marticle()">
+                    <input type='button' class="delete" data-doc="<%= article._id %>" value='Supprimer'>
+                    <input type="button" value="Annuler" onclick="location.href='/referentielModifArticle';">
                 </form>
             </div>
 
