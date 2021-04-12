@@ -9,7 +9,7 @@ const commande_affiche = async (req, res) => {
         const com = await Commande.findById(id);
         let client = await Individu.findOne(com.client);
         let articles = await Article.find({ _id: { $in: com.articles } });
-        res.render('./saisieCom/Commande', { commande: com, cl: client, larticles: articles, title: "Commande", style: "Commande" });
+        res.render('./saisieCom/Commande', { commande: com, cl: client, larticles: articles, title: 'Saisie de Commandes', style: "Commande" });
     } catch (err) {
         console.log(err);
     };

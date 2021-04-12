@@ -2,7 +2,7 @@
 const Individu = require('../../models/individu');
 
 const commande_afficheNewInd = (req, res) => {
-    res.render('./saisieCom/AjoutInd', { title: 'Commandes', style: "Commande" })
+    res.render('./saisieCom/AjoutInd', { title: 'Saisie de Commandes', style: "Commande" })
 }
 
 const commande_creerNewInd = (req, res) => {

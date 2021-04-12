@@ -168,13 +168,13 @@ app.use('/referentielIndividu', checkAuthenticated, referentielIndividuRoutes)
 /////////////////////////////////////////////////
 // Saisie de Commandes
 app.get('/commandes', checkAuthenticated, (req, res) => {
-    res.render('./saisieCom/AcceuilCom', { title: 'Commandes', style: "Commande" })
+    res.render('./saisieCom/AcceuilCom', { title: 'Saisie de Commandes', style: "Commande" })
 })
 
 app.get('/creerCom', checkAuthenticated, async(req, res) => {
     const articles = await Article.find({})
     const individus = await Individu.find({})
-    res.render('./saisieCom/CreerCom', { articles: articles, individus: individus, title: 'Commandes', style: "Commande" })
+    res.render('./saisieCom/CreerCom', { articles: articles, individus: individus, title: 'Saisie de Commandes', style: "Commande" })
 })
 
 //créer un nouvel object commande selon la requête et l'ajoute à notre base de donnée
@@ -315,7 +315,7 @@ app.get('/modifCom', checkAuthenticated, (req, res) => {
     Commande.find(searchOptions).sort({ createdAt: -1 })
         .then((result) => {
             res.render('./saisieCom/ModifCom', {
-                title: 'Commandes',
+                title: 'Saisie de Commandes',
                 commandes: result,
                 style: "Commande",
                 searchOptions: req.query
