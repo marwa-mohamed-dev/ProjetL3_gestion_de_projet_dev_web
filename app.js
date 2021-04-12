@@ -64,16 +64,29 @@ initializePassport(
     id => users.find(user => user.id === id)
 );
 
-///////////////////////////////////////////////
+const { users } = require('./data')
+roleAdmin = ["admin", "all"]
+roleGestAnomalie = ["gest", "all"]
+roleSaisieCom = ["saisie", "all"]
+roleProsp = ["prosp", "all", "strat"]
+roleDirecteurStrat = ["strat", "all"]
+roleResponsableEnvoiPub = ["pub", "all"]
 
-const users = [{ id: '1', identifiant: "winkler", mdp: "astrid" },
-        { id: '2', identifiant: "lee", mdp: "jiou" },
-        { id: '3', identifiant: "weber", mdp: "louise" },
-        { id: '4', identifiant: "gomes", mdp: "lucie" },
-        { id: '5', identifiant: "mohamed", mdp: "marwa" }
-    ]
-///////////////////////////////////////////////
-
+function letAcess(arrayRole) {
+    return (req, res, next) => {
+        let acces = false
+        arrayRole.forEach(role => {
+            if (req.user.role == role) {
+                acces = true
+                next()
+            }
+        })
+        if(!acces) {
+            res.status(401);
+            return res.send("Vous n'avez pas accès à ce module");
+        }
+    }
+}
 
 // on créé une instance d'une application express
 const app = express();
@@ -134,52 +147,52 @@ app.post('/', checkNotAuthenticated, passport.authenticate('local', {
 
 /////////////////////////////////////////////////
 // Administration du référentiel
-app.get('/referentiel', checkAuthenticated, (req, res) => {
+app.get('/referentiel', checkAuthenticated, letAcess(roleAdmin), (req, res) => {
     res.render('./adminRef/Referentiel', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
 //// Articles
 // /referentielCreerArticle
 // get, post et generateRef()
-app.use('/referentielCreerArticle', checkAuthenticated, upload.single('image'), creerArticleRoutes)
+app.use('/referentielCreerArticle', checkAuthenticated, letAcess(roleAdmin), upload.single('image'), creerArticleRoutes)
 
 // /referentielModifArticle et /referentielModifArticle/:id
 // get et delete
-app.use('/referentielModifArticle', checkAuthenticated, modifArticleRoutes);
+app.use('/referentielModifArticle', checkAuthenticated, letAcess(roleAdmin), modifArticleRoutes);
 
 // /referentielArticle/:id
 // get et put
-app.use('/referentielArticle', checkAuthenticated, referentielArticleRoutes)
+app.use('/referentielArticle', checkAuthenticated, letAcess(roleAdmin), referentielArticleRoutes)
 
 
 //// Individus
 // /referentielCreerIndividu
 // get, post et getAge()
-app.use('/referentielCreerIndividu', checkAuthenticated, creerIndividuRoutes)
+app.use('/referentielCreerIndividu', checkAuthenticated, letAcess(roleAdmin), creerIndividuRoutes)
 
 // /referentielModifIndividu et /:id
 // get et delete
-app.use('/referentielModifIndividu', checkAuthenticated, modifIndividuRoutes)
+app.use('/referentielModifIndividu', checkAuthenticated, letAcess(roleAdmin), modifIndividuRoutes)
 
 // /referentielIndividu/:id
 // get et put
-app.use('/referentielIndividu', checkAuthenticated, referentielIndividuRoutes)
+app.use('/referentielIndividu', checkAuthenticated, letAcess(roleAdmin), referentielIndividuRoutes)
 
 
 /////////////////////////////////////////////////
 // Saisie de Commandes
-app.get('/commandes', checkAuthenticated, (req, res) => {
+app.get('/commandes', checkAuthenticated, letAcess(roleSaisieCom), (req, res) => {
     res.render('./saisieCom/AcceuilCom', { title: 'Commandes', style: "Commande" })
 })
 
-app.get('/creerCom', checkAuthenticated, async(req, res) => {
+app.get('/creerCom', checkAuthenticated, letAcess(roleSaisieCom), async(req, res) => {
     const articles = await Article.find({})
     const individus = await Individu.find({})
     res.render('./saisieCom/CreerCom', { articles: articles, individus: individus, title: 'Commandes', style: "Commande" })
 })
 
 //créer un nouvel object commande selon la requête et l'ajoute à notre base de donnée
-app.post('/creerCom', checkAuthenticated, async(req, res) => {
+app.post('/creerCom', checkAuthenticated, letAcess(roleSaisieCom), async(req, res) => {
     const commande = new Commande(req.body);
     //pour récupérer la liste des prix des articles de notre commande
     const ids = commande.articles;
@@ -259,7 +272,7 @@ function testAnomalie(com) {
 
 // affiche liste de toutes les commandes de la base
 //ordonés avec celle ajoutée le plus récemment en premier
-app.get('/modifCom', checkAuthenticated, (req, res) => {
+app.get('/modifCom', checkAuthenticated, letAcess(roleSaisieCom), (req, res) => {
     let searchOptions = {}
     if (req.query.numCommande != null) {
         searchOptions.numCommande = new RegExp(req.query.numCommande);
@@ -280,24 +293,24 @@ app.get('/modifCom', checkAuthenticated, (req, res) => {
 
 // /commande/:id
 // get et delete
-app.use('/commande/:id', checkAuthenticated, commandeRoutes)
+app.use('/commande/:id', checkAuthenticated, letAcess(roleSaisieCom), commandeRoutes)
 
 // /ajoutInd
 // get et post
-app.use('/ajoutInd', checkAuthenticated, ajoutIndRoutes)
+app.use('/ajoutInd', checkAuthenticated, letAcess(roleSaisieCom), ajoutIndRoutes)
 
 /////////////////////////////////////////////////
 // Prospection
-app.get('/prospection', checkAuthenticated, (req, res) => {
+app.get('/prospection', checkAuthenticated, letAcess(roleProsp), (req, res) => {
     res.render('./prospection/page', { title: 'Prospection', style: "prospection" })
 })
 
 // /creationCiblederoutage
 //get et post
-app.use('/creationCiblederoutage', checkAuthenticated, creationCiblederoutageRoutes)
+app.use('/creationCiblederoutage', checkAuthenticated, letAcess(roleProsp), creationCiblederoutageRoutes)
 
 // Envoi publicité
-app.get('/envoyerPublicite', checkAuthenticated, async(req, res) => {
+app.get('/envoyerPublicite', checkAuthenticated, letAcess(roleResponsableEnvoiPub), async(req, res) => {
     try {
         const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
         const individus = await Individu.find({ _id: { $in: cibleDeRoutages.listeIndividus } })
@@ -321,18 +334,18 @@ app.get('/envoyerPublicite', checkAuthenticated, async(req, res) => {
 
 // /ciblederoutageRefuses et 2 fois /:id
 // get, get et delete
-app.use('/ciblederoutageRefuses', checkAuthenticated, ciblederoutageRefusesRoutes)
+app.use('/ciblederoutageRefuses', checkAuthenticated, letAcess(roleProsp), ciblederoutageRefusesRoutes)
 
 // /validationCibleDeRoutage et 4 fois /:id
 // get et get, post, put, delete
-app.use('/validationCibleDeRoutage', checkAuthenticated, validationCibleDeRoutageRoutes)
+app.use('/validationCibleDeRoutage', checkAuthenticated, letAcess(roleDirecteurStrat), validationCibleDeRoutageRoutes)
 
 /////////////////////////////////////////////////
 // Anomalie
 
 // affiche liste de tous les articles de la base
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/anomalies', checkAuthenticated, (req, res) => {
+app.get('/anomalies', checkAuthenticated, letAcess(roleGestAnomalie), (req, res) => {
     let searchOptions = {};
     if ( /*req.query.reference != null &&*/ req.query.numeroCom != null) {
         //searchOptions.reference= new RegExp(req.query.reference, 'i');
