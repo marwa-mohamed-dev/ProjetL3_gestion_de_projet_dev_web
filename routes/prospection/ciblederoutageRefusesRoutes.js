@@ -1,44 +1,15 @@
 const express = require('express')
-const Individu = require('../../models/individu');
-const Article = require('../../models/article');
-const CibleDeRoutage = require('../../models/cibleDeRoutage');
+const ciblederoutageRefusesController = require('../../controllers/prospection/ciblederoutageRefusesController')
 
 const router = express.Router();
 
-router.get('/', async(req, res) => {
-    try {
-        const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
-        res.render('./prospection/visualiserRefuses', {
-            cibleDeRoutages: cibleDeRoutages,
-            title: 'Cibles de routage',
-            style: "prospection"
-        })
-    } catch (err) {
-        console.log(err);
-    }
-})
+// Affiche la page des cibles de routage refusées et la liste des cibles
+router.get('/', ciblederoutageRefusesController.cibleRefusee_affiche)
 
-router.get('/:id', async(req, res) => {
-    try {
-        const id = req.params.id;
-        const cible = await CibleDeRoutage.findById(id)
-        const articles = await Article.find({ _id: { $in: cible.articles } })
-        const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
-        res.render('./prospection/modif', { cible: cible, articles: articles, individus: individus, title: 'cible de routage', style: "prospection" });
-    } catch (error) {
-        console.log(err);
-    }
-});
+// Récupère les informations de la cible de routage sélectionnée
+router.get('/:id', ciblederoutageRefusesController.cibleRefusee_getOne)
 
-router.delete('/:id', (req, res) => {
-    const id = req.params.id;
-    CibleDeRoutage.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect: '/ciblederoutageRefuses' });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// Supprime la cible de routage refusée
+router.delete('/:id', ciblederoutageRefusesController.cibleRefusee_delete)
 
 module.exports = router;

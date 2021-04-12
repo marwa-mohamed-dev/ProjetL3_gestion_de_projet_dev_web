@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 };
 
+///// PACKAGES /////
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -13,8 +14,7 @@ const Anomalie = require('./models/anomalie');
 const CibleDeRoutage = require('./models/cibleDeRoutage');
 const { render } = require('ejs');
 
-///// ORGANISATION /////
-
+///// ORGANISATION, ACCÈS ROUTES /////
 // adminRef
 const creerArticleRoutes = require('./routes/adminRef/creerArticleRoutes')
 const modifArticleRoutes = require('./routes/adminRef/modifArticleRoutes')
@@ -35,9 +35,8 @@ const validationCibleDeRoutageRoutes = require('./routes/prospection/validationC
 //recherche
 const rechercheRoutes = require('./routes/recherche/rechercheRoutes')
 
-
-
 //////////////////////////////////////////////
+/// IMAGES ///
 const multer = require('multer');
 const path = require('path');
 const uploadPath = path.join('public', Article.imageBasePath)
@@ -49,7 +48,8 @@ const upload = multer({
         // }
 })
 
-// //////////////////////////////////////////
+////////////////////////////////////////////
+// CONNEXION //
 const flash = require('express-flash');
 const session = require('express-session');
 const passport = require('passport');
@@ -76,7 +76,6 @@ const users = [{ id: '1', identifiant: "winkler", mdp: "astrid" },
 
 
 // on créé une instance d'une application express
-// permet de faciliter le routing
 const app = express();
 
 var server = app.listen(process.env.PORT || 3000, function () {
@@ -114,10 +113,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
-
-
 ///////////////////////////////////////////////////////////////////
-/////////////////////      ROUTES      ////////////////////////////
+//////////////////      APPEL ROUTES      /////////////////////////
 ///////////////////////////////////////////////////////////////////
 
 app.get('/', checkNotAuthenticated, (req, res) => {
@@ -141,6 +138,7 @@ app.get('/referentiel', checkAuthenticated, (req, res) => {
     res.render('./adminRef/Referentiel', { title: 'Administration du référentiel', style: 'Referentiel' });
 });
 
+//// Articles
 // /referentielCreerArticle
 // get, post et generateRef()
 app.use('/referentielCreerArticle', checkAuthenticated, upload.single('image'), creerArticleRoutes)
@@ -153,6 +151,8 @@ app.use('/referentielModifArticle', checkAuthenticated, modifArticleRoutes);
 // get et put
 app.use('/referentielArticle', checkAuthenticated, referentielArticleRoutes)
 
+
+//// Individus
 // /referentielCreerIndividu
 // get, post et getAge()
 app.use('/referentielCreerIndividu', checkAuthenticated, creerIndividuRoutes)
@@ -164,6 +164,7 @@ app.use('/referentielModifIndividu', checkAuthenticated, modifIndividuRoutes)
 // /referentielIndividu/:id
 // get et put
 app.use('/referentielIndividu', checkAuthenticated, referentielIndividuRoutes)
+
 
 /////////////////////////////////////////////////
 // Saisie de Commandes

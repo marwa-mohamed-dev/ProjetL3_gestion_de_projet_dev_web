@@ -1,23 +1,12 @@
 const express = require('express')
-const Individu = require('../../models/individu');
+const ajoutIndController = require('../../controllers/saisieCom/ajoutIndController')
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.render('./saisieCom/AjoutInd', { title: 'Commandes', style: "Commande" })
-})
+// Affiche la page de ajout individu à partir de commande
+router.get('/', ajoutIndController.commande_afficheNewInd)
 
-//créer un nouvel individu depuis l'espace saisie de commande
-router.post('/', (req, res) => {
-    const individu = new Individu(req.body);
-    individu.age = getAge(individu.dateNaissance)
-    individu.save()
-        .then((result) => {
-            res.redirect('/creerCom');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// Créer un nouvel individu depuis l'espace saisie de commande
+router.post('/', ajoutIndController.commande_creerNewInd)
 
 module.exports = router;
