@@ -9,14 +9,14 @@ const anomalieSchema = new Schema({
 
     client: {
         // à mettre type object Individu
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref:"Individu",
         required: true
     },
 
     anomalies: {
-        type: String,
-        //required: true
+        type: Array,
+        required: true
     },
     
 }, { timestamps: true })

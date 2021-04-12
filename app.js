@@ -199,6 +199,13 @@ app.post('/creerCom', checkAuthenticated, async(req, res) => {
     commande.numCommande = generateNumCom().toString();
     commande.etat = testAnomalie(commande);
 
+    if(commande.etat.length>0){
+        const anomalie=new Anomalie();
+        anomalie.numeroCom=commande.numCommande;
+        anomalie.client=commande.client;
+        anomalie.anomalies=commande.etat;
+        anomalie.save();
+    }
     commande.save()
         .then((result) => {
             res.redirect('/creerCom');
