@@ -167,7 +167,7 @@ form>select {
     margin: auto 15%;
 }
 
-form>input[type="submit"] {
+form>input[type="submit"],form>input[type="button"] {
     width: 200px;
     height: 40px;
     background-color: #f6f8f6;
@@ -179,6 +179,13 @@ form>input[type="submit"] {
     margin-top: 5px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.update{
+    grid-column: 2/3 !important;
+}
+.delete{
+    grid-column: 3/4 !important;
 }
 
 .Col2 {

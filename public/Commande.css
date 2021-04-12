@@ -140,7 +140,6 @@ footer{
   justify-items: center;
 }
 
-
 .titre{
   grid-column: 2;
 }
@@ -175,16 +174,6 @@ input[value="Créer la commande"]{
 
 label>input[type='text']{
   width: 150px;
-}
-.SearchCom{
-  text-align: center;
-  justify-self: center;
-}
-
-.NewGrid{
-  grid-template-columns: auto !important;
-  grid-template-rows: repeat(3,max-content) !important;
-  grid-gap: 7px;
 }
 
 /*boutons ajour et suppr pour creation commande*/
@@ -236,6 +225,27 @@ form>select {
     margin: auto 15%;
 }
 
+form>input[type="submit"] {
+  width: 200px;
+  height: 40px;
+  background-color: #f6f8f6;
+  border-radius: 5px;
+  border: none;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.update{
+  grid-column: 2/3 !important;
+}
+.delete{
+  grid-column: 3/4 !important;
+}
+
 .Col2 {
   grid-column: 3/4;
   margin-right: 30%;
@@ -249,11 +259,6 @@ form>select {
 }
 
 /*Page Modifier Commande*/
-.NewGrid{
-  grid-template-columns: auto !important;
-  grid-template-rows: repeat(3,max-content) !important;
-  grid-gap: 7px;
-}
 
 .SearchCom{
   text-align: center;

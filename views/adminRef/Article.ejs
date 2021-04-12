@@ -19,7 +19,7 @@
                     <input type='number' name='prix' min='0.00' step='0.01' value="<%= article.prix %>" required>
                     <label>Description</label>
                     <input type='text' name='description' value="<%= article.description %>" required>
-                    <input type='submit' value='Modifier'>
+                    <input type='submit' class='update' value='Modifier'>
                     <input type='button' class="delete" data-doc="<%= article._id %>" value='Supprimer'>
                     <input type="button" value="Annuler" onclick="location.href='/referentielModifArticle';">
                 </form>

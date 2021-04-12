@@ -18,7 +18,9 @@
                 <% }) %>
                 <p><%=commande.prix%>€</p>
             </div>
-            <a class="delete" data-doc="<%= commande._id %>">delete</a>
+            <input type='submit' class='update' value='Modifier'>
+            <input type='button' class="delete" data-doc="<%= commande._id %>" value='Supprimer'>
+            <input type="button" value="Annuler" onclick="location.href='/modifCom';">
         </div>
     </div>
 
