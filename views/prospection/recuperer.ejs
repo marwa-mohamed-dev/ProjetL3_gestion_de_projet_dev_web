@@ -19,10 +19,7 @@
                     
                     <% if(Math.abs(new Date() - cible.dateValide.getTime()) >  864000000 ) { %> 
                         <p>Expiré, les individus ne font plus partie de la cible de routage</p>   
-                        <% cible.listeIndividus.forEach(individu => individu.statut = 'Client') %>  
                     <% } %> 
-                
-                
                 <%} %>
             <% }) %>
         <% } else { %>
