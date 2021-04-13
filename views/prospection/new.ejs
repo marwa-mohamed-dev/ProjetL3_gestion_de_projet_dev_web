@@ -12,8 +12,8 @@
                     <form action='' method='POST'>
                         <label class='partie'>Création de cible de routage :</label>
                         <label>Catégorie socio-professionnelle 
-                <SELECT name='categoriePro' size='1'>
-                    <OPTION disabled selected>Catégorie
+                <SELECT name='categoriePro' size='1' required>
+                    <OPTION selected disabled >Catégorie
                     <OPTION>Agriculteurs exploitants
                     <OPTION>Artisans. commerçants. chefs entreprise
                     <OPTION>Cadres et professions intellectuelles supérieures
@@ -25,11 +25,11 @@
                     <OPTION>Autres    
                 </SELECT>
             </label>
-                        <label>Age: de <input id="min" type='number' min='0' max='110' name='ageMin' > à <input type='number' min=getMin() max='110' name='ageMax'></label>
-                        <label>Département de résidence <input type='number' min='0' name='departementResidence'> </label>
+                        <label>Age: de <input id="min" type='number' min='0' max='110' name='ageMin' required > à <input type='number' min=getMin() max='110' name='ageMax' required></label>
+                        <label>Département de résidence <input type='number' min='0' name='departementResidence' required> </label>
                         <label>Clients ? 
-                <SELECT name='client' size='1'>
-                    <option selected>  </option>
+                <SELECT name='client' size='1' required>
+                    <!-- <option selected disabled>  </option> -->
                     <OPTION>Oui</OPTION>
                     <OPTION>Non</OPTION>
                 </SELECT>
@@ -47,7 +47,7 @@
                         <div id="articles"><label>Choix des articles</label>
                             <input type='button' id="ajout" value='+' placeholder='+' onclick='Ajout_Article()'>
                             <input type='button' id="suppr" value="-" placeholder=' - ' class="hidden" onclick='Supprimer_Article()'>
-                            <select name="articles" class="numberArt">
+                    <select name="articles" class="numberArt" required>
                     <option value="" disabled selected>choisir 1 article</option>
                     <% articles.forEach(article =>{ %>
                         <option class="1" label="<%= article.designation %>" value=<%=article._id%>></option>
@@ -86,7 +86,7 @@
                         if (papier.checked) {
                             internet.checked = false;
                             //papierElements.innerHTML="";
-                            papierElements.insertAdjacentHTML('afterbegin', "<select name='typePapier'><option>Standard</option><option>Supérieur</option><option>Economique</option></select>")
+                            papierElements.insertAdjacentHTML('afterbegin', "<select name='typePapier' required><option>Standard</option><option>Supérieur</option><option>Economique</option></select>")
                         }
                         if (!papier.checked) {
                             papierElements.innerHTML = "";
@@ -95,7 +95,7 @@
                     ////////////////////////////////
                     function Ajout_Article() {
                         const nbArt = document.getElementsByClassName("numberArt").length + 1;
-                        articles.insertAdjacentHTML('beforeend', "<select name='articles' class='numberArt'><option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article._id %>'></option><% }) %></select>")
+                        articles.insertAdjacentHTML('beforeend', "<select name='articles' class='numberArt' required><option value='' disabled selected>choisir 1 article</option><% articles.forEach(article =>{ %><option label='<%= article.designation %>' value='<%= article._id %>'></option><% }) %></select>")
                         if (nbArt > 1) {
                             suppr.classList.remove('hidden')
                         }

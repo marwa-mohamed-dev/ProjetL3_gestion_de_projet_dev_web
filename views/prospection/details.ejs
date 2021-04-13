@@ -35,11 +35,11 @@
                 <p>Sélection parmi les clients : <%=cible.client%></p>
             <% } %>
             <label>Remarque si refus :</label>
-            <input name="remarque" type="text"><br>
-            
-            <legend>Veuillez sélectionner qu'une seule option</legend>
-            <input type="button" placeholder="Valider" class="validate" data-doc="<%= cible._id %>" >
-            <input type="button" placeholder="Refuser" class="refuse" data-doc="<%= cible._id %>" >
+            <form action="" method="POST">
+                <input name="remarque" type="text" value=''>
+                <input type="submit" value="Refuser" class="refuse" value="<%= cible._id %>" >
+            </form>
+            <input type="button" value="Valider" class="validate" data-doc="<%= cible._id %>" >
             <input type="button" value='Retour' onclick="location.href='/validationCiblederoutage';">
         </div>
         <script>
@@ -58,16 +58,16 @@
                 .catch(err => console.log(err));
             })
             //////////////////
-            const refuse = document.querySelector('input.refuse')
-            refuse.addEventListener('click', (e) => {
-            const endpoint = `/validationCiblederoutage/${refuse.dataset.doc}`;
-            fetch(endpoint, {
-                    method: 'POST',
-                })
-                .then(response => response.json())
-                .then(window.location.href = '/prospection')
-                .catch(err => console.log(err));
-            })
+            // const refuse = document.querySelector('input.refuse')
+            // refuse.addEventListener('click', (e) => {
+            // const endpoint = `/validationCiblederoutage/${refuse.dataset.doc}`;
+            // fetch(endpoint, {
+            //         method: 'POST',
+            //     })
+            //     .then(response => response.json())
+            //     .then(window.location.href = '/prospection')
+            //     .catch(err => console.log(err));
+            // })
         </script>
 
         <%- include('../partials/footer.ejs') %>
