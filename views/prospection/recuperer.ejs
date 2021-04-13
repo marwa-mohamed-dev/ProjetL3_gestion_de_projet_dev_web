@@ -18,10 +18,10 @@
                         <p> Date de création : <%= cible.dateProspection.toDateString() %></p>
                         <p>Date de validation <%= cible.dateValide.toDateString() %></p> 
                     </a>
-                        <input type="button" class="delete" data-doc="<%= cible._id %>" value="Supprimer">
                         <% if(Math.abs(new Date() - cible.dateValide.getTime()) >  864000000 ) { %> 
                             <p>Expiré, les individus ne font plus partie de la cible de routage</p>   
                         <% } %> 
+                        <input type="button" class="delete" data-doc="<%= cible._id %>" value="Supprimer">
                 <%} %>
             <% }) %>
         <% } else { %>

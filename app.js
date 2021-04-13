@@ -223,13 +223,14 @@ app.get('/envoyerPublicite', checkAuthenticated, letAcess(roleResponsableEnvoiPu
             if (Math.abs(new Date() - cible.dateValide) > 864000000) {
                 if(cible.listeIndividus.length>0){
                     const individus = await Individu.find({ _id: { $in: cibleDeRoutages.listeIndividus } })
-                    individus.forEach(individu => {
+                    individus.forEach(async individu => {
                         if(individu.statut === 'Prospect'){
                             individu.statut = 'Enregistré'
-                            individu.save()
+                            await individu.save()
                         }
                     })
-                    cible.listeIndividus = new Array
+                    cible.listeIndividus = []
+                    await cible.save()
                 }
             }
         })

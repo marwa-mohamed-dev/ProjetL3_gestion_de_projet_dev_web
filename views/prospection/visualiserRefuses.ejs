@@ -17,8 +17,8 @@
                 <% cibleDeRoutages.forEach(cible => { %>
                     <%if(cible.refus) { %>
                         <div class="single">
-                            <a class='cibleR' href="./ciblederoutageRefuses/<%= cible._id %>"></a>
-                            <h3 class="nom"><%= cible.titre %></h3>
+                            <a class='cibleR' href="./ciblederoutageRefuses/<%= cible._id %>">
+                            <h3 class="nom"><%= cible.titre %></h3></a>
                             <p class="date"><%= cible.dateProspection.toDateString() %></p>
                         </div>
                     <%} %>
