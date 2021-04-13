@@ -287,7 +287,7 @@ form>input[type="submit"] {
   display: grid;
   grid-template-columns: 100px 1fr 100px;
   grid-template-rows:min-content;
-  
+  grid-row-gap:10px;
 }
 
 .single{
@@ -297,9 +297,6 @@ form>input[type="submit"] {
   background-color: rgba(140, 224, 140, 0.774);
   margin-top: 2px;
   justify-items: center;
-
-  /*text-decoration: none;
-  color:black;*/
 }
 
 .affiche img{
@@ -308,6 +305,7 @@ form>input[type="submit"] {
   width: 25px;
   height: 25px;
 }
+
 .single>p,h3,a{
   align-self: center;
   margin-top:5px;

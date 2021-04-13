@@ -9,18 +9,24 @@
     <%- include('../partials/barreProspection.ejs') %>
     
     <div class="page" >
-        <% if (cibleDeRoutages.length > 0) { %>
-            <% cibleDeRoutages.forEach(cible => { %>
-                <%if(cible.refus) { %>
-                    <a class="single" href="./ciblederoutageRefuses/<%= cible._id %>">
-                    <h3 class="nom"><%= cible.titre %></h3>
-                </a>
-                <p><%= cible.dateProspection.toDateString() %></p>
-                <%} %>
-            <% }) %>
-        <% } else { %>
-            <p>Pas de publicité à envoyer ou en attente de validation</p>
-        <% } %>
+        <div class="place">
+            <p>Cible de Routage à supprimer</p>            
+        </div>
+        <div class="liste">
+            <% if (cibleDeRoutages.length > 0) { %>
+                <% cibleDeRoutages.forEach(cible => { %>
+                    <%if(cible.refus) { %>
+                        <div class="single">
+                            <a class='cibleR' href="./ciblederoutageRefuses/<%= cible._id %>"></a>
+                            <h3 class="nom"><%= cible.titre %></h3>
+                            <p class="date"><%= cible.dateProspection.toDateString() %></p>
+                        </div>
+                    <%} %>
+                <% }) %>
+            <% } else { %>
+                <p class='noelmt'>Pas de publicité à envoyer ou en attente de validation</p>
+            <% } %>
+        </div>
     </div>
     <script>
         let on_modif = document.getElementById("Modif")

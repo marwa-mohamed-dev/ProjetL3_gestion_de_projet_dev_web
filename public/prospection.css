@@ -115,6 +115,7 @@ footer{
     background-color: rgb(238, 244, 234);
 }
 
+/* CSS de la page*/
 .page{
     grid-area: page-start/page-start/page-end/page-end;
     display: grid;
@@ -130,15 +131,10 @@ footer{
 
 div>form{
   grid-column-start:2;
-
-   display:grid;
+  display:grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
 }
-/*
-form>label{
-  grid-column-start: 1;
-}*/
 
 .partie{
   justify-self: center;
@@ -153,8 +149,8 @@ form>label{
 .hidden{
   visibility: hidden;
 }
-input[value="Soumettre à la validation"]{
-  width: 200px;
+input[value="Soumettre"]{
+  width: 150px;
   height: 40px;
   background-color: #f6f8f6;
   border-radius: 5px;
@@ -167,15 +163,39 @@ input[value="Soumettre à la validation"]{
   margin-right: auto;
 }
 
+/*CSS pour Visulaiser les cibles de routages à supprimer*/
+.place{
+  grid-column: 2/4;
+  margin-top: 3%;
+  background-color: rgb(77, 155, 57);
+  border: 1px solid black;
+  width: 100%;
+  text-align: center;
+}
+
+.liste{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows:min-content;
+  grid-column: 2/4;
+  width:100%;
+}
+
 .single{
   text-decoration: none;
   color: #222;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  background-color: rgba(140, 224, 140, 0.774);
+  margin-top: 2px;
+  justify-items: center;
 }
 
-.single p{
-  display:none;
-  opacity:1;}
-  
-.single:hover p{
-  display:block;
+.nom{
+grid-column:1 ;
 }
+
+.date{
+grid-column-start: 2;
+}
+
