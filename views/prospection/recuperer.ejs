@@ -25,11 +25,22 @@
         <% } else { %>
             <p>Pas de publicité à envoyer ou en attente de validation</p>
         <% } %>
+
     </div>
     <script>
        let on_recup = document.getElementById("recup")
        on_recup.classList.add("on");
-
+        ////////////////////
+        const trashcan = document.querySelector('input.delete');
+            trashcan.addEventListener('click', (e) => {
+            const endpoint = `/validationCiblederoutage/${trashcan.dataset.doc}`;
+            fetch(endpoint, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+            });
     </script>
 
     <%- include('../partials/footer.ejs') %>

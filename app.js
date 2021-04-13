@@ -235,10 +235,6 @@ app.get('/envoyerPublicite', checkAuthenticated, letAcess(roleResponsableEnvoiPu
         const individus = await Individu.find({ _id: { $in: cibleDeRoutages.listeIndividus } })
         cibleDeRoutages.forEach(cible => {
             if (Math.abs(new Date() - cible.dateValide) > 864000000) {
-<<<<<<< Updated upstream
-=======
-                cibleDeRoutages.listeIndividus = new Array
->>>>>>> Stashed changes
                 individus.forEach(individu => {
                     individu.statut = 'Client'
                     individu.save()

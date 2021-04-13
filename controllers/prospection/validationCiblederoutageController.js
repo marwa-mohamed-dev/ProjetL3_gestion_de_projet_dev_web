@@ -29,15 +29,10 @@ const cible_getOne = async (req, res) => {
 }
 
 const cible_refus = (req, res) => {
-    console.log('refus')
     const id = req.params.id;
     const remarque = req.body.remarque
     console.log(remarque)
-<<<<<<< Updated upstream
     CibleDeRoutage.findByIdAndUpdate(id, { refus: true, valide: false , remarque: remarque })
-=======
-    CibleDeRoutage.findByIdAndUpdate(id, { refus: true, remarque: remarque })
->>>>>>> Stashed changes
         .then(result => {
             res.redirect('/validationCiblederoutage');
         })
