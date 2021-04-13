@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('../partials/head.ejs') %>
+
+<body>
+
+    <%- include('../partials/nav.ejs') %>
+    <%- include('../partials/barreRecherche.ejs') %>
+
+    <div class="page" id='choix'>
+        <form action='/rechercheArt' method='GET' class='ReshearchArt'>
+            <label>Référence</label>
+            <input type="text" name="reference" value="<%= searchOptions.reference %>">
+            <label>Désignation</label>
+            <input type="text" name="designation" value="<%= searchOptions.designation %>">
+            <input type='submit' value='Rechercher'>
+        </form>
+        <div class="place">
+            <div class="titretab">
+                <p>Image</p>
+                <p>Référence</p>
+                <p>Désignation</p>
+                <p>Voir</p>
+            </div>
+        </div>
+        <div class=liste>
+            <% if (articles.length > 0) { %>
+                <% articles.forEach(article => { %>
+                    <div class="single" >
+                        <img height="50" width="50" src="<%= article.imagePath %>">
+                        <p class="reference"><%= article.reference%></p>
+                        <h3 class="designation"><%= article.designation %></h3>
+                        <a class="affiche" href="/rechercheArt/<%= article._id %>" >Voir</a>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p class='noelmt'>Aucun article ne correpond à votre recherche.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+
+</body>
+</html>

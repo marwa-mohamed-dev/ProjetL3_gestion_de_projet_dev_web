@@ -35,7 +35,8 @@ const ciblederoutageRefusesRoutes = require('./routes/prospection/ciblederoutage
 const validationCibleDeRoutageRoutes = require('./routes/prospection/validationCibleDeRoutageRoutes')
 
 //recherche
-const rechercheRoutes = require('./routes/recherche/rechercheRoutes')
+const rechercheIndRoutes = require('./routes/recherche/rechercheIndRoutes')
+const rechercheArtRoutes = require('./routes/recherche/rechercheArtRoutes')
 
 //////////////////////////////////////////////
 /// IMAGES ///
@@ -86,6 +87,7 @@ function letAcess(arrayRole) {
         if(!acces) {
             res.status(401);
             return res.send("Vous n'avez pas accès à ce module");
+            //res.redirect('/acceuil')
         }
     }
 }
@@ -289,9 +291,21 @@ app.get('/anomalies', checkAuthenticated, letAcess(roleGestAnomalie), (req, res)
 /////////////////////////////////////////////////
 // Bouton Recherche
 
+app.get('/recherche', checkAuthenticated, (req, res) => {
+    res.render('recherche/recherche', {
+        title: "Recherche",
+        style: "recherche"
+    })
+})
+
 // /recherche et 2 fois /:id
 // get, get et delete
-app.use('/recherche', checkAuthenticated, rechercheRoutes)
+app.use('/rechercheInd', checkAuthenticated, rechercheIndRoutes)
+
+// /recherche et 2 fois /:id
+// get, get et delete
+app.use('/rechercheArt', checkAuthenticated, rechercheArtRoutes)
+
 
 /////////////////////////////////////////
 // AUTRES FONCTIONS
