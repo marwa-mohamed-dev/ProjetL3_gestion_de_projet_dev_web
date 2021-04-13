@@ -15,18 +15,28 @@
             <input class='SearchCom' type='text' name='numCommande' value="<%= searchOptions.numCommande %>">
             <input class='SearchCom' type='submit' value='Rechercher'>
         </form>
-
+        <div class="place">
+            <div class="titretab">
+                <p class="num">Numéro Commande</p>
+                <p>Date création</p>
+                <p>Client</p>
+                <p>Modifier</p>
+            </div>
+        </div>
         <div class="liste">
             <% if (commandes.length > 0) { %>
                 <% commandes.forEach(commande => { %>
                     <%if(!commande.valide) { %>
-                        <a class="single" href="/commande/<%= commande._id %>">
+                        <div class="single">
                             <h3 class="numéro"><%= commande.numCommande %></h3>
-                        </a>   
+                            <p class="créer"><%= commande.createdAt.toDateString()%></p>
+                            <p class="client"></p>
+                            <a class="affiche" href="/commande/<%= commande._id %>" ><img src="../edit.png" alt="edit"></a>
+                        </div>   
                     <% } %>
                 <% }) %>
             <% } else { %>
-                <p>Aucune commande n'est enregistré dans la base de données</p>
+                <p class="noelmt">Aucune commande n'est enregistré dans la base de données</p>
             <% } %>
         </div>
     </div>
