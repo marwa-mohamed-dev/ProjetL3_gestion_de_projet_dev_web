@@ -27,6 +27,7 @@ const referentielIndividuRoutes = require('./routes/adminRef/referentielIndividu
 const commandeRoutes = require('./routes/saisieCom/commandeRoutes')
 const ajoutIndRoutes = require('./routes/saisieCom/ajoutIndRoutes')
 const creerComRoutes = require('./routes/saisieCom/creerComRoutes')
+const modifComRoutes = require('./routes/saisieCom/modifComRoutes')
 
 // prospection
 const creationCiblederoutageRoutes = require('./routes/prospection/creationCiblederoutageRoutes')
@@ -191,32 +192,16 @@ app.use('/creerCom', checkAuthenticated, letAcess(roleSaisieCom), creerComRoutes
 
 // affiche liste de toutes les commandes de la base
 //ordonés avec celle ajoutée le plus récemment en premier
-app.get('/modifCom', checkAuthenticated, letAcess(roleSaisieCom), (req, res) => {
-    let searchOptions = {}
-    if (req.query.numCommande != null) {
-        searchOptions.numCommande = new RegExp(req.query.numCommande);
-    }
-    Commande.find(searchOptions).sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('./saisieCom/ModifCom', {
-                title: 'Saisie de Commandes',
-                commandes: result,
-                style: "Commande",
-                searchOptions: req.query
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+app.use('/modifCom', checkAuthenticated, letAcess(roleSaisieCom), modifComRoutes)
 
 // /commande/:id
 // get et delete
-app.use('/commande/:id', checkAuthenticated, letAcess(roleSaisieCom), commandeRoutes)
+app.use('/commande', checkAuthenticated, letAcess(roleSaisieCom), commandeRoutes)
 
 // /ajoutInd
 // get et post
 app.use('/ajoutInd', checkAuthenticated, letAcess(roleSaisieCom), ajoutIndRoutes)
+
 
 /////////////////////////////////////////////////
 // Prospection
