@@ -34,6 +34,9 @@ const cible_refus = (req, res) => {
     const remarque = req.body.remarque
     console.log(remarque)
     CibleDeRoutage.findByIdAndUpdate(id, { refus: true, valide: false , remarque: remarque })
+=======
+    CibleDeRoutage.findByIdAndUpdate(id, { refus: true, remarque: remarque })
+>>>>>>> Stashed changes
         .then(result => {
             res.redirect('/validationCiblederoutage');
         })
@@ -47,7 +50,6 @@ const cible_valide_statutInd = async (req, res) => {
         const id = req.params.id;
         const cible = await CibleDeRoutage.findById(id)
         const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
-
         individus.forEach(individu => {
                 individu.statut = 'Prospect'
                 individu.save()
