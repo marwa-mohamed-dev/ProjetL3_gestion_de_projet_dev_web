@@ -268,13 +268,7 @@ app.use('/validationCibleDeRoutage', checkAuthenticated, letAcess(roleDirecteurS
 //ordonés avec celui ajouté le plus récemment en premier
 app.get('/anomalies', checkAuthenticated, letAcess(roleGestAnomalie), async (req, res) => {
     let searchOptions = {};
-<<<<<<< Updated upstream
-    console.log("query"+req.query.numeroCom);
-    if ( /*req.query.reference != null &&*/ req.query.numeroCom!="") {
-        //searchOptions.reference= new RegExp(req.query.reference, 'i');
-=======
     let client=null;
-    
     if( req.query.nom!=null && req.query.prenom!= null && req.query.numeroCom!= null &&((req.query.nom !="" || req.query.prenom!= "") || req.query.numeroCom!="") /*req.query.date!= null*/){
         //console.log("date="+req.query.date);
         console.log("dedans");
@@ -294,7 +288,6 @@ app.get('/anomalies', checkAuthenticated, letAcess(roleGestAnomalie), async (req
         if(client!=null){
             searchOptions.client = client;
         }
->>>>>>> Stashed changes
         searchOptions.numeroCom = new RegExp(req.query.numeroCom, 'i');
         /*if (req.query.date!= '') {
             let anoJour= await Anomalie.find({createdAt:{$regex :req.query.date}});
