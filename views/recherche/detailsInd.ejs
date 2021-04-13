@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include('../partials/head.ejs') %>
+
+<body>
+
+    <%- include('../partials/nav.ejs') %>
+
+    <div class="details content">
+        <h2><%= individu.nom %> <%= individu.prenom %></h2>
+        <div class="content">
+            <p><%= individu.dateNaissance %></p>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+    
+</body>
+</html>

@@ -1,15 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
-body {
-    display: grid;
-    grid-template-columns: [head-start com-start anom-start foot-start menu-start] 1fr [menu-end logo-start] 1fr [logo-end] 1fr [com-end anom-end ref-start cible-start] 1fr [search-start]1fr[search-end id-start] 1fr [id-end ref-end cible-end foot-end head-end];
-    grid-template-rows: [head-start menu-start logo-start search-start id-start]1fr [head-end menu-end logo-end search-end id-end com-start ref-start] 4fr [com-end ref-end anom-start cible-start] 4fr [anom-end cible-end foot-start] 1fr [foot-end];
-    min-width: 800px;
-    grid-row-gap: 5%;
-    width: 100vw;
-    height: 100vh;
-    margin: 0px;
+body{
+    width:100vw;
+    height:100vh;
+    margin:0px;
     padding: 0px;
-    background-color: rgb(131, 172, 129);
+    background-color: rgb(131, 172,129);
+
+    display: grid;
+    grid-template-columns:[head-start barre-start page-start foot-start] 1fr [head-end barre-end page-end foot-end];
+    grid-template-rows:[head-start] 2fr [head-end barre-start] 1fr [barre-end page-start] 10fr [page-end foot-start] 1fr [foot-end];
 }
 
 
@@ -107,6 +106,22 @@ footer {
     font-size: xx-large;
 }
 
+.barre{
+    /* grid-area: barre-start/barre-start/barre-end/barre-end; */
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-auto-rows: 50px;
+    align-items: stretch;
+    background-color: black;
+    height: 50px;
+}
+.Recherche_Ind, .Recherche_Art{
+    width: 100%;
+    background-color: rgb(60, 131, 55);
+}
+.Nouvel_Commande:focus, .Recherche_Commande:focus, .on{
+    background-color: rgb(238, 244, 234);
+}
 
 /*Content*/
 
@@ -124,6 +139,7 @@ ul {
 
 .liste{
     display: grid;
+    max-width: 80%;
     grid-template-columns: repeat(6,16.66%);
     grid-template-rows: auto;
     grid-row-gap:10px;
