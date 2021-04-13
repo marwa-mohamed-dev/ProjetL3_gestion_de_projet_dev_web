@@ -48,6 +48,10 @@ const individuSchema = new Schema({
         type : String,
         required: true
     },
+    prospect : {
+        type: Boolean,
+        default: false
+    },
     // commandes : {
     //     type: mongoose.Schema.Types.Array,
     //     ref: 'Commandes'

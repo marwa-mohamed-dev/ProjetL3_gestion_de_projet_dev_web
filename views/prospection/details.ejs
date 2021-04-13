@@ -6,104 +6,166 @@
     <body>
 
         <%- include('../partials/nav.ejs') %>
-            <%- include('../partials/barreProspection.ejs') %>
+        <%- include('../partials/barreProspection.ejs') %>
+<<<<<<< Updated upstream
+        <div>
+            <h2><%= cible.titre %></h2>
+            <p><%=cible.description%></p>
+            <h2>Articles de la publicité : </h2>
+            <%articles.forEach( article => {%>
+                <p><%=article.designation%></p>
+            <%})%>
+            <h2>Cible de routage : </h2>
+            <% if(individus.length>0) { %>
+                <% individus.forEach( individu => { %>
+                    <p><%=individu.nom%> <%=individu.Prenom%></p>
+                <% }); %>
+            <% }else{ %>
+                <p> Aucun individu ne correspond aux condtions émises </p>
+            <% } %>
+            <h3> Conditions de cible de routage choisis </h3>
+            <%if(cible.ageMin !=null && cible.ageMax != null) { %>
+                <p>Age compris entre <%=cible.ageMin%> et <%=cible.ageMax%> ans</p> <%}%>
+            <% if (cible.categoriePro != ''){ %>
+                <p> Catégorie socio-professionnelle : <%=cible.categoriePro%></p>
+            <% } %>
+            <% if (cible.departementResidence != null){ %>
+                <p>Département de résidence : <%=cible.departementResidence%> </p>
+            <% } %>
+            <% if (cible.client != ''){ %>
+                <p>Sélection parmi les clients : <%=cible.client%></p>
+            <% } %>
+            <label>Remarque si refus :</label>
+            <input name="remarque" type="text"><br>
+            <a class="validate" data-doc="<%= cible._id %>" >Valider</a>
+            <a class="refuse" data-doc="<%= cible._id %>">Refuser</a>
+            <legend>Veuillez sélectionner qu'une seule option</legend>
+            <input type="checkbox" class="validate" data-doc="<%= cible._id %>" checked>
+            <label>Valider</label><br>
+            <input type="checkbox" class="refuse" data-doc="<%= cible._id %>">
+            <label>Refuser</label><br>
+            <input type="button" class="delete" data-doc="<%= cible._id %>" value="Supprimer">
+            <input type="button" value='Enregistrer' onclick="location.href='/validationCiblederoutage';">
+        </div>
+        <script>
+            let on_val = document.getElementById("val")
+            on_val.classList.add("on");
+            ////////////////////
+            const trashcan = document.querySelector('input.delete');
+            trashcan.addEventListener('click', (e) => {
+            const endpoint = `/validationCiblederoutage/${trashcan.dataset.doc}`;
+            fetch(endpoint, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+            });
+            //////////////////
+            const validate = document.querySelector('input.validate')
+            validate.addEventListener('click', (e) => {
+            const endpoint = `/validationCiblederoutage/${validate.dataset.doc}`;
+            fetch(endpoint, {
+                    method: 'PUT',
+                })
+                .then(response => response.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+            })
+            //////////////////
+            const refuse = document.querySelector('a.refuse')
+            refuse.addEventListener('click', (e) => {
+            const endpoint = `/validationCiblederoutage/${refuse.dataset.doc}`;
+            fetch(endpoint, {
+                    method: 'POST',
+                })
+                .then(response => response.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+            })
+        </script>
 
-                <div>
-                    <h2>
-                        <%= cible.titre %>
-                    </h2>
-                    <p>
-                        <%=cible.description%>
-                    </p>
-                    <h2>Articles de la publicité : </h2>
-                    <%articles.forEach( article => {%>
-                        <p>
-                            <%=article.designation%>
-                        </p>
-                        <%})%>
-                            <h2>Cible de routage : </h2>
-                            <% if(individus.length>0) { %>
-                                <% individus.forEach( individu => { %>
-                                    <p>
-                                        <%=individu.nom.toUpperCase()%>
-                                            <%=individu.Prenom%>
-                                    </p>
-                                    <% }); %>
-                                        <% }else{ %>
-                                            <p> Aucun individu ne correspond aux condtions émises </p>
-                                            <% } %>
-                                                <h3> Conditions de cible de routage choisis </h3>
-                                                <%if(cible.ageMin !=null && cible.ageMax != null) { %>
-                                                    <p>Age compris entre
-                                                        <%=cible.ageMin%> et
-                                                            <%=cible.ageMax%> ans</p>
-                                                    <%}%>
-                                                        <% if (cible.categoriePro != ''){ %>
-                                                            <p> Catégorie socio-professionnelle :
-                                                                <%=cible.categoriePro%>
-                                                            </p>
-                                                            <% } %>
-                                                                <% if (cible.departementResidence != null){ %>
-                                                                    <p>Département de résidence :
-                                                                        <%=cible.departementResidence%>
-                                                                    </p>
-                                                                    <% } %>
-                                                                        <% if (cible.client != ''){ %>
-                                                                            <p>Sélection parmi les clients :
-                                                                                <%=cible.client%>
-                                                                            </p>
-                                                                            <% } %>
-                                                                                <label>Remarque si refus :</label>
-                                                                                <input id="remarque" type="text"><br>
+=======
 
-                                                                                <legend>Veuillez sélectionner qu'une seule option</legend>
-                                                                                <input type="checkbox" class="validate" data-doc="<%= cible._id %>" checked>
-                                                                                <label>Valider</label><br>
-                                                                                <input type="checkbox" class="refuse" data-doc="<%= cible._id %>">
-                                                                                <label>Refuser</label><br>
-                                                                                <input type="submit" class="delete" data-doc="<%= cible._id %>" value="Supprimer">
-                                                                                <input type="button" value='Enregistrer' onclick=valider()>
-                </div>
-                <script>
-                    let on_val = document.getElementById("val")
-                    on_val.classList.add("on");
-                    ////////////////////
-                    const trashcan = document.querySelector('input.delete');
-                    trashcan.addEventListener('click', (e) => {
-                        const endpoint = `/validationCiblederoutage/${trashcan.dataset.doc}`;
-                        fetch(endpoint, {
-                                method: 'DELETE',
-                            })
-                            .then(response => response.json())
-                            .then((data) => window.location.href = data.redirect)
-                            .catch(err => console.log(err));
-                    });
-                    //////////////////
-                    const validate = document.querySelector('input.validate')
-                    validate.addEventListener('click', (e) => {
-                            const endpoint = `/validationCiblederoutage/${validate.dataset.doc}`;
-                            fetch(endpoint, {
-                                    method: 'PUT',
-                                })
-                                .then(response => response.json())
-                                .then((data) => window.location.href = data.redirect)
-                                .catch(err => console.log(err));
-                        })
-                        //////////////////
-                    const refuse = document.querySelector('input.refuse')
-                    refuse.addEventListener('click', (e) => {
-                        const endpoint = `/validationCiblederoutage/${refuse.dataset.doc}`;
-                        fetch(endpoint, {
-                                method: 'POST',
-                                remarque: document.getElementById('remarque').value,
-                            })
-                            .then(response => response.json())
-                            .then((data) => window.location.href = data.redirect)
-                            .catch(err => console.log(err));
-                    })
-                </script>
+        <div>
+            <h2><%= cible.titre %></h2>
+            <p><%=cible.description%></p>
+            <h2>Articles de la publicité : </h2>
+            <%articles.forEach( article => {%>
+                <p><%=article.designation%></p>
+            <%})%>
+            <h2>Cible de routage : </h2>
+            <% if(individus.length>0) { %>
+                <% individus.forEach( individu => { %>
+                    <p> <%=individu.nom.toUpperCase()%><%=individu.Prenom%></p>
+                <% }); %>
+            <% }else{ %>
+                <p> Aucun individu ne correspond aux condtions émises </p>
+            <% } %>
+            <h3> Conditions de cible de routage choisis </h3>
+            <%if(cible.ageMin !=null && cible.ageMax != null) { %>
+                <p>Age compris entre <%=cible.ageMin%> et<%=cible.ageMax%> ans</p>
+            <%}%>
+            <% if (cible.categoriePro != ''){ %>
+                <p> Catégorie socio-professionnelle : <%=cible.categoriePro%></p>
+            <% } %>
+            <% if (cible.departementResidence != null){ %>
+                <p>Département de résidence :<%=cible.departementResidence%></p>
+            <% } %>
+            <% if (cible.client != ''){ %>
+                <p>Sélection parmi les clients :<%=cible.client%></p>
+            <% } %>
+            <label>Remarque si refus :</label>
+            <input type="text" name="remarque"><br>
 
-                <%- include('../partials/footer.ejs') %>
+            <legend>Veuillez sélectionner qu'une seule option</legend>
+            <input type="checkbox" class="validate" data-doc="<%= cible._id %>" checked>
+            <label>Valider</label><br>
+            <input type="checkbox" class="refuse" data-doc="<%= cible._id %>">
+            <label>Refuser</label><br>
+            <input type="button" class="delete" data-doc="<%= cible._id %>" value="Annuler" onclick="location.href='/validationCiblederoutage';">
+            <input type="button" value='Enregistrer' onclick="location.href='/validationCiblederoutage';">
+        </div>
+        <script>
+            let on_val = document.getElementById("val")
+            on_val.classList.add("on");
+            ////////////////////
+            // const trashcan = document.querySelector('input.delete');
+            // trashcan.addEventListener('click', (e) => {
+            // const endpoint = `/validationCiblederoutage/${trashcan.dataset.doc}`;
+            // fetch(endpoint, {
+            //     method: 'DELETE',
+            //     })
+            //     .then(response => response.json())
+            //     .then((data) => window.location.href = data.redirect)
+            //     .catch(err => console.log(err));
+            // });
+            //////////////////
+            const validate = document.querySelector('input.validate')
+            validate.addEventListener('click', (e) => {
+            const endpoint = `/validationCiblederoutage/${validate.dataset.doc}`;
+            fetch(endpoint, {
+                method: 'PUT',
+                })
+                .then(response => response.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+            })
+            //////////////////
+            const refuse = document.querySelector('input.refuse')
+            refuse.addEventListener('click', (e) => {
+            const endpoint = `/validationCiblederoutage/${refuse.dataset.doc}`;
+            fetch(endpoint, {
+                method: 'POST',
+                })
+                .then(response => response.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+            })
+        </script>
+
+>>>>>>> Stashed changes
+        <%- include('../partials/footer.ejs') %>
 
     </body>
 
