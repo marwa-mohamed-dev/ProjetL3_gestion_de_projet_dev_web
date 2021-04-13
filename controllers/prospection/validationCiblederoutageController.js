@@ -45,10 +45,11 @@ const cible_valide_statutInd = async (req, res) => {
         const id = req.params.id;
         const cible = await CibleDeRoutage.findById(id)
         const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
-        individus.forEach(individu => {
+        console.log(individus)
+        individus.forEach(async individu => {
             if(individu.statut === 'Enregistré'){
                 individu.statut = 'Prospect'
-                individu.save()
+                await individu.save()
             }
         })
             // await individus.save()
@@ -64,11 +65,25 @@ const cible_valide_statutInd = async (req, res) => {
     }
 }
 
-const cible_delete = (req, res) => {
+const cible_delete = async (req, res) => {
     const id = req.params.id;
+    const cible = await CibleDeRoutage.findById(id)
+    const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
+    if(cible.listeIndividus.length>0){
+        console.log(individus)
+        individus.forEach( async (individu) => {
+            if(individu.statut === 'Prospect'){
+                individu.statut = 'Enregistré'
+                await individu.save()
+                console.log(individu)
+            }
+            
+        })
+    }
+    console.log(individus)
     CibleDeRoutage.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/validationCiblederoutage' });
+            res.json({ redirect: '/prospection' });
         })
         .catch((err) => {
             console.log(err);

@@ -219,13 +219,18 @@ app.use('/creationCiblederoutage', checkAuthenticated, letAcess(roleProsp), crea
 app.get('/envoyerPublicite', checkAuthenticated, letAcess(roleResponsableEnvoiPub), async(req, res) => {
     try {
         const cibleDeRoutages = await CibleDeRoutage.find({}).sort({ createdAt: -1 })
-        const individus = await Individu.find({ _id: { $in: cibleDeRoutages.listeIndividus } })
-        cibleDeRoutages.forEach(cible => {
+        cibleDeRoutages.forEach(  async cible => {
             if (Math.abs(new Date() - cible.dateValide) > 864000000) {
-                individus.forEach(individu => {
-                    individu.statut = 'Enregistré'
-                    individu.save()
-                })
+                if(cible.listeIndividus.length>0){
+                    const individus = await Individu.find({ _id: { $in: cibleDeRoutages.listeIndividus } })
+                    individus.forEach(individu => {
+                        if(individu.statut === 'Prospect'){
+                            individu.statut = 'Enregistré'
+                            individu.save()
+                        }
+                    })
+                    cible.listeIndividus = new Array
+                }
             }
         })
         res.render('./prospection/recuperer', {
@@ -240,20 +245,33 @@ app.get('/envoyerPublicite', checkAuthenticated, letAcess(roleResponsableEnvoiPu
 
 // Envoyer une publicité
 // Download a file
-// Todo : Get data coming from Mongo
 app.get('/Envoyerpublicite/:id', checkAuthenticated, async (req, res) => {
     const id = req.params.id
-    //const data = { "foo": "bar" }; // JSON
-    // const data = await CibleDeRoutage.findById(id)
     const cible = await CibleDeRoutage.findById(id)
     const individus = await Individu.find({_id: { $in: cible.listeIndividus }})
-    const articles = await Article.find({_id: { $in: cible.listeIndividus }})
+    const articles = await Article.find({_id: { $in: cible.articles }})
     const data = {"Titre":cible.titre, "Description" : cible.description, "Liste des individus": individus, "Articles" : articles }
     res.set("Content-Disposition", "attachment;filename=file.json");
     res.type("application/json");
     //res.save()
     res.json(data);
+    res.redirect('/prospection')
 });
+
+// Récupérer les courriers à envoyer
+// Download a file
+app.get('/courrier/:id', checkAuthenticated, async (req, res) => {
+    const id = req.params.id
+    const courrier = await Anomalie.findById(id)
+    const individu = await Individu.find({_id: { $in: courrier.client }})
+    //const commande = await Commande.find({_id: { $in: courrier.commande }})
+    const data = {"Client":individu, "Numéro de commande" : courrier.numeroCom, "Anomalie(s) présente(s)": courrier.anomalies }
+    res.set("Content-Disposition", "attachment;filename=file.json");
+    res.type("application/json");
+    res.json(data);
+});
+
+
 
 // /ciblederoutageRefuses et 2 fois /:id
 // get, get et delete

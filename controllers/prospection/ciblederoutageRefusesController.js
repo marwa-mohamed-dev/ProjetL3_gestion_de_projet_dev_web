@@ -28,8 +28,22 @@ const cibleRefusee_getOne = async (req, res) => {
     }
 }
 
-const cibleRefusee_delete = (req, res) => {
+const cibleRefusee_delete = async(req, res) => {
     const id = req.params.id;
+    const cible = await CibleDeRoutage.findById(id)
+    const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
+    if(cible.listeIndividus.length>0){
+        console.log(individus)
+        individus.forEach( async (individu) => {
+            if(individu.statut === 'Prospect'){
+                individu.statut = 'Enregistré'
+                await individu.save()
+                console.log(individu)
+            }
+            
+        })
+    }
+    console.log(individus)
     CibleDeRoutage.findByIdAndDelete(id)
         .then(result => {
             res.json({ redirect: '/ciblederoutageRefuses' });

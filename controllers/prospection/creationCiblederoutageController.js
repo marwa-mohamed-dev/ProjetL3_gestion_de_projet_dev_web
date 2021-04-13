@@ -26,9 +26,6 @@ const creationCible_creer = async (req, res) => {
 
     const liste = new Array();
     individus.forEach(individu => {
-        if(cibleDeRoutage.client === null && cibleDeRoutage.age === null ){
-
-        }
         if (cibleDeRoutage.client === 'Non') {
             if ((individu.age <= cibleDeRoutage.ageMax) && (individu.age >= cibleDeRoutage.ageMin) && (individu.categoriePro === cibleDeRoutage.categoriePro) && (Math.floor(individu.adresseCode / 1000) === cibleDeRoutage.departementResidence) && (individu.statut === 'Enregistré')) {
                 liste.push(individu._id)
