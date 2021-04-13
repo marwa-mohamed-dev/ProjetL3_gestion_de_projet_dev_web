@@ -31,7 +31,6 @@ const cible_getOne = async (req, res) => {
 const cible_refus = (req, res) => {
     const id = req.params.id;
     const remarque = req.body.remarque
-    console.log(remarque)
     CibleDeRoutage.findByIdAndUpdate(id, { refus: true, valide: false , remarque: remarque })
         .then(result => {
             res.redirect('/validationCiblederoutage');

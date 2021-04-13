@@ -30,7 +30,11 @@
                         <div class="single">
                             <h3 class="numéro"><%= commande.numCommande %></h3>
                             <p class="créer"><%= commande.createdAt.toDateString()%></p>
-                            <p class="client"></p>
+                            <%cl.forEach(client =>{ %>
+                                <%if(client.id==commande.client){ %>
+                                    <p class="client"><%=client.nom%> <%=client.prenom%></p>
+                                <%}%>
+                            <%})%>
                             <a class="affiche" href="/commande/<%= commande._id %>" ><img src="../edit.png" alt="edit"></a>
                         </div>   
                     <% } %>
@@ -40,7 +44,10 @@
             <% } %>
         </div>
     </div>
-    
+    <script>
+        let on_Modif_Comm = document.getElementById("R_Comm")
+        on_Modif_Comm.classList.add("on")
+    </script>
     <%- include('../partials/footer.ejs') %>
 
 </body>

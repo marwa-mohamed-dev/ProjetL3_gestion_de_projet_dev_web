@@ -32,12 +32,16 @@ const commandeSchema = new Schema({
     numeroCarte: {
         type: String,
     },
-    titulaire:{
+    crypto:{
         type:String,
     },
     dateExpiration: {
         type: String,
     },
+    titulaire:{
+        type:String,
+    },
+
     numeroCheque: {
         type: String,
     },

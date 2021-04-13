@@ -25,7 +25,7 @@ const creerCom_creer_verifAnomalie = async (req, res) => {
     });
 
     commande.prix = calculPrix(lprix, commande.quantite);
-    if(commande.pCarte=='on' && commande.numeroCarte!="" && commande.dateExpiration!=""){
+    if(commande.pCarte=='on' && commande.numeroCarte!="" && commande.dateExpiration!="" && commande.crypto!=""){
         commande.valeur=verifSoldeCB(commande);
     }
     commande.numCommande = generateNumCom().toString();
@@ -111,6 +111,9 @@ function testAnomalie(com) {
             etat.push("anoPaiement");
         }
         else if(com.titulaire==""){
+            etat.push("anoPaiement");
+        }
+        else if(com.crypto==""){
             etat.push("anoPaiement");
         }
         else if(com.dateExpiration==""){
