@@ -140,11 +140,12 @@ ul {
 .liste{
     display: grid;
     max-width: 80%;
-    grid-template-columns: repeat(6,16.66%);
+    grid-template-columns: repeat(4,25%);
     grid-template-rows: auto;
-    grid-row-gap:10px;
+    grid-row-gap:20px;
     grid-column-gap:40px;
     justify-items: center;
+    margin-top:2%;
 }
 .single{
     text-decoration: none;
@@ -154,7 +155,6 @@ ul {
 .search{
     display: grid;
     grid-template-columns: 20px 200px;
-    grid-template-rows: 3;
 }
 
 .search>label{
@@ -168,4 +168,35 @@ ul {
 .search>button{
     grid-column: 2;
     width:80px;
+    margin: 7px;
+}
+/*
+.ReshearchArt{
+    margin-top:5%;
+}*/
+/*Affichage à l'intérieur des individus*/
+.page{
+    display: grid;
+    grid-template-columns: 1;
+   margin-top: 5%;
+}
+
+.content{
+    grid-row: 2/3;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: auto;
+    align-content: space-evenly !important;
+    grid-row-gap: 5%;
+}
+
+div>label,
+div>h2,
+div>h3,
+div>img{
+    grid-column: 2/3
+}
+
+.adresse2{
+    margin-left:65px;
 }
