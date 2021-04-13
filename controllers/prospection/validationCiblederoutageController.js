@@ -28,7 +28,7 @@ const cible_getOne = async (req, res) => {
     }
 }
 
-const cible_refus = (req, res) => {
+const cible_refus = async (req, res) => {
     const id = req.params.id;
     const remarque = req.body.remarque
     CibleDeRoutage.findByIdAndUpdate(id, { refus: true, valide: false , remarque: remarque })
@@ -46,9 +46,11 @@ const cible_valide_statutInd = async (req, res) => {
         const cible = await CibleDeRoutage.findById(id)
         const individus = await Individu.find({ _id: { $in: cible.listeIndividus } })
         individus.forEach(individu => {
+            if(individu.statut === 'Enregistré'){
                 individu.statut = 'Prospect'
                 individu.save()
-            })
+            }
+        })
             // await individus.save()
         cible.valide = true
         cible.dateValide = new Date()

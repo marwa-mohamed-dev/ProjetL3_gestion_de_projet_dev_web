@@ -13,13 +13,15 @@
         <% if (cibleDeRoutages.length > 0) { %>
             <% cibleDeRoutages.forEach(cible => { %>
                 <%if(cible.valide) { %>
-                    <h3 class="nom"><%= cible.titre %></h3>
-                    <p> Date de création : <%= cible.dateProspection.toDateString() %></p>
-                    <p>Date de validation <%= cible.dateValide.toDateString() %></p> 
-                    <input type="button" class="delete" data-doc="<%= cible._id %>" value="Supprimer">
-                    <% if(Math.abs(new Date() - cible.dateValide.getTime()) >  864000000 ) { %> 
-                        <p>Expiré, les individus ne font plus partie de la cible de routage</p>   
-                    <% } %> 
+                    <a href="./Envoyerpublicite/<%= cible._id %>">
+                        <h3 class="nom"><%= cible.titre %></h3>
+                        <p> Date de création : <%= cible.dateProspection.toDateString() %></p>
+                        <p>Date de validation <%= cible.dateValide.toDateString() %></p> 
+                        <input type="button" class="delete" data-doc="<%= cible._id %>" value="Supprimer">
+                        <% if(Math.abs(new Date() - cible.dateValide.getTime()) >  864000000 ) { %> 
+                            <p>Expiré, les individus ne font plus partie de la cible de routage</p>   
+                        <% } %> 
+                    </a>
                 <%} %>
             <% }) %>
         <% } else { %>
@@ -38,7 +40,7 @@
                     method: 'DELETE',
                 })
                 .then(response => response.json())
-                .then((data) => window.location.href = data.redirect)
+                .then(window.location.href = '/prospection')
                 .catch(err => console.log(err));
             });
     </script>

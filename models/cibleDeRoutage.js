@@ -63,8 +63,9 @@ const CibleDeRoutageSchema = new Schema({
         required: true,
         ref: 'Article'
     },
-    Remarque : {
+    remarque : {
         type:String,
+        default: ''
     }
     // article1 : {
     //     type: mongoose.Schema.Types.ObjectId,

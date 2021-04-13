@@ -221,7 +221,7 @@ app.get('/envoyerPublicite', checkAuthenticated, letAcess(roleResponsableEnvoiPu
         cibleDeRoutages.forEach(cible => {
             if (Math.abs(new Date() - cible.dateValide) > 864000000) {
                 individus.forEach(individu => {
-                    individu.statut = 'Client'
+                    individu.statut = 'Enregistré'
                     individu.save()
                 })
             }
@@ -235,6 +235,23 @@ app.get('/envoyerPublicite', checkAuthenticated, letAcess(roleResponsableEnvoiPu
         console.log(err);
     }
 })
+
+// Envoyer une publicité
+// Download a file
+// Todo : Get data coming from Mongo
+app.get('/Envoyerpublicite/:id', checkAuthenticated, async (req, res) => {
+    const id = req.params.id
+    //const data = { "foo": "bar" }; // JSON
+    // const data = await CibleDeRoutage.findById(id)
+    const cible = await CibleDeRoutage.findById(id)
+    const individus = await Individu.find({_id: { $in: cible.listeIndividus }})
+    const articles = await Article.find({_id: { $in: cible.listeIndividus }})
+    const data = {"Titre":cible.titre, "Description" : cible.description, "Liste des individus": individus, "Articles" : articles }
+    res.set("Content-Disposition", "attachment;filename=file.json");
+    res.type("application/json");
+    //res.save()
+    res.json(data);
+});
 
 // /ciblederoutageRefuses et 2 fois /:id
 // get, get et delete
@@ -278,16 +295,6 @@ app.use('/recherche', checkAuthenticated, rechercheRoutes)
 
 /////////////////////////////////////////
 // AUTRES FONCTIONS
-
-// Envoyer une publicité
-// Download a file
-// Todo : Get data coming from Mongo
-app.get('/download-file', checkAuthenticated, (req, res) => {
-    const data = { "foo": "bar" }; // JSON
-    res.set("Content-Disposition", "attachment;filename=file.json");
-    res.type("application/json");
-    res.json(data);
-});
 
 
 // permet de se déconnecter (revient à page de connexion)
