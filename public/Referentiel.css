@@ -132,19 +132,6 @@ footer {
 }
 
 
-/* .barreRef {
-    grid-area: barre-start/barre-start/barre-end/barre-end;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 50px;
-    align-items: stretch;
-    background-color: black;
-    height: 50px;
-} */
-
-
-
-
 /*Partie CSS pour la page*/
 .page {
     grid-area: page-start/page-start/page-end/page-end;
@@ -186,6 +173,7 @@ form>input[type="submit"],form>input[type="button"] {
 }
 .delete{
     grid-column: 3/4 !important;
+    border:2px solid crimson !important;
 }
 
 .Col2 {
@@ -214,21 +202,6 @@ form>input[type="submit"],form>input[type="button"] {
     background-color: rgb(77, 155, 57);
     border: 1px solid black;
     justify-items: center;
-}
-.name{
-    grid-column-start: 2;
-    margin-left: 70px;
-}
-.date{
-    margin-left: 145px;
-}
-
-.state{
-    margin-left: 95px;
-}
-
-.modif{
-    margin-left: 30px;
 }
 
 .liste{
