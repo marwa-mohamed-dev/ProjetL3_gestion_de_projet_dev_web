@@ -5,9 +5,9 @@ const router = express.Router();
 
 // affiche les informations de l'individu sélectionné
 // dans la liste de recherche
-router.get('/', commandeController.commande_affiche)
+router.get('/:id', commandeController.commande_getOne)
 
 // supprime la commande sélectionnée
-router.delete('/', commandeController.commande_delete)
+router.delete('/:id', commandeController.commande_delete)
 
 module.exports = router;
