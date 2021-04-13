@@ -7,7 +7,10 @@ const router = express.Router();
 // dans la liste de recherche
 router.get('/:id', commandeController.commande_getOne)
 
-// supprime la commande sélectionnée
+// Modifier la commande sélectionnée
+router.post('/:id', commandeController.commande_verif)
+
+// Supprimer la commande sélectionnée
 router.delete('/:id', commandeController.commande_delete)
 
 module.exports = router;

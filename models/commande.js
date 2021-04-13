@@ -5,8 +5,7 @@ const Schema = mongoose.Schema;
 const commandeSchema = new Schema({
     numCommande: {
          type: String,
-     },
-
+    },
     client: {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Individu',
@@ -41,7 +40,6 @@ const commandeSchema = new Schema({
     titulaire:{
         type:String,
     },
-
     numeroCheque: {
         type: String,
     },
@@ -55,7 +53,6 @@ const commandeSchema = new Schema({
         type: Array,
         required: true
     },
-
     //valeur du moyen de paiement
     valeur: {
         type: Number
@@ -64,6 +61,10 @@ const commandeSchema = new Schema({
     //prix de l'ensemble des articles de la commande
     prix:{
         type: Number
+    },
+    verification: {
+        type: Boolean,
+        Default: false
     }
     
 }, { timestamps: true })
