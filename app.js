@@ -268,10 +268,12 @@ app.use('/validationCibleDeRoutage', checkAuthenticated, letAcess(roleDirecteurS
 //ordonés avec celui ajouté le plus récemment en premier
 app.get('/anomalies', checkAuthenticated, letAcess(roleGestAnomalie), (req, res) => {
     let searchOptions = {};
-    if ( /*req.query.reference != null &&*/ req.query.numeroCom != null) {
+    console.log("query"+req.query.numeroCom);
+    if ( /*req.query.reference != null &&*/ req.query.numeroCom!="") {
         //searchOptions.reference= new RegExp(req.query.reference, 'i');
         searchOptions.numeroCom = new RegExp(req.query.numeroCom, 'i');
     }
+    console.log(searchOptions);
     Anomalie.find(searchOptions).sort({ createdAt: -1 })
         .then((result) => {
             res.render('anomalie', {
