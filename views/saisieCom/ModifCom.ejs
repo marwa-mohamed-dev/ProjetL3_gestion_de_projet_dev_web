@@ -20,13 +20,13 @@
                 <p class="num">Numéro Commande</p>
                 <p>Date création</p>
                 <p>Client</p>
-                <p>Modifier</p>
+                <p>Vérifier</p>
             </div>
         </div>
         <div class="liste">
             <% if (commandes.length > 0) { %>
                 <% commandes.forEach(commande => { %>
-                    <%if(!commande.valide) { %>
+                    <%if(!commande.verification) { %>
                         <div class="single">
                             <h3 class="numéro"><%= commande.numCommande %></h3>
                             <p class="créer"><%= commande.createdAt.toDateString()%></p>

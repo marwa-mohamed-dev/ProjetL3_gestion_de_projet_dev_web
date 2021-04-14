@@ -353,7 +353,6 @@ app.use('/rechercheArt', checkAuthenticated, rechercheArtRoutes)
 /////////////////////////////////////////
 // AUTRES FONCTIONS
 
-
 // permet de se déconnecter (revient à page de connexion)
 app.delete('/logout', checkAuthenticated, (req, res) => {
     req.logOut()
