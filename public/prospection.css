@@ -21,13 +21,13 @@ body{
   grid-auto-flow: dense;
 }
 
-.interieur{
+/*.interieur{
   margin-left: auto;
   margin-right: auto;
   grid-column: 2/4;
   width: max-content;
 }
-
+*/
 nav img{
     width: 200px;
     padding-top: 30px;
@@ -137,7 +137,7 @@ footer{
     grid-area: page-start/page-start/page-end/page-end;
     display: grid;
     grid-template-columns: repeat(4,25%);
-    grid-template-rows: auto;
+    grid-auto-rows: min-content; 
     justify-items: center;
 }
 
@@ -201,7 +201,9 @@ input[value="Soumettre"]{
 
 /*CSS pour Visulaiser les cibles de routages à supprimer*/
 .place{
-  grid-column: 2/4;
+  grid-column: 2/4; 
+  grid-template-columns: 1fr;
+  grid-template-rows: auto; 
   margin-top: 3%;
   background-color: rgb(77, 155, 57);
   border: 1px solid black;
