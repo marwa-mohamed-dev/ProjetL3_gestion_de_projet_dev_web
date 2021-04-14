@@ -10,24 +10,26 @@
             
     <div class="page" id='choix'>
         <div class="details content">
-            <h2>Commande <%= commande.numCommande %></h2>
-            <div class="content">
-                <h3>Client(e) - <%=cl.nom%> <%=cl.prenom%></h3>
-                <h3>Article(s): </h3>
-                <% let i = 0 %>
-                <% larticles.forEach(article =>{ %>
-                    <p>Ref <%= article.reference %> : <%= article.designation %></p>
-                    <p>Quantité : <%= commande.quantite[i] %></p>
-                <% }) %>
-                <p>Prix total : <%= commande.prix %>€</p>
-                <h3>Moyen de payement : par carte banquaire</h3>
-                <p>Numéro de carte : <%= commande.numeroCarte%></p>
-                <p>Date d'expiration : <%= commande.dateExpiration %></p>
-                <p>Cryptogramme : <%= commande.crypto %></p>
-                <p>Montant versé : <%= commande.valeur %></p>
-            </div>
-            <input type='submit' class='update' value='Valider'>
-            <input type="button" value="Annuler" onclick="location.href='/modifCom';">
+            <form action="/commande/<%= commande._id %>" method="POST">
+                <h2>Commande <%= commande.numCommande %></h2>
+                <div class="content">
+                    <h3>Client(e) - <%=cl.nom%> <%=cl.prenom%></h3>
+                    <h3>Article(s): </h3>
+                    <% let i = 0 %>
+                    <% larticles.forEach(article =>{ %>
+                        <p>Ref <%= article.reference %> : <%= article.designation %></p>
+                        <p>Quantité : <%= commande.quantite[i] %></p>
+                    <% }) %>
+                    <p>Prix total : <%= commande.prix %>€</p>
+                    <h3>Moyen de payement : par carte banquaire</h3>
+                    <p>Numéro de carte : <%= commande.numeroCarte%></p>
+                    <p>Date d'expiration : <%= commande.dateExpiration %></p>
+                    <p>Cryptogramme : <%= commande.crypto %></p>
+                    <p>Montant versé : <%= commande.valeur %></p>
+                </div>
+                <input type='submit' class='update' value='Valider'>
+                <input type="button" value="Annuler" onclick="location.href='/modifCom';">
+            </form>
         </div>
     </div>
 
