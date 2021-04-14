@@ -5,39 +5,18 @@
 
     <body>
         <%- include('./partials/nav.ejs') %>
-
-            <div class="barre"></div>
-            <div class="page" id="choix">
-
-                <form action="/anomalies" method='GET' id="R_An">
-                    <label>Numéro Commande</label>
-                    <input type="text" id="Cnum" name="numeroCom" value="<%=searchOptions.numeroCom%>">
-                    <label>Nom Individu</label>
-                    <input type="text" id="nom" name="nom" value="<%=searchOptions.nom%>">
-                    <label>Prénom Individu</label>
-                    <input type="text" id="prenom" name="prenom" value="<%=searchOptions.prenom%>">
-                    <!-- <label>Date d'anomalie</label>
-                    <input type='date' name="date" value="%=searchOptions.date%>"> -->
-                    <input type='submit' value='Rechercher'>
-                </form>
-
-                <div class="liste">
-                    <% if (anomalies.length > 0) { %>
-                        <% anomalies.forEach(anomalie => { %>
-                            <%if(!anomalie.valide) { %>
-                                <a class="single" href="/commande/<%= anomalie._id %>">
-                                    <h3 class="numéro"><%= anomalie.numeroCom %></h3>
-                                </a>   
-                            <% } %>
-                        <% }) %>
-                    <% } else { %>
-                        <p>Aucune anomalie n'est enregistré dans la base de données</p>
-                    <% } %>
+        <div class='page'>
+            <form action="/anomalie/<%= anomalie._id %>?_method=PUT" method='POST'>
+                <div class="content">
+                    <h3 class='commande'>Numéro de commande : <%= lacom.numCommande %></h3>
+                    <h3 class='client'>Désignation : <%= leclient.nom%> <%= leclient.prenom%></h3>
+                    <label class='anomalies'>Description : <%= anomalie.anomalies%></label>
                 </div>
-
-            </div>
-
-            <%- include('./partials/footer.ejs') %>
+                <input type='submit' class='update' value='Modifier'>
+                <input type="button" value="Annuler" onclick="location.href='/referentielModifArticle';">
+            </form>
+        </div>
+        <%- include('./partials/footer.ejs') %>
 
     </body>
 

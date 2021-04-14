@@ -272,8 +272,6 @@ app.get('/courrier/:id', checkAuthenticated, async (req, res) => {
     res.json(data);
 });
 
-
-
 // /ciblederoutageRefuses et 2 fois /:id
 // get, get et delete
 app.use('/ciblederoutageRefuses', checkAuthenticated, letAcess(roleProsp), ciblederoutageRefusesRoutes)
@@ -287,15 +285,11 @@ app.use('/validationCibleDeRoutage', checkAuthenticated, letAcess(roleDirecteurS
 
 // affiche liste de tous les articles de la base
 //ordonés avec celui ajouté le plus récemment en premier
-app.get('/anomalies', checkAuthenticated, letAcess(roleGestAnomalie), async (req, res) => {
+app.get('/rechercheAnomalies', checkAuthenticated, letAcess(roleGestAnomalie), async (req, res) => {
     let searchOptions = {};
     let client=null;
-    if( req.query.nom!=null && req.query.prenom!= null && req.query.numeroCom!= null &&((req.query.nom !="" || req.query.prenom!= "") || req.query.numeroCom!="") /*req.query.date!= null*/){
-        //console.log("date="+req.query.date);
-        console.log("dedans");
-        console.log("numeroCom"+req.query.numeroCom);
-        console.log("nom"+req.query.nom);
-        console.log("prenom"+req.query.prenom);
+
+    if( req.query.nom!=null && req.query.prenom!= null && req.query.idCom!= null &&((req.query.nom !="" || req.query.prenom!= "") || req.query.idCom!=null) /*req.query.date!= null*/){
         if(req.query.nom !="" && req.query.prenom!= ""){
             client= await Individu.find({nom: req.query.nom, prenom : req.query.prenom});
         }
@@ -305,23 +299,29 @@ app.get('/anomalies', checkAuthenticated, letAcess(roleGestAnomalie), async (req
         else if(req.query.prenom !=""){
             client= await Individu.find({prenom: req.query.prenom});
         }
-        console.log(client);
+        //console.log(client);
         if(client!=null){
             searchOptions.client = client;
         }
-        searchOptions.numeroCom = new RegExp(req.query.numeroCom, 'i');
-        /*if (req.query.date!= '') {
+        if(req.query.idCom!=null){
+            let com= await Commande.findOne({numCommande:{$regex:req.query.idCom}})
+            searchOptions.idCom =com.id;
+        }
+        /*let dateA= new Date(req.query.date);
+        console.log(dateA);
+        if (req.query.date!= '') {
             let anoJour= await Anomalie.find({createdAt:{$regex :req.query.date}});
             console.log(anoJour);
             searchOptions.createdAt = req.query.date;
         }*/
     }
-    console.log(searchOptions);
     Anomalie.find(searchOptions).sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('anomalie', {
+        .then(async (result) => {
+            let commandes= await Commande.find(result.idCom);
+            res.render('rechercheAnomalie', {
                 title: 'Gestion des Anomalies',
                 anomalies: result,
+                coms:commandes,
                 style: "anomalie",
                 searchOptions: req.query
             });
@@ -330,6 +330,21 @@ app.get('/anomalies', checkAuthenticated, letAcess(roleGestAnomalie), async (req
             console.log(err);
         });
 });
+
+app.get('/anomalie/:id', checkAuthenticated, async (req, res) => {
+    const id = req.params.id;
+    let ano= await Anomalie.findById(id);
+    let com= await Commande.findById(ano.idCom);
+    let cl = await Individu.findById(ano.client);
+
+    Anomalie.findById(id)
+        .then(result => {
+            res.render('anomalie', { anomalie: result, lacom:com, leclient:cl, title: "Gestion des Anomalies", style: "anomalie" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+})
 
 /////////////////////////////////////////////////
 // Bouton Recherche

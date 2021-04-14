@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./partials/head.ejs') %>
+
+    <body>
+        <%- include('./partials/nav.ejs') %>
+
+            <div class="page" id="choix">
+
+                <form action="/rechercheAnomalies" method='GET' id="R_An">
+                    <label>Numéro Commande</label>
+                    <input type="text" id="Cnum" name="idCom" value="<%=searchOptions.idCom%>">
+                    <label>Nom Individu</label>
+                    <input type="text" id="nom" name="nom" value="<%=searchOptions.nom%>">
+                    <label>Prénom Individu</label>
+                    <input type="text" id="prenom" name="prenom" value="<%=searchOptions.prenom%>">
+                    <!-- <label>Date d'anomalie</label>
+                    <input type='date' name="date" value="%=searchOptions.date%>"> -->
+                    <input type='submit' value='Rechercher'>
+                </form>
+
+                <div class="liste">
+                    <% if (anomalies.length > 0) { %>
+                        <% anomalies.forEach(anomalie => { %>
+                            <a class="single" href="/anomalie/<%= anomalie._id %>">
+                                <%coms.forEach(com =>{ %>
+                                    <%if(com.id==anomalie.idCom){ %>
+                                        <p class="numero"><%=com.numCommande%></p>
+                                    <%}%>
+                                <%})%>
+                            </a>   
+                        <% }) %>
+                    <% } else { %>
+                        <p>Aucune anomalie n'est enregistré dans la base de données</p>
+                    <% } %>
+                </div>
+
+            </div>
+
+            <%- include('./partials/footer.ejs') %>
+
+    </body>
+
+</html>

@@ -10,7 +10,6 @@ const modifCom_recherche = (req, res) => {
 
     Commande.find(searchOptions).sort({ createdAt: -1 })
         .then(async (result) => {
-            console.log('result'+result.client);
             let clients= await Individu.find(result.client);
             res.render('./saisieCom/ModifCom', {
                 title: 'Saisie de Commandes',

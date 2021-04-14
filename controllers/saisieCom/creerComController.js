@@ -35,12 +35,11 @@ const creerCom_creer_verifAnomalie = async (req, res) => {
 
     if(commande.etat.length>0){
         const anomalie=new Anomalie();
-        anomalie.numeroCom=commande.numCommande;
+        anomalie.idCom=commande._id;
         anomalie.client=commande.client;
         anomalie.anomalies=commande.etat;
         anomalie.save();
     } else {
-        // TODO Téléchargement
         const individu = await Individu.findOne(commande.client)
         const data = {"Client":individu, "Commande" : commande, "Article(s) ":articles}
         res.set("Content-Disposition", "attachment;filename=file.json");

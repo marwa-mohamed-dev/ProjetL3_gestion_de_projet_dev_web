@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const anomalieSchema = new Schema({
-    numeroCom: {
+    idCom: {
          type: mongoose.Schema.Types.ObjectId ,
          required: true
      },
