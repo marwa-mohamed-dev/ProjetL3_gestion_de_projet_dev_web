@@ -7,21 +7,27 @@
 
     <%- include('../partials/nav.ejs') %>
     <%- include('../partials/barreProspection.ejs') %>
-    
     <div class="page" >
+    <div class="place">
+        <p>Cible de Routage à vérifier pour validation</p>            
+    </div>
+    <div class="liste" >
         <% if (cibleDeRoutages.length > 0) { %>
             <% cibleDeRoutages.forEach(cible => { %>
                 <%if(!cible.valide && !cible.refus) { %>
-                    <a class="single" href="./validationCiblederoutage/<%= cible._id %>">
-                        <h3 class="nom"><%= cible.titre %></h3>
-                        <p><%= cible.dateProspection.toDateString() %></p>
-                    </a> 
+                    <div class="single">
+                    <a class="cibleR" href="./validationCiblederoutage/<%= cible._id %>"> 
+                        <h3 class="nom"><%= cible.titre %></h3></a>
+                        <p class="date"><%= cible.dateProspection.toDateString() %></p>
+                    
+                    </div>
                 <% } %>
             <% }) %>
         <% } else { %>
             <p>Pas de publicité en attente de validation</p>
         <% } %>
     </div>
+</div>
     <script>
         let on_val = document.getElementById("val")
         on_val.classList.add("on");

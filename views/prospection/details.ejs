@@ -7,13 +7,22 @@
 
         <%- include('../partials/nav.ejs') %>
         <%- include('../partials/barreProspection.ejs') %>
-        <div>
-            <h2><%= cible.titre %></h2>
+        <div class="details">
+            <div class="interieur">
+            <h2>Titre : <%= cible.titre %></h2>
             <p><%=cible.description%></p>
             <h2>Articles de la publicité : </h2>
             <%articles.forEach( article => {%>
-                <p><%=article.designation%></p>
+                <p><img height="50" width="50" src="<%= article.imagePath %>"> <%=article.designation%></p>
             <%})%>
+            <h2>Type de prospection</h2>
+            <% if(cible.cataloguePapier ==='on') {%> 
+                <p>Catalogue papier de qualité <%= cible.typePapier %> </p>
+            <% } else if (cible.catalogueInternet ==='on') { %> 
+                <p>Canaux internet</p>
+            <% } else{ %>
+                <p>Le type de prospection n'a pas été choisi</p>
+            <% } %> 
             <h2>Cible de routage : </h2>
             <% if(individus.length>0) { %>
                 <% individus.forEach( individu => { %>
@@ -22,7 +31,7 @@
             <% }else{ %>
                 <p> Aucun individu ne correspond aux condtions émises </p>
             <% } %>
-            <h3> Conditions de cible de routage choisis </h3>
+            <h2> Conditions de cible de routage choisis </h3>
             <%if(cible.ageMin !=null && cible.ageMax != null) { %>
                 <p>Age compris entre <%=cible.ageMin%> et <%=cible.ageMax%> ans</p> <%}%>
             <% if (cible.categoriePro != ''){ %>
@@ -35,13 +44,15 @@
                 <p>Sélection parmi les clients : <%=cible.client%></p>
             <% } %>
             <label>Remarque si refus :</label>
-            <form action="" method="POST">
-                <input name="remarque" type="text" value=''>
-                <input type="submit" value="Refuser" class="refuse" value="<%= cible._id %>" >
+            <form  action="" method="POST">
+                <input class="commantaire" name="remarque" type="text" value=''>
+                <input  type="submit" value="Refuser" class="refus" value="<%= cible._id %>" >
+                <input type="button" value="Valider" class="validate" data-doc="<%= cible._id %>" >
             </form>
-            <input type="button" value="Valider" class="validate" data-doc="<%= cible._id %>" >
-            <input type="button" value='Retour' onclick="location.href='/validationCiblederoutage';">
+
+            <!-- <input type="button" value='Retour' onclick="location.href='/validationCiblederoutage';"> -->
         </div>
+    </div>
         <script>
             let on_val = document.getElementById("val")
             on_val.classList.add("on");
