@@ -17,6 +17,9 @@ const users = [
     {id: '10', identifiant: "strat", mdp: "strat", role: "strat"},
     // Responsable de routage : lance envoi des publicités
     {id: '11', identifiant: "pub", mdp: "pub", role: "pub"},
+
+    // Directeur de l'entreprise
+    {id: '12', identifiant: "global", mdp: "global", role: "all"}
 ]
 
 module.exports = {
