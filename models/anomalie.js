@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const anomalieSchema = new Schema({
     numeroCom: {
-         type: String,
+         type: mongoose.Schema.Types.ObjectId ,
          required: true
      },
 
