@@ -1,5 +1,5 @@
 const express = require('express');
-const modifComController = require('../../controllers/SaisieCom/modifComController')
+const modifComController = require('../../controllers/saisieCom/modifComController')
 
 const router = express.Router();
 

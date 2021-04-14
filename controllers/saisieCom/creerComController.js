@@ -39,11 +39,19 @@ const creerCom_creer_verifAnomalie = async (req, res) => {
         anomalie.client=commande.client;
         anomalie.anomalies=commande.etat;
         anomalie.save();
+    } else {
+        // TODO Téléchargement
+        const individu = await Individu.findOne(commande.client)
+        const data = {"Client":individu, "Commande" : commande, "Article(s) ":articles}
+        res.set("Content-Disposition", "attachment;filename=file.json");
+        res.type("application/json");
+        res.json(data);
     }
+
     commande.verification = true;
     commande.save()
         .then((result) => {
-            res.redirect('/creerCom');
+            res.redirect('/commandes');
         })
         .catch((err) => {
             console.log(err);
