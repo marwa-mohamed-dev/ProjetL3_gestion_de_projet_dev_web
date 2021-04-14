@@ -9,15 +9,15 @@
             <div class="barre"></div>
             <div class="page" id="choix">
 
-                <form action="" method='GET' id="R_An">
+                <form action="/anomalies" method='GET' id="R_An">
                     <label>Numéro Commande</label>
-                    <input type="text" id="Cnum" name="Cnum" value="<%=searchOptions.numerocom%>">
+                    <input type="text" id="Cnum" name="numeroCom" value="<%=searchOptions.numeroCom%>">
                     <label>Nom Individu</label>
-                    <input type="text" id="nom" name="nom" value="<%=searchOptions.client%>">
-                    <!-- <label>Prénom Individu</label>
-                    <input type="text" id="prenom" name="prenom" value="%=anomalie.client%>"> -->
+                    <input type="text" id="nom" name="nom" value="<%=searchOptions.nom%>">
+                    <label>Prénom Individu</label>
+                    <input type="text" id="prenom" name="prenom" value="<%=searchOptions.prenom%>">
                     <label>Date d'anomalie</label>
-                    <input type='date' value="<%=searchOptions.date%>">
+                    <input type='date' name="date" value="<%=searchOptions.date%>">
                     <input type='submit' value='Rechercher'>
                 </form>
 
@@ -36,9 +36,6 @@
                 </div>
 
             </div>
-            <script>
-                let on_R_An = document.getElementById("R_An")
-            </script>
 
             <%- include('./partials/footer.ejs') %>
 
