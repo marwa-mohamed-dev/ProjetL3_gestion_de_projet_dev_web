@@ -24,5 +24,7 @@ Pour résoudre ce problème:
 ## Connexion à l'application
 Pour se connecter à l'application il faut avoir un identifiant et un mot de passe.
 Voici un id et un mdp pour accéder à l'ensemble des fonctionnalités l'application
-identifant:
-mdp:
+
+
+identifant: global
+mdp: global
