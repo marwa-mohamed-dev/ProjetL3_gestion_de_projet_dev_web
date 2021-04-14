@@ -23,8 +23,22 @@ Pour résoudre ce problème:
 # Utilisation de l'Application Fenouil
 ## Connexion à l'application
 Pour se connecter à l'application il faut avoir un identifiant et un mot de passe.
-Voici un id et un mdp pour accéder à l'ensemble des fonctionnalités l'application
+Voici la liste des couples identifiants/mots de passe qui modélisent les différents rôles au sein de l'entreprise :
 
 
-identifant: global
-mdp: global
+- Amdministrateur référentiel : Administration du référentiel
+{identifiant: "admin", mdp: "admin"}
+- Gestionnaire administratif : Anomalies et envoie de courrier
+{identifiant: "gest", mdp: "gest"}
+- Assistant de saisie : Saisie des commandes
+{identifiant: "saisie", mdp: "saisie"}
+- Département de prospection : Prospection
+{identifiant: "prosp", mdp: "prosp"}
+- Directeur de la stratégie : valide cible de routage
+{identifiant: "strat", mdp: "strat"}
+- Responsable de routage : lance envoi des publicités
+{identifiant: "pub", mdp: "pub"}
+- Directeur de l'entreprise (accès à tous les modules, intégralité de l'application)
+{identifiant: "global", mdp: "global"}
+
+
