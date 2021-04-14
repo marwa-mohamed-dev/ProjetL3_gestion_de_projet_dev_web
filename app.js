@@ -246,7 +246,7 @@ app.get('/envoyerPublicite', checkAuthenticated, letAcess(roleResponsableEnvoiPu
 
 // Envoyer une publicité
 // Download a file
-app.get('/Envoyerpublicite/:id', checkAuthenticated, async (req, res) => {
+app.get('/envoyerPublicite/:id', checkAuthenticated, async (req, res) => {
     const id = req.params.id
     const cible = await CibleDeRoutage.findById(id)
     const individus = await Individu.find({_id: { $in: cible.listeIndividus }})
