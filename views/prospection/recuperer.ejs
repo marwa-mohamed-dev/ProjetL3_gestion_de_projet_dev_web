@@ -8,20 +8,22 @@
     <%- include('../partials/nav.ejs') %>
     <%- include('../partials/barreProspection.ejs') %>
     
-    <div  >
+    <div class="publicite" >
 
         <% if (cibleDeRoutages.length > 0) { %>
             <% cibleDeRoutages.forEach(cible => { %>
                 <%if(cible.valide) { %>
-                    <a href="./Envoyerpublicite/<%= cible._id %>">
-                        <h3 class="nom"><%= cible.titre %></h3>
-                        <p> Date de création : <%= cible.dateProspection.toDateString() %></p>
-                        <p>Date de validation <%= cible.dateValide.toDateString() %></p> 
-                    </a>
-                        <% if(Math.abs(new Date() - cible.dateValide.getTime()) >  864000000 ) { %> 
-                            <p>Expiré, les individus ne font plus partie de la cible de routage</p>   
-                        <% } %> 
-                        <input type="button" class="delete" data-doc="<%= cible._id %>" value="Supprimer">
+                    <div >
+                        <a class="lien" href="./Envoyerpublicite/<%= cible._id %>">
+                            <h3 class="titreCible" ><%= cible.titre %></h3>
+                            <p class="dateCreation"> Date de création : <%= cible.dateProspection.toDateString() %></p>
+                            <p class='dateVal'>Date de validation <%= cible.dateValide.toDateString() %></p> 
+                        </a>
+                            <% if(Math.abs(new Date() - cible.dateValide.getTime()) >  864000000 ) { %> 
+                                <p class="expire">Expiré, les individus ne font plus partie de la cible de routage</p>   
+                            <% } %> 
+                            <input type="button" class="delete" data-doc="<%= cible._id %>" value="Supprimer">
+                    </div>
                 <%} %>
             <% }) %>
         <% } else { %>

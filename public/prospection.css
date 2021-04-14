@@ -11,6 +11,23 @@ body{
     grid-template-rows:[head-start] 2fr [head-end barre-start] 1fr [barre-end page-start] 10fr [page-end foot-start] 1fr [foot-end];
 }
 
+.details{
+  display: grid;
+  grid-template-columns: repeat(4,25%);
+  grid-auto-rows: auto;
+  grid-row-gap: 15px;
+  grid-column-gap: 5px;
+  /* margin: 4% auto; */
+  grid-auto-flow: dense;
+}
+
+.interieur{
+  margin-left: auto;
+  margin-right: auto;
+  grid-column: 2/4;
+  width: max-content;
+}
+
 nav img{
     width: 200px;
     padding-top: 30px;
@@ -136,6 +153,25 @@ div>form{
   grid-template-rows: auto;
 }
 
+.refus,.validate, .delete{
+  width: 150px;
+  height: 40px;
+  background-color: #f6f8f6;
+  border-radius: 5px;
+  border: none;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.commantaire{
+  height: 100px;
+  width: inherit;
+}
+
 .partie{
   justify-self: center;
   text-decoration: underline;
@@ -171,6 +207,7 @@ input[value="Soumettre"]{
   border: 1px solid black;
   width: 100%;
   text-align: center;
+
 }
 
 .liste{
@@ -193,6 +230,25 @@ input[value="Soumettre"]{
 
 .nom{
 grid-column:1 ;
+color: black ;
+text-decoration: none;
+}
+.lien{
+  color: black;
+  text-decoration: none;
+}
+.publicite{
+  display: grid;
+    max-width: 80%;
+    grid-template-columns: repeat(4,25%);
+    grid-template-rows: auto;
+    grid-row-gap:20px;
+    grid-column-gap:40px;
+    justify-items: center;
+    margin-top:2%;
+    margin-left: 3%;
+    margin-left: 3%;
+    justify-items: center;
 }
 
 .date{
