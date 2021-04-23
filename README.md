@@ -2,7 +2,7 @@
 
 ## Hébergement en ligne
 Vous pouvez essayer directement l'application disponible en ligne sur le site d'hébergement Scalingo en cliquant sur le lien suivant : 
-https://fenouildecoperso.osc-fr1.scalingo.io/.
+https://fenouildecoperso.osc-fr1.scalingo.io/. (lien valable jusqu'au 11 mai 2021)
 
 
 ## Connexion à l'application
